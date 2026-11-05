@@ -24,7 +24,11 @@ export default function LiveWorkerCard({
   stage,
   visibleSteps,
   ticketCode,
-  approver
+  approver,
+  defaultOpen = false,
+  paused = false,
+  statusLabel,
+  inline = false
 }: {
   message: MessageNode;
   activities: EventNode[];
@@ -33,35 +37,42 @@ export default function LiveWorkerCard({
   ticketCode?: string;
   /** Who the paused work is waiting on, for the 'waiting' stage. */
   approver?: string;
+  defaultOpen?: boolean;
+  paused?: boolean;
+  /** Specific work in progress, using the same inline text shine as Thinking. */
+  statusLabel?: string;
+  /** Compact conversation activity, with work details closed until requested. */
+  inline?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const bodyId = useId();
 
+  useEffect(() => setElapsedSeconds(0), [stage]);
+
   useEffect(() => {
-    const startedAt = performance.now();
-    setElapsedSeconds(0);
-    const timer = window.setInterval(() => setElapsedSeconds((performance.now() - startedAt) / 1000), 100);
+    if (paused || inline) return;
+    const timer = window.setInterval(() => setElapsedSeconds((value) => value + 0.1), 100);
     return () => window.clearInterval(timer);
-  }, [stage]);
+  }, [stage, paused, inline]);
 
   /* A pause on an approval opens the work, so the agent sees what it is waiting on. */
   useEffect(() => {
-    if (stage === 'waiting') setOpen(true);
-  }, [stage]);
+    if (stage === 'waiting' && !inline) setOpen(true);
+  }, [stage, inline]);
 
   const reasoning = message.id === 'm2'
     ? 'I should find out whether the Wi-Fi problem affects only Megan’s laptop before deciding where to route it.'
     : activities[0]?.intent ?? 'I should check the ticket context and choose the next safe step.';
 
   return (
-    <article id={`stream-${message.id}`} className="tr-live-worker-card" aria-label={`${message.actor.name} ${stage}`}>
-      <ActorAvatar actor={message.actor} size="xs" pixelSize={32} channel={message.channel} />
+    <article id={`stream-${message.id}`} className={`tr-live-worker-card${inline ? ' is-inline' : ''}${paused ? ' is-paused' : ''}`} aria-label={`${message.actor.name} ${stage}`}>
+      {!inline && <ActorAvatar actor={message.actor} size="xs" pixelSize={32} channel={message.channel} />}
       <div className="tr-live-worker-content">
-        <div className="tr-live-worker-name">{message.actor.name}</div>
+        {!inline && <div className="tr-live-worker-name">{message.actor.name}</div>}
         <button type="button" className="tr-live-worker-toggle" aria-expanded={open} aria-controls={bodyId} onClick={() => setOpen((value) => !value)}>
-          <span className="tr-live-shine" aria-live="polite">{STAGE_LABEL[stage]}</span>
-          <span>{elapsedSeconds.toFixed(1)}s</span>
+          <span className="tr-live-shine" aria-live="polite">{statusLabel ?? STAGE_LABEL[stage]}</span>
+          {!inline && <span>{elapsedSeconds.toFixed(1)}s</span>}
           <Icon name={open ? 'ChevronDown' : 'ChevronRight'} size="xs" color="var(--color-icon-secondary)" />
         </button>
         {open && (
@@ -82,7 +93,7 @@ export default function LiveWorkerCard({
                 )}
               </ol>
             )}
-            {stage === 'working' && <span className="tr-live-worker-progress tr-live-shine">{visibleSteps === 0 ? 'Starting work…' : 'Putting the response together…'}</span>}
+            {stage === 'working' && !statusLabel && <span className="tr-live-worker-progress tr-live-shine">{visibleSteps === 0 ? 'Starting work…' : 'Putting the response together…'}</span>}
             {stage === 'waiting' && <span className="tr-live-worker-progress tr-live-shine">Waiting for {approver ?? 'an agent'} to decide…</span>}
           </div>
         )}

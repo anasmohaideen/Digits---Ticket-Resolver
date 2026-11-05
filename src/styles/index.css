@@ -1201,7 +1201,7 @@ body {
   height: 52px;
   padding: var(--spacing-100) var(--spacing-200);
   border-block: 1px solid var(--color-boundary-border-mildest);
-  background: linear-gradient(105deg, var(--color-fill-semantic-highlight-mildest), var(--color-fill-semantic-info-mildest));
+  background: var(--color-fill-container);
   flex-wrap: nowrap;
   transition: max-height 220ms ease, min-height 220ms ease, padding-block 220ms ease, opacity 160ms ease, border-color 220ms ease, border-width 220ms ease;
 }
@@ -3175,3 +3175,90 @@ div:has(> [role='menu']) { z-index: 1000; }
 .tr-o2-activity.is-artifact-pointer .tr-o2-activity-line { cursor: pointer; }
 .tr-o2-activity.is-artifact-pointer .tr-o2-activity-line:hover { background: var(--color-fill-container); }
 .tr-o2-activity-view:focus-visible { outline: 2px solid var(--color-boundary-brand); outline-offset: 2px; }
+
+/* Stakeholder autoplay stays in the prototype toolbar's own visual language. */
+.tr-proto-panel-with-demo {
+  width: 288px;
+  max-height: calc(100dvh - 72px);
+  overflow: hidden;
+}
+.tr-proto-demo-group {
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--proto-line);
+}
+.tr-proto-demo-description {
+  margin: 0 2px;
+  color: var(--proto-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+.tr-proto-demo-progress { display: flex; flex-direction: column; gap: 8px; }
+.tr-proto-demo-status {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.tr-proto-demo-step {
+  flex-shrink: 0;
+  color: var(--proto-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+.tr-proto-demo-track {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--proto-line);
+}
+.tr-proto-demo-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--proto-accent);
+  transition: width 250ms ease;
+}
+.tr-proto-demo-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.tr-proto-demo-actions > .tr-proto-action {
+  flex: 1 1 auto;
+  width: auto;
+  padding: 7px 9px;
+  font-size: 12px;
+}
+.tr-proto-demo-actions > .tr-proto-demo-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-color: rgba(62, 207, 142, 0.3);
+  background: rgba(62, 207, 142, 0.12);
+  color: #8ae5bb;
+}
+.tr-proto-demo-actions > .tr-proto-demo-primary:hover { background: rgba(62, 207, 142, 0.2); }
+@media (prefers-reduced-motion: reduce) { .tr-proto-demo-track > span { transition: none; } }
+.tr-live-worker-card.is-paused *, .is-demo-paused .tr-o2-generating-lines span { animation-play-state: paused; }
+
+.tr-proto-options { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow-y: auto; }
+.tr-proto-panel-with-demo > .tr-proto-head,
+.tr-proto-panel-with-demo > .tr-proto-demo-group { flex-shrink: 0; }
+
+/* Digit work occupies the same text column as other conversation activities. */
+.tr-live-worker-card.is-inline {
+  padding: var(--spacing-050) 0 var(--spacing-050) calc(var(--spacing-300) + var(--spacing-150));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.tr-live-worker-card.is-inline .tr-live-worker-toggle {
+  margin-top: 0;
+  border-radius: var(--border-radius-xsmall);
+  line-height: var(--spacing-300);
+}
+.tr-live-worker-card.is-inline .tr-live-worker-toggle:hover { background: var(--color-fill-container); }
+.tr-live-worker-card.is-inline .tr-live-worker-toggle:focus-visible {
+  outline: 2px solid var(--color-boundary-brand);
+  outline-offset: var(--spacing-025);
+}

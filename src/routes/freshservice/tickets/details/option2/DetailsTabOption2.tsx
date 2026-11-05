@@ -58,6 +58,10 @@ import {
   type ScenarioId,
 } from './scenarios';
 import type { AskAi } from './useAskAi';
+import LiveWorkerCard from '../LiveWorkerCard';
+import type { DigitDemoStep } from './useDigitDemo';
+import { digitWorkPresentation } from './digitWork';
+import ArtifactViewportAnchor from './ArtifactViewportAnchor';
 
 /** The sticky ticket tabs' height; the brief bar pins under it. */
 export const STICKY_TABS_HEIGHT = 42;
@@ -108,7 +112,9 @@ export default function DetailsTabOption2({
   stage,
   locked = false,
   pickedUpAt,
-  conversationExpired = false
+  conversationExpired = false,
+  demo,
+  demoPaused = false
 }: {
   tab: TicketDetailsTab;
   /** The ticket as authored, before a journey stage cut it back; what asking for a result brings. */
@@ -129,6 +135,8 @@ export default function DetailsTabOption2({
   pickedUpAt?: string;
   /** The pre-ticket chat is past its 90 days and no longer kept. */
   conversationExpired?: boolean;
+  demo?: DigitDemoStep;
+  demoPaused?: boolean;
 }) {
   const ticketCode = authoredTab.ticket.id;
   const fullTab = fullTabProp ?? authoredTab;
@@ -151,9 +159,22 @@ export default function DetailsTabOption2({
     } else if (rcaGen.phase === 'ready' && rootCauseContent) {
       next = { ...next, rootCause: { ...rootCauseContent, at: rcaGen.at, by: RESOLVER } };
     }
+    if (demo && !['triage-failed', 'rca-failed', 'group', 'person', 'blocked-freeze', 'blocked-no-tool', 'blocked-permission', 'blocked-partial'].includes(demo.stage) && next.summary.state === 'ready') {
+      const resolved = demo.stage === 'resolved';
+      const foundCause = ['rca-done', 'approval'].includes(demo.stage);
+      next = { ...next, summary: { ...next.summary,
+        tried: resolved
+          ? [['Ticket Resolver identified the certificate issue and prepared the Wi-Fi profile update.'], ['The updated profile was assigned and Megan confirmed she can reconnect.']]
+          : foundCause
+          ? [['Knowledge-base steps didn’t help. Ticket Resolver found the likely certificate issue and prepared a fix.']]
+          : [['Knowledge-base steps didn’t help. Ticket Resolver classified the ticket and is investigating the cause.']],
+        standing: [resolved ? 'Resolved: Megan confirmed Corp-Secure Wi-Fi and internal tools are working again.' : demo.stage === 'approval' ? 'Waiting for an agent to approve the Wi-Fi certificate fix.' : foundCause ? 'The likely cause and suggested resolution are ready.' : 'Ticket Resolver is investigating Megan’s Wi-Fi connectivity issue.'],
+        strip: resolved ? 'Resolved: the Wi-Fi profile was updated and Megan confirmed connectivity.' : foundCause ? 'Likely certificate issue found; the fix is being prepared.' : 'Ticket Resolver is investigating the Wi-Fi connectivity issue.'
+      } };
+    }
     return next;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authoredTab, summaryGen.phase, summaryGen.elapsed, summaryGen.at, rcaGen.phase, rcaGen.elapsed, rcaGen.at]);
+  }, [authoredTab, summaryGen.phase, summaryGen.elapsed, summaryGen.at, rcaGen.phase, rcaGen.elapsed, rcaGen.at, demo]);
   const defaults = composerDefaults(ticketCode, tab.ticket.requester.name);
   const story = hasScenarioData(tab.ticket.id);
 
@@ -256,7 +277,10 @@ export default function DetailsTabOption2({
      left the card falls back to its empty state. */
   const [deleted, setDeleted] = useState<ArtifactKind[]>([]);
   const takeover = useTakeover();
-  const available = availableArtifacts(tab, Boolean(resolution)).filter((kind) => !deleted.includes(kind));
+  const { working: digitArtifactWork, tab: artifactTab } = digitWorkPresentation(tab, locked, demo?.generating);
+  const liveStage = demo?.live ?? (digitArtifactWork ? 'working' : undefined);
+  const liveStatusLabel = demo && !demo.generating ? undefined : digitArtifactWork === 'summary' ? 'Generating summary' : digitArtifactWork === 'root-cause' ? 'Generating root cause' : digitArtifactWork === 'resolution' ? 'Generating resolution note' : undefined;
+  const available = availableArtifacts(artifactTab, Boolean(resolution)).filter((kind) => !deleted.includes(kind));
   /* The card always opens on Summary when there is one. */
   const lead = available.includes('summary') ? 'summary' : leadArtifact(available);
   const [selectedArtifact, setActive] = useState<ArtifactKind>(lead);
@@ -267,6 +291,7 @@ export default function DetailsTabOption2({
   /* What was just asked for is what the card shows. */
   useEffect(() => { if (rcaGen.phase !== 'idle') setActive('root-cause'); }, [rcaGen.phase]);
   useEffect(() => { if (noteGen.phase === 'ready') setActive('resolution'); }, [noteGen.phase]);
+  useEffect(() => { if (demo && demo.focus !== 'conversation') setActive(demo.focus); }, [demo]);
   const [forward, setForward] = useState<{ id: number; text: string } | undefined>();
 
   const generateArtifact = (kind: ArtifactKind) => takeover(() => {
@@ -475,7 +500,7 @@ export default function DetailsTabOption2({
     if (!scroller) return;
     /* Consumption (S1) and service requests are read from the top; the demos
        that act on the conversation land at its end, by the editor. */
-    const startAtTop = ticketType === 'Service Request' || scenario === '1';
+    const startAtTop = !demo && !digitArtifactWork && (ticketType === 'Service Request' || scenario === '1');
     const toTarget = () => {
       scroller.scrollTop = startAtTop ? 0 : scroller.scrollHeight;
     };
@@ -492,7 +517,35 @@ export default function DetailsTabOption2({
       cancelAnimationFrame(frame);
       window.clearTimeout(settle);
     };
-  }, [tab.ticket.id, ticketType, reviewState, scenario]);
+    // This is the initial landing position only. Artifact updates and demo
+    // steps must not move someone away from what they are reading.
+  }, [tab.ticket.id]);
+
+  const [demoVisibleSteps, setDemoVisibleSteps] = useState(0);
+  useEffect(() => setDemoVisibleSteps(0), [demo?.id]);
+  useEffect(() => {
+    if (!demo?.live || demo.live === 'thinking' || demoPaused) return;
+    const timer = window.setInterval(() => setDemoVisibleSteps((count) => Math.min(count + 1, demo.visibleSteps ?? 0)), 1100);
+    return () => window.clearInterval(timer);
+  }, [demo, demoPaused]);
+
+  const liveWork = demo?.work ?? digitArtifactWork;
+  const demoWorkText = liveWork === 'summary'
+    ? ['reviewed the issue, actions taken, and current ticket status']
+    : liveWork === 'root-cause'
+    ? ['searched similar Wi-Fi incidents', 'checked the recent Intune certificate change', 'compared the available evidence with Megan’s device report']
+    : liveWork === 'resolution'
+      ? ['prepared the certificate workflow for approval', 'ran the certificate workflow; profile assignment needs an agent’s permission', 'handed the device-profile assignment to Jordan for completion']
+      : ['reviewed the requester’s conversation and device details', 'reviewed the available classification signals'];
+  const demoReason = liveWork === 'summary'
+    ? 'I should summarize the issue, actions taken, and current status so the agent can quickly understand this ticket.'
+    : liveWork === 'root-cause'
+    ? 'I should compare similar incidents and recent changes to understand why this laptop cannot connect.'
+    : liveWork === 'resolution'
+      ? 'The certificate profile needs updating. I should get approval, run the workflow, and hand off any step that needs an agent’s permission.'
+      : 'I should review Megan’s report and the failed knowledge-base steps before classifying this ticket.';
+  const demoMessage: MessageNode = { kind: 'message', id: 'demo-live', at: createdAt ?? new Date().toISOString(), actor: RESOLVER, variant: 'digit-message', channel: fullTab.ticket.source, body: [] };
+  const demoWork: EventNode[] = demoWorkText.map((verb, index) => ({ kind: 'event', id: `demo-work-${index}`, at: demoMessage.at, actor: RESOLVER, type: 'searched', intent: demoReason, data: { verb } }));
 
   const visibleRows = rows;
 
@@ -593,7 +646,7 @@ export default function DetailsTabOption2({
   };
 
   return (
-    <div className="tr-details-tab tr-o2" style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className={`tr-details-tab tr-o2${demoPaused && demo ? ' is-demo-paused' : ''}`} style={{ display: 'flex', flexDirection: 'column' }}>
       <ArtifactStrip
         kind={active}
         line={available.length > 0 ? briefLine(active, tab, resolution) : ''}
@@ -602,9 +655,10 @@ export default function DetailsTabOption2({
       />
 
       <div ref={contentStartRef} className="tr-o2-content">
+        <ArtifactViewportAnchor topInset={STICKY_TABS_HEIGHT + 16}>
         <div ref={cardRef}>
-          <ArtifactCard
-            tab={tab}
+          {(!digitArtifactWork || available.length > 0) && <ArtifactCard
+            tab={artifactTab}
             ticketCode={ticketCode}
             proposed={proposed}
             available={available}
@@ -617,9 +671,10 @@ export default function DetailsTabOption2({
             onDelete={(kind) => setDeleted((current) => [...current, kind])}
             onRegenerate={() => generateArtifact(active)}
             onGenerate={summaryContent ? () => generateArtifact('summary') : undefined}
-          />
-          <AmbientRows rows={ambientRows} />
+          />}
+          {!demo && <AmbientRows rows={ambientRows} />}
         </div>
+        </ArtifactViewportAnchor>
 
         <DescriptionBox
           description={tab.description}
@@ -650,6 +705,8 @@ export default function DetailsTabOption2({
               }
               return <Fragment key={row.entry.id}>{renderEntry(row.entry)}</Fragment>;
             })}
+
+            {liveStage && <LiveWorkerCard message={demoMessage} activities={demoWork} stage={liveStage} statusLabel={liveStatusLabel} visibleSteps={demoVisibleSteps} ticketCode={ticketCode} approver={tab.viewer.agent.name} inline paused={demo ? demoPaused : false} />}
 
             {showDeck && (
               <div ref={deckRef}>

@@ -8,7 +8,7 @@ import FormatToolbar from './FormatToolbar';
 import RecipientField from './RecipientField';
 import { SparkleIcon } from '../AiCardChrome';
 import ActorAvatar from '../ActorAvatar';
-import { ActionButton } from '../../../../../dewai';
+import { ActionButton, CopilotPanel, useCopilotPanel } from '../../../../../dewai';
 import { useTakeover } from '../../HandOverDialog';
 
 /** The Digit a locked ticket is waiting on. */
@@ -431,6 +431,9 @@ export default function ReplyComposer({
   }, [open, mode]);
 
   const body = htmlToText(draft);
+  const copilot = useCopilotPanel({
+    onAccept: (start, end, text) => setDraft(textToHtml(body.slice(0, start) + text + body.slice(end))),
+  });
 
   /* A forward needs someone to go to; its own words are optional. */
   const canSend = mode === 'forward' ? mail.to.length > 0 : Boolean(body);
@@ -676,6 +679,17 @@ export default function ReplyComposer({
                         )}
                       </div>
                     )}
+                    <button
+                      type="button"
+                      className="tr-o2-compose-ai"
+                      onClick={() => {
+                        setSuggestionsOpen(false);
+                        copilot.openForEdit({ start: 0, end: body.length, text: body });
+                      }}
+                    >
+                      <img src={FREDDY_AI_ICON} alt="" width={16} height={16} />
+                      Edit with Copilot
+                    </button>
                   </>
                 )}
               </div>
@@ -805,6 +819,7 @@ export default function ReplyComposer({
           </div>
         </div>
       </div>
+      <CopilotPanel {...copilot.buildCopilotPanelProps()} />
     </div>
   );
 }

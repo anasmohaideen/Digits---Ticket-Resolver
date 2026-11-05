@@ -61,7 +61,8 @@ export default function ArtifactCard({
   onForward,
   onDelete,
   onGenerate,
-  onRegenerate
+  onRegenerate,
+  generating
 }: {
   tab: TicketDetailsTab;
   ticketCode?: string;
@@ -79,6 +80,7 @@ export default function ArtifactCard({
   /** Present where a summary can be generated on demand: the empty row becomes the button. */
   onGenerate?: () => void;
   onRegenerate?: () => void;
+  generating?: ArtifactKind;
 }) {
   const { summary, rootCause } = tab;
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -91,7 +93,7 @@ export default function ArtifactCard({
 
   /* Nothing to show (never generated, or every tab deleted): the single
      "Summarize ticket" row, with the record of the chat still below it. */
-  if (available.length === 0) {
+  if (available.length === 0 && !generating && summary.state !== 'generating') {
     /* The AI Design System's action banner (from the reference build), with
        the Freddy logo before the title and no info icon. */
     return (
@@ -105,8 +107,8 @@ export default function ArtifactCard({
     );
   }
 
-  if (summary.state === 'generating' || (active === 'root-cause' && rootCause.state === 'analyzing')) {
-    const label = summary.state === 'generating' ? 'Generating summary…' : 'Finding the root cause…';
+  if (generating || summary.state === 'generating' || (active === 'root-cause' && rootCause.state === 'analyzing')) {
+    const label = generating === 'resolution' ? 'Generating resolution note…' : summary.state === 'generating' || generating === 'summary' ? 'Generating summary…' : 'Finding the root cause…';
     return (
       <section className={`${className} tr-o2-generating`} aria-label={label} aria-busy="true">
         <div className="tr-o2-generating-head">

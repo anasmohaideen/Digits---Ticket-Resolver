@@ -8,6 +8,7 @@ import AskAiPanel from './details/option2/AskAiPanel';
 import useAskAi from './details/option2/useAskAi';
 import { PrimaryButton } from '../../../dewai';
 import ReviewControls from './details/option2/ReviewControls';
+import useDigitDemo from './details/option2/useDigitDemo';
 import HandOverDialog, { TakeoverContext, type Takeover } from './HandOverDialog';
 import type { InternalStyle } from './details/option2/ResponseCard';
 import { hasScenarioData, parseScenario, type ScenarioId } from './details/option2/scenarios';
@@ -432,11 +433,14 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
   const internalStyle: InternalStyle = searchParams.get('internal') === 'border' ? 'border' : 'tint';
   const fixture = findDetailsFixture(found?.code);
   /* The journey's last stage is the resolved ticket, which is scenario S4. */
-  const stageParam = fixture && STAGE_TICKETS.includes(fixture.ticket.id) ? parseStage(searchParams.get('stage'), fixture.ticket.id) : undefined;
-  const scenario: ScenarioId = stageParam === 'resolved' ? '4' : parseScenario(searchParams.get('scenario'));
+  const selectedStage = fixture && STAGE_TICKETS.includes(fixture.ticket.id) ? parseStage(searchParams.get('stage'), fixture.ticket.id) : undefined;
+  const demo = useDigitDemo(fixture?.ticket.id === 'INC-4127' && tab === 'Details', selectedStage);
+  const stageParam = demo.active ? demo.current.stage : selectedStage;
+  const selectedScenario: ScenarioId = selectedStage === 'resolved' ? '4' : parseScenario(searchParams.get('scenario'));
+  const scenario: ScenarioId = demo.active ? (demo.current.stage === 'resolved' ? '4' : '1') : selectedScenario;
   const story = Boolean(fixture && hasScenarioData(fixture.ticket.id));
   /* While the Digit has the ticket, people can read it but not change it. */
-  const locked = digitOwns(stageParam) && !pickedUpAt;
+  const locked = digitOwns(stageParam) && (demo.active || !pickedUpAt);
   /* Nothing is disabled while the Digit has the ticket. The first change asks
      to take it over (`HandOverDialog`); Continue picks the ticket up and then
      goes ahead with what the person did. */
@@ -450,12 +454,12 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
       if (action) window.setTimeout(action, 0);
     });
   };
-  useEffect(() => setPickedUpAt(undefined), [stageParam]);
+  useEffect(() => setPickedUpAt(undefined), [selectedStage]);
   /* The properties pane's draft (see `update`); a new stage starts it fresh. */
   const [draft, setDraft] = useState<Partial<Ticket>>({});
   const [texts, setTexts] = useState(EMPTY_TEXTS);
   const [savedTexts, setSavedTexts] = useState(EMPTY_TEXTS);
-  useEffect(() => { setDraft({}); setTexts(savedTexts); }, [stageParam]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setDraft({}); setTexts(savedTexts); }, [selectedStage]); // eslint-disable-line react-hooks/exhaustive-deps
   /* A ticket the list shows with Ticket Resolver is the Resolver's while it
      owns the stage; once it has handed over, or someone picks it up, the agent
      is the person it went to (the viewer, as in the hand-over rows). */
@@ -465,9 +469,9 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
   const resolverAssigned = found?.assignee === 'Ticket Resolver' && Boolean(fixture && STAGE_TICKETS.includes(fixture.ticket.id));
   useEffect(() => {
     if (!resolverAssigned) return;
-    const assignee: Agent = digitOwns(stageParam) && !pickedUpAt ? 'Ticket Resolver' : viewerAgent ?? 'Ticket Resolver';
+    const assignee: Agent = digitOwns(selectedStage) && !pickedUpAt ? 'Ticket Resolver' : viewerAgent ?? 'Ticket Resolver';
     setTicket((current) => (current ? { ...current, assignee } : current));
-  }, [resolverAssigned, stageParam, pickedUpAt, viewerAgent]);
+  }, [resolverAssigned, selectedStage, pickedUpAt, viewerAgent]);
   /* The pre-ticket chat is kept for 90 days; `?expired=1` shows the ticket after that. */
   const conversationExpired = searchParams.get('expired') === '1';
   const askAi = useAskAi(scenario, fixture?.viewer.agent ?? { kind: 'agent', id: 'viewer', name: 'You' }, story);
@@ -475,8 +479,8 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
   /* S4 is the ticket resolved; every other scenario is it still open. */
   useEffect(() => {
     if (!story) return;
-    setTicket((current) => (current ? { ...current, status: scenario === '4' ? 'Resolved' : found?.status ?? current.status } : current));
-  }, [scenario, story, found?.status]);
+    setTicket((current) => (current ? { ...current, status: selectedScenario === '4' ? 'Resolved' : found?.status ?? current.status } : current));
+  }, [selectedScenario, story, found?.status]);
 
   /* Ask AI docks beside the whole ticket card (see `AskAiPanel`) and takes
      the widgets' place, so the side pane steps aside while it is open. */
@@ -585,7 +589,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
     ? (Object.keys(draft) as Array<keyof Ticket>).filter((key) => draft[key] !== ticket[key])
     : [];
   const formDirty = changed.length > 0 || (Object.keys(texts) as Array<keyof typeof texts>).some((key) => texts[key] !== savedTexts[key]);
-  const form = { ...ticket!, ...draft };
+  const form = { ...ticket!, ...draft, ...(demo.active ? { status: demo.current.stage === 'resolved' ? 'Resolved' as Status : 'Open' as Status, assignee: 'Ticket Resolver' as Agent } : {}) };
   const update = () => {
     const apply = () => {
       patch(Object.fromEntries(changed.map((key) => [key, draft[key]])) as Partial<Ticket>);
@@ -798,7 +802,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
           ) : tab === 'Details' ? (
             detailsTab && (
               <DetailsTabOption2
-                key={`${reviewState}-${scenario}-${stageId ?? 'full'}`}
+                key={demo.active ? `demo-${demo.run}` : `${reviewState}-${scenario}-${stageId ?? 'full'}-normal`}
                 tab={detailsTab}
                 ticketType={ticket.type}
                 reviewState={reviewState}
@@ -809,8 +813,10 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
                 stage={stageId}
                 fullTab={authoredTab}
                 locked={locked}
-                pickedUpAt={pickedUpAt}
+                pickedUpAt={demo.active ? undefined : pickedUpAt}
                 conversationExpired={conversationExpired}
+                demo={demo.active ? demo.current : undefined}
+                demoPaused={demo.status !== 'playing'}
               />
             )
           ) : (
@@ -847,7 +853,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
             style={{ ...CARD, borderColor: 'var(--color-boundary-semantic-info-mild)' }}
           >
             <div style={{ marginBlockEnd: 'var(--spacing-100)', fontSize: '16px', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text-primary)' }}>
-              {ticket.status}
+              {demo.active ? form.status : ticket.status}
             </div>
             <div style={{ marginBlockEnd: 'var(--spacing-150)' }}>
               <div style={LABEL}>Priority</div>
@@ -1063,11 +1069,22 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
         )}
       </div>
       <ReviewControls
+        demo={fixture?.ticket.id === 'INC-4127' && tab === 'Details' ? {
+          status: demo.status,
+          label: demo.current.label,
+          step: demo.index + 1,
+          total: demo.total,
+          onPlay: demo.play,
+          onPause: demo.pause,
+          onRestart: demo.restart,
+          onExit: demo.exit
+        } : undefined}
         stages={authoredTab && tab === 'Details' && STAGE_TICKETS.includes(authoredTab.ticket.id)
           ? {
-              value: stageId,
+              value: selectedStage,
               options: stagesFor(authoredTab.ticket.id),
               onChange: (next) => {
+                demo.exit();
                 const params = new URLSearchParams(searchParams);
                 if (next) params.set('stage', next);
                 else params.delete('stage');

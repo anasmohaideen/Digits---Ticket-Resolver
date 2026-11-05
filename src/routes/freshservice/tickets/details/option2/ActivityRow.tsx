@@ -89,11 +89,9 @@ export default function ActivityRow({
             </time>
           </Tooltip>
           {view && (
-            <Tooltip content={view.ariaLabel} placement="top">
-              <button type="button" className="tr-o2-activity-view" aria-label={view.ariaLabel} onClick={view.onClick}>
-                View
-              </button>
-            </Tooltip>
+            <button type="button" className="tr-o2-activity-view" aria-label={view.ariaLabel} onClick={view.onClick}>
+              View
+            </button>
           )}
           {expandable && (
             <button

@@ -15,7 +15,8 @@ import type { StageId, stagesFor } from './stages';
 export default function ReviewControls({
   stages,
   incoming,
-  expired
+  expired,
+  demo
 }: {
   /** The Resolver journey, one job at a time. */
   stages?: { value: StageId | undefined; options: ReturnType<typeof stagesFor>; onChange: (next: StageId | undefined) => void };
@@ -23,10 +24,70 @@ export default function ReviewControls({
   incoming?: { count: number; onSend: () => void; onReset: () => void };
   /** Past 90 days the pre-ticket chat is gone; only the description and files stay. */
   expired?: { value: boolean; onChange: (next: boolean) => void };
+  /** Plays the Digit's arrival and work as a stakeholder walkthrough. */
+  demo?: {
+    status: 'idle' | 'playing' | 'paused' | 'finished';
+    label: string;
+    step: number;
+    total: number;
+    onPlay: () => void;
+    onPause: () => void;
+    onRestart: () => void;
+    onExit: () => void;
+  };
 }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const panelId = useId();
+  const demoActive = demo && demo.status !== 'idle';
+  const demoProgress = demo ? Math.min(Math.max(demo.step, 0), demo.total) : 0;
+  const demoPercent = demo && demo.total > 0 ? (demoProgress / demo.total) * 100 : 0;
+  const demoActionLabel = demo?.status === 'playing' ? 'Pause' : demo?.status === 'paused' ? 'Resume' : demo?.status === 'finished' ? 'Replay' : 'Play Digit demo';
+
+  const renderDemoActions = () => demo && (
+    <div className="tr-proto-demo-actions">
+      <button
+        type="button"
+        className="tr-proto-action tr-proto-demo-primary"
+        onClick={() => {
+          if (demo.status === 'playing') demo.onPause();
+          else demo.onPlay();
+          setOpen(false);
+        }}
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+          {demo.status === 'playing' ? <path d="M2 2h3v8H2zm5 0h3v8H7z" /> : <path d="M3 1.5v9L10 6z" />}
+        </svg>
+        {demoActionLabel}
+      </button>
+      {demoActive && (
+        <>
+          <button type="button" className="tr-proto-action" onClick={() => { demo.onRestart(); setOpen(false); }}>Restart</button>
+          <button type="button" className="tr-proto-action" onClick={demo.onExit}>Stop demo</button>
+        </>
+      )}
+    </div>
+  );
+
+  const renderDemoProgress = () => demo && (
+    <div className="tr-proto-demo-progress">
+      <div className="tr-proto-demo-status" role="status">
+        <span>{demo.label}</span>
+        <span className="tr-proto-demo-step">{demoProgress}/{demo.total}</span>
+      </div>
+      <div
+        className="tr-proto-demo-track"
+        role="progressbar"
+        aria-label="Digit demo progress"
+        aria-valuemin={0}
+        aria-valuemax={demo.total}
+        aria-valuenow={demoProgress}
+        aria-valuetext={demo.label}
+      >
+        <span style={{ width: `${demoPercent}%` }} />
+      </div>
+    </div>
+  );
 
   /* Closes on Escape and on a click anywhere else on the page. */
   useEffect(() => {
@@ -46,7 +107,7 @@ export default function ReviewControls({
   return (
     <div ref={rootRef} className="tr-proto">
       {open && (
-        <div id={panelId} role="dialog" aria-label="Prototype controls" className="tr-proto-panel">
+        <div id={panelId} role="dialog" aria-label="Prototype controls" className={`tr-proto-panel${demo ? ' tr-proto-panel-with-demo' : ''}`}>
           <div className="tr-proto-head">
             <span className="tr-proto-title">Prototype controls</span>
             <button type="button" className="tr-proto-close" aria-label="Close prototype controls" onClick={() => setOpen(false)}>
@@ -54,6 +115,7 @@ export default function ReviewControls({
             </button>
           </div>
 
+          <div className="tr-proto-options">
           {stages && (
             <div role="radiogroup" aria-label="Journey stage" className="tr-proto-group">
               <span className="tr-proto-label">Journey stage</span>
@@ -116,6 +178,16 @@ export default function ReviewControls({
               )}
             </>
           )}
+          </div>
+          {demo && (
+            <div role="group" aria-label="Digit autoplay" className="tr-proto-group tr-proto-demo-group">
+              <span className="tr-proto-label">Digit autoplay</span>
+              <p className="tr-proto-demo-description">Play the selected journey scenario from arrival to its outcome.</p>
+              {demoActive && renderDemoProgress()}
+              {renderDemoActions()}
+            </div>
+          )}
+
         </div>
       )}
 
