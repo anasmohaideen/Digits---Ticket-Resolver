@@ -2895,10 +2895,12 @@ div:has(> [role='menu']) { z-index: 1000; }
 .tr-o2-desc-source-faces > span { position: relative; display: inline-flex; width: 20px; height: 20px; }
 
 .tr-o2-desc-source-label {
-  flex: 1;
   min-width: 0;
   color: var(--color-text-secondary);
 }
+.tr-o2-desc-source-count { flex: none; color: var(--color-text-secondary); }
+/* The channel, as its logo and name: "… in (logo) Slack". */
+.tr-o2-desc-source-channel { display: inline-flex; align-items: center; gap: var(--spacing-050); vertical-align: top; }
 
 .tr-o2-desc-source-label strong {
   font-weight: var(--font-weight-semi-bold);
@@ -3139,3 +3141,34 @@ div:has(> [role='menu']) { z-index: 1000; }
 .tr-assign-search [role='search'] { width: 100%; }
 .tr-assign-popover [role='tablist'] { padding-inline: var(--spacing-200); border-block-end: 1px solid var(--color-boundary-border-mildest); }
 .tr-assign-popover [role='tabpanel'] { padding: 0; }
+
+/* AI generation follows the production lavender shimmer treatment. */
+.tr-o2-card.tr-o2-generating {
+  background: var(--color-fill-surface, #fff);
+  border: 1px solid #ddd5ff;
+  border-radius: 16px;
+  padding: 24px;
+}
+.tr-o2-generating-head { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.tr-o2-generating-label { display: flex; align-items: center; gap: var(--spacing-150); color: var(--color-text-secondary); }
+.tr-o2-generating-actions { display: flex; gap: 20px; }
+.tr-o2-generating-actions span, .tr-o2-generating-footer span { display: block; width: 20px; height: 20px; border-radius: 50%; background: #f5f6f7; }
+.tr-o2-generating-lines { display: flex; flex-direction: column; gap: 15px; margin-block: 24px; }
+.tr-o2-generating-lines span {
+  display: block;
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #f2edff 15%, #e8dcfc 38%, #f8f5ff 52%, #f2edff 70%);
+  background-size: 240% 100%;
+  animation: tr-ai-gradient-shimmer 2s ease-in-out infinite;
+}
+.tr-o2-generating-lines span:nth-child(1) { width: 13%; min-width: 100px; }
+.tr-o2-generating-lines span:nth-child(2) { width: 80%; }
+.tr-o2-generating-lines span:nth-child(3) { width: 41%; }
+.tr-o2-generating-footer { display: flex; align-items: center; gap: 20px; }
+.tr-o2-generating-footer span:first-child { width: 88px; border-radius: 999px; }
+.tr-o2-generating-footer i { width: 1px; height: 10px; background: var(--color-boundary-border-mild, #d9dfe5); }
+@keyframes tr-ai-gradient-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .tr-o2-generating-lines span { animation: none; } }
+@media (max-width: 600px) { .tr-o2-generating-actions { gap: 8px; } }
+.tr-o2-generating-label > :first-child { color: #b653f3; }

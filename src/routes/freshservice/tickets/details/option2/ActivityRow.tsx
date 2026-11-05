@@ -1,5 +1,5 @@
 import { useId, useState, type MouseEvent, type ReactNode } from 'react';
-import { Icon } from '@freshworks/dew-components';
+import { Icon, Tooltip } from '@freshworks/dew-components';
 import type { Actor, EventNode } from '../types';
 import ActorAvatar from '../ActorAvatar';
 import Reveal from './Reveal';
@@ -82,7 +82,11 @@ export default function ActivityRow({
           {tag && <span className="tr-o2-activity-tag">{tag}</span>}
           {/* No separator: the smaller, muted type already sets the time apart. */}
           {' '}
-          <time className="tr-o2-activity-meta" dateTime={at} title={fullDateTime(at)}>{relativeAgo(at)}</time>
+          <Tooltip content={fullDateTime(at)} placement="top">
+            <time className="tr-o2-activity-meta" dateTime={at} aria-label={fullDateTime(at)} tabIndex={0}>
+              {relativeAgo(at)}
+            </time>
+          </Tooltip>
           {view && (
             <button type="button" className="tr-o2-activity-view" aria-label={view.ariaLabel} onClick={view.onClick}>
               View

@@ -266,16 +266,27 @@ export default function DetailsTabOption2({
   useEffect(() => { if (noteGen.phase === 'ready') setActive('resolution'); }, [noteGen.phase]);
   const [forward, setForward] = useState<{ id: number; text: string } | undefined>();
 
+  const generateArtifact = (kind: ArtifactKind) => takeover(() => {
+    setDeleted((current) => current.filter((item) => item !== kind));
+    setActive(kind);
+    if (kind === 'summary') summaryGen.start();
+    else if (kind === 'root-cause') rcaGen.start();
+    else noteGen.start();
+  });
+
   /* Slim rows under the top card for what a person can ask for when the Digit
      did not produce it. */
   /* Asking for work is a change, so while the Digit has the ticket it goes
      through the take-over guard first. */
   const ambientRows: AmbientRow[] = [
-    ...(tab.summary.state !== 'not-generated' && tab.summary.state !== 'generating' && tab.rootCause.state === 'not-analyzed' && rcaGen.phase === 'idle' && rootCauseContent
-      ? [{ id: 'rca', label: 'Find the likely cause and resolution steps', onClick: () => takeover(rcaGen.start) }]
+    ...(available.length > 0 && !available.includes('summary') && summaryContent && tab.summary.state !== 'generating'
+      ? [{ id: 'summary', label: 'Summarize ticket', onClick: () => generateArtifact('summary') }]
       : []),
-    ...(tab.rootCause.state === 'found' && !resolution && hasResolutionOnDemand(ticketCode)
-      ? [{ id: 'note', label: 'Generate a resolution note', busy: noteGen.phase === 'generating', busyLabel: 'Writing the resolution note', seconds: noteGen.elapsed, onClick: () => takeover(noteGen.start) }]
+    ...(tab.summary.state !== 'not-generated' && tab.summary.state !== 'generating' && !available.includes('root-cause') && tab.rootCause.state !== 'analyzing' && rcaGen.phase !== 'generating' && rootCauseContent
+      ? [{ id: 'rca', label: 'Find the likely cause and resolution steps', onClick: () => generateArtifact('root-cause') }]
+      : []),
+    ...(tab.rootCause.state === 'found' && !available.includes('resolution') && (resolution || hasResolutionOnDemand(ticketCode))
+      ? [{ id: 'note', label: 'Generate a resolution note', busy: noteGen.phase === 'generating', busyLabel: 'Writing the resolution note', seconds: noteGen.elapsed, onClick: () => generateArtifact('resolution') }]
       : [])
   ];
 
@@ -623,10 +634,8 @@ export default function DetailsTabOption2({
             log={logMessages}
             onForward={isEmailLike(tab.ticket.source) ? (text) => setForward((current) => ({ id: (current?.id ?? 0) + 1, text })) : undefined}
             onDelete={(kind) => setDeleted((current) => [...current, kind])}
-            onGenerate={summaryContent ? () => takeover(() => {
-              setDeleted((current) => current.filter((kind) => kind !== 'summary'));
-              summaryGen.start();
-            }) : undefined}
+            onRegenerate={() => generateArtifact(active)}
+            onGenerate={summaryContent ? () => generateArtifact('summary') : undefined}
           />
           <AmbientRows rows={ambientRows} />
         </div>

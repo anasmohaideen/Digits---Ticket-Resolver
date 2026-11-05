@@ -92,7 +92,6 @@ export default function DescriptionBox({
   }
   const concierge = speakers.find((actor) => actor.kind === 'digit');
   const parties = [requesterName ?? requester?.name ?? 'The requester', concierge ? logSpeaker(concierge) : 'Workplace Concierge'].join(' and ');
-  const logo = channel ? CHANNEL_LOGO[channel] : undefined;
 
   return (
     <section className={`tr-o2-desc${FLAT_DESCRIPTION ? ' is-flat' : ''}`} aria-label="Description">
@@ -146,18 +145,29 @@ export default function DescriptionBox({
             aria-controls={sourceId}
             onClick={() => setSourceOpen((value) => !value)}
           >
-            {logo && <img src={logo} alt={channel ? CHANNEL_LABEL[channel] : ''} width={16} height={16} />}
-            <span className="tr-o2-desc-source-faces" aria-hidden>
+            {/* Says where the description came from, then who was in that chat
+                (their faces; the names are in the transcript) and how long it was. */}
+            <span className="tr-o2-desc-source-label">
+              Description generated from the conversation
+              {channel ? (
+                <>
+                  {' in '}
+                  <span className="tr-o2-desc-source-channel">
+                    {CHANNEL_LOGO[channel] && <img src={CHANNEL_LOGO[channel]} alt="" width={16} height={16} />}
+                    <strong>{CHANNEL_LABEL[channel]}</strong>
+                  </span>
+                </>
+              ) : null}
+            </span>
+            <span className="tr-o2-desc-source-faces" aria-label={parties}>
               {speakers.slice(0, 3).map((actor, i) => (
                 <span key={actorKey(actor)} style={{ marginLeft: i === 0 ? 0 : -6, zIndex: 3 - i }}>
                   <Face actor={actor} />
                 </span>
               ))}
             </span>
-            <span className="tr-o2-desc-source-label">
-              <strong>{parties}</strong>
-              <span> · {log.length} {log.length === 1 ? 'message' : 'messages'}{channel ? ` in ${CHANNEL_LABEL[channel]}` : ''}</span>
-            </span>
+            <span className="tr-o2-desc-source-count">{log.length} {log.length === 1 ? 'message' : 'messages'}</span>
+            <span style={{ flex: 1 }} />
             <Icon name={sourceOpen ? 'ChevronUp' : 'ChevronDown'} size="sm" color="var(--color-icon-secondary)" />
           </button>
           <Reveal open={sourceOpen} id={sourceId}>

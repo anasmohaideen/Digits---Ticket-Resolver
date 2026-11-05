@@ -1,8 +1,7 @@
 import { useRef } from 'react';
-import { InlineMessage, SegmentedTabs, Shimmer, Spinner } from '@freshworks/dew-components';
+import { InlineMessage, SegmentedTabs } from '@freshworks/dew-components';
 import type { Actor, MessageNode, ProposedFlags, TicketDetailsTab } from '../types';
 import { META } from '../details.styles';
-import { elapsed } from '../format';
 import { SparkleIcon, SummaryHeaderActions } from '../AiCardChrome';
 import { ActionBanner, AiFeedbackFooter } from '../../../../../dewai';
 import { useTakeover } from '../../HandOverDialog';
@@ -61,7 +60,8 @@ export default function ArtifactCard({
   log = [],
   onForward,
   onDelete,
-  onGenerate
+  onGenerate,
+  onRegenerate
 }: {
   tab: TicketDetailsTab;
   ticketCode?: string;
@@ -78,6 +78,7 @@ export default function ArtifactCard({
   onDelete: (kind: ArtifactKind) => void;
   /** Present where a summary can be generated on demand: the empty row becomes the button. */
   onGenerate?: () => void;
+  onRegenerate?: () => void;
 }) {
   const { summary, rootCause } = tab;
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -104,16 +105,20 @@ export default function ArtifactCard({
     );
   }
 
-  if (summary.state === 'generating') {
+  if (summary.state === 'generating' || (active === 'root-cause' && rootCause.state === 'analyzing')) {
+    const label = summary.state === 'generating' ? 'Generating summary…' : 'Finding the root cause…';
     return (
-      <section className={className} aria-label="Summary">
-        <div className="tr-ai-card-content" aria-live="polite">
-          <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-100)' }}>
-            <Spinner size="sm" aria-label="Generating summary" /> Thinking {elapsed(summary.elapsedSeconds ?? 0)}
-          </span>
-          <Shimmer width="100%" height={14} radius="sm" />
-          <Shimmer width="70%" height={14} radius="sm" />
+      <section className={`${className} tr-o2-generating`} aria-label={label} aria-busy="true">
+        <div className="tr-o2-generating-head">
+          <div className="tr-o2-generating-label fw-text-base" role="status"><SparkleIcon size="md" />{label}</div>
+          <div className="tr-o2-generating-actions" aria-hidden="true">
+            {[0, 1, 2, 3].map((item) => <span key={item} />)}
+          </div>
         </div>
+        <div className="tr-o2-generating-lines" aria-hidden="true">
+          <span /><span /><span />
+        </div>
+        <div className="tr-o2-generating-footer" aria-hidden="true"><span /><i /><span /><span /></div>
         {logBlock}
       </section>
     );
@@ -162,7 +167,7 @@ export default function ArtifactCard({
             take-over guard while the Digit has it. */}
         <SummaryHeaderActions
           subject={label.toLowerCase()}
-          onRegenerate={() => takeover()}
+          onRegenerate={onRegenerate ?? (() => takeover())}
           onEdit={() => takeover()}
           onAddNote={() => takeover()}
           onForward={onForward ? () => takeover(() => onForward(bodyRef.current?.innerText ?? '')) : undefined}
@@ -177,13 +182,7 @@ export default function ArtifactCard({
       <div ref={bodyRef} className="tr-ai-card-content tr-o2-card-body">
         {active === 'summary' && <SummaryBody tab={tab} ticketCode={ticketCode} />}
         {active === 'root-cause' && (
-          rootCause.state === 'analyzing' ? (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-100)' }} aria-live="polite">
-              <Spinner size="sm" aria-label="Analysing" /> {rootCause.live?.label ?? 'Analysing'} {elapsed(rootCause.live?.elapsedSeconds ?? 0)}
-            </span>
-          ) : (
-            <RootCauseBody tab={tab} ticketCode={ticketCode} />
-          )
+          <RootCauseBody tab={tab} ticketCode={ticketCode} />
         )}
         {active === 'resolution' && resolution && <ResolutionBody note={resolution} ticketCode={ticketCode} />}
       </div>
