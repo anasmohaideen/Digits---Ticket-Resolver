@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Proposed additions to Digit’s States</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2C5CC5;text-decoration:none}a:hover{color:#1D4296}
+.r{display:grid;grid-template-columns:300px minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start;padding:22px 0;border-top:1px solid #E1E6EC}
+.nm{font-size:15px;font-weight:600}
+.ty{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7A4106;background:#FCE6C8;border-radius:5px;padding:2px 7px;display:inline-block;margin-bottom:8px}
+.why{font-size:13px;line-height:20px;color:#475867;margin-top:6px}
+.pill{background:#fff;border-radius:10px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:#2B3D50}
+.pill b{color:#12344D;font-weight:600}
+.exp{background:#fff;border-radius:10px;padding:10px 14px;font-size:13px;line-height:20px;color:#2B3D50;display:flex;flex-direction:column;gap:6px}
+.ic{width:16px;height:16px;flex:0 0 16px;color:#6B7A89}
+.av{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
+.btn{font:inherit;font-size:12px;font-weight:500;border:1px solid #CFD7DF;background:#fff;color:#12344D;border-radius:7px;padding:0 10px;height:28px;display:inline-flex;align-items:center;gap:5px}
+.btn.pri{background:#2C5CC5;border-color:#2C5CC5;color:#fff}
+.card{background:#fff;border:1px solid #C9BEF7;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.done{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:7px;padding:5px 9px}
+</style>
+</helmet>
+<div style="width: 1440px; min-height: 3100px; box-sizing: border-box; padding: 64px 72px; background: #fff; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #12344D; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h1 style="margin: 0; font-size: 34px; font-weight: 700">Proposed additions to Digit’s States</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #475867; max-width: 980px">Gaps found while mapping the TR happy path and PRD to the current states file. Same columns as the states file: what it looks like before or collapsed, and after or expanded.</p>
+</div>
+
+<div style="background: #F3F5F8; border-radius: 16px; padding: 8px 28px 12px">
+<div class="r" style="border-top: 0; font-size: 12px; font-weight: 700; color: #475867; padding-bottom: 6px"><span>State</span><span>In progress / Collapsed</span><span>When done / Expanded</span></div>
+
+<!-- 1 -->
+<div class="r">
+<div><span class="ty">Timeline event</span><div class="nm">Ticket created</div><div class="why">Deflection runs before a ticket exists. Agents need to see who created the ticket, for whom, and what was already tried.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"></path><path d="M12 10v4M10 12h4"></path></svg><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg><b>Ticket Resolver</b> created this ticket on behalf of <span class="av" style="background:#F4D3C2;color:#7A3418">MB</span><b>Megan Brooks</b></div>
+<div class="exp"><div style="display: flex; align-items: center; gap: 6px"><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg><b>Ticket Resolver</b> created this ticket on behalf of <b>Megan Brooks</b></div><div>Tried first: <a href="#">Can’t connect to Corp-Secure Wi-Fi</a> (3 steps)</div><div>Requester said it didn’t work · Source: Slack</div></div>
+</div>
+
+<!-- 2 -->
+<div class="r">
+<div><span class="ty">Live state</span><div class="nm">Waiting</div><div class="why">TR is idle on purpose while it waits on a person. Without this, a long gap after “Thinking” looks like the Digit is stuck.</div></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Waiting for approval from <span class="av" style="background:#CFE1F5;color:#1A3E85">JR</span><b>Jordan Reyes</b><span style="color: #5A6B7D">4m</span></div><div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Waiting for <b>Megan’s</b> reply<span style="color: #5A6B7D">2m</span></div></div>
+<div class="exp">Replaced by what it was waiting for: the approval decision event, or the requester’s message. If the wait passes its deadline, it becomes a handover.</div>
+</div>
+
+<!-- 3 -->
+<div class="r">
+<div><span class="ty">Timeline event</span><div class="nm">Approval decision</div><div class="why">“Requested approval” has an event; the decision needs one too, so the audit trail shows who decided and when.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12l3 3 5-6"></path></svg><span class="av" style="background:#CFE1F5;color:#1A3E85">JR</span><b>Jordan Reyes</b> approved <b>Re-issue Megan’s Wi-Fi certificate</b></div>
+<div class="exp"><div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9 9l6 6M15 9l-6 6"></path></svg><span class="av" style="background:#CFE1F5;color:#1A3E85">JR</span><b>Jordan Reyes</b> rejected <b>Re-issue Megan’s Wi-Fi certificate</b></div><div>Reason: Hold until we decide whether to roll back CHG-2187.</div></div>
+</div>
+
+<!-- 4 -->
+<div class="r">
+<div><span class="ty">Artifact</span><div class="nm">Actionable card · decided</div><div class="why">After a decision, the Reject and Approve buttons should give way to the outcome, so the card can’t be acted on twice.</div></div>
+<div class="card"><div style="display: flex; gap: 8px; align-items: center"><span style="font-size: 11px; padding: 2px 7px; border-radius: 5px; background: #FCE6C8; color: #7A4106; font-weight: 500">Approval needed</span><b>Re-issue Megan’s Wi-Fi certificate</b></div><div style="display: flex; gap: 8px; align-items: center"><button class="btn">3 comments</button><span style="flex: 1"></span><button class="btn">Reject</button><button class="btn pri">Approve</button></div></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div class="card"><div style="display: flex; gap: 8px; align-items: center"><span style="font-size: 11px; padding: 2px 7px; border-radius: 5px; background: #FCE6C8; color: #7A4106; font-weight: 500">Approval needed</span><b>Re-issue Megan’s Wi-Fi certificate</b></div><div style="display: flex; gap: 8px; align-items: center"><button class="btn">3 comments</button><span style="flex: 1"></span><span class="done" style="background:#DDF3E8;color:#0B5A3C">Approved by Jordan Reyes · 9:31 AM</span></div></div><div class="card"><div style="display: flex; gap: 8px; align-items: center"><span style="font-size: 11px; padding: 2px 7px; border-radius: 5px; background: #FCE6C8; color: #7A4106; font-weight: 500">Approval needed</span><b>Re-issue Megan’s Wi-Fi certificate</b></div><div style="display: flex; gap: 8px; align-items: center"><button class="btn">3 comments</button><span style="flex: 1"></span><span class="done" style="background:#FBE3E3;color:#8C1D1D">Rejected by Jordan Reyes · 9:31 AM</span></div></div></div>
+</div>
+
+<!-- 5 -->
+<div class="r">
+<div><span class="ty">Live state variant</span><div class="nm">Searching · expandable results</div><div class="why">The states file’s “searched for n entities” has no expanded view. RCA evidence like similar tickets, changes and assets should be inspectable.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg><b>Ticket Resolver</b> searched for <b>7 similar tickets</b><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div>
+<div class="exp"><div><a href="#">INC-4098</a> Corp-Secure “unable to join” after the weekend · Resolved</div><div><a href="#">INC-4103</a> MacBook won’t connect to office Wi-Fi · Resolved</div><div><a href="#">INC-4110</a> Wi-Fi certificate error on Corp-Secure · Resolved</div><div><a href="#">+4 more</a></div></div>
+</div>
+
+<!-- 6 -->
+<div class="r">
+<div><span class="ty">Artifact anatomy</span><div class="nm">Output card · confidence slot</div><div class="why">The PRD gates RCA and deflection on tenant thresholds. Agents need the score in context to trust or override it. This becomes slot 3a in the anatomy.</div></div>
+<div class="card"><div style="display: flex; gap: 8px; align-items: center"><span style="font-size: 11px; padding: 2px 7px; border-radius: 5px; background: #EEEAFD; color: #4B2FB8; font-weight: 500">Root cause</span><b>Wi-Fi certificate not renewed after CHG-2187</b></div><div><b>Confidence</b></div><div style="display: flex; gap: 8px; align-items: center"><span class="done" style="background:#DDF3E8;color:#0B5A3C;padding:2px 8px">High</span>0.84 · above your 0.75 threshold</div></div>
+<div class="exp"><div><b>Bands:</b> High (above threshold, TR proceeds) · Medium (near threshold, TR asks a human) · Low (below threshold, TR hands over as Inconclusive).</div><div>Open question for PM: raw score, band, or both.</div></div>
+</div>
+
+<!-- 7 -->
+<div class="r">
+<div><span class="ty">Timeline event</span><div class="nm">Handover with reason</div><div class="why">Outside the happy path. The PRD’s Inconclusive and Blocked return states carry a reason and evidence that a plain “assigned ticket to” event loses.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"></circle><path d="M3 20c0-3.5 3-6 7-6"></path><path d="M16 14l3 3-3 3M13 17h6"></path></svg><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg><b>Ticket Resolver</b> handed over to <span class="av" style="background:#CFE1F5;color:#1A3E85">JR</span><b>Jordan Reyes</b><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: #FCE6C8; color: #7A4106">Blocked</span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div>
+<div class="exp"><div><b>Blocker:</b> Workflow step failed: Intune profile assignment denied</div><div><b>Diagnosis:</b> Wi-Fi certificate not renewed after CHG-2187</div><div><b>Tried:</b> KB steps, workflow “Re-issue Wi-Fi certificate (macOS)”</div><div><b>Routed by:</b> Intelligent routing → Network Team</div></div>
+</div>
+
+<!-- 8 -->
+<div class="r">
+<div><span class="ty">Timeline event</span><div class="nm">Other Digit event</div><div class="why">Concierge, Knowledge Curator and the Handlers also act on tickets. One shared pattern keeps each Digit’s avatar and name consistent.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M14 20h6"></path></svg><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5S3 7.2 3 10.2a5 5 0 0 0 10 0C13 7.2 8 1.5 8 1.5z" fill="#2563EB"></path></svg><b>Knowledge Curator</b> proposed updates to <a href="#"><b>Can’t connect to Corp-Secure Wi-Fi</b></a></div>
+<div class="exp"><div>Opens the draft in the knowledge module. Curator drafts and never auto-publishes, so the event links to a review, not a live change.</div></div>
+</div>
+
+<!-- 9 -->
+<div class="r">
+<div><span class="ty">Live state variant</span><div class="nm">Executing a workflow · failed step</div><div class="why">“Executed” assumes every step worked. When a step fails, agents need to see which one, why, and what didn’t run, because the handover depends on it.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4a3 3 0 0 1 3 3V14"></path></svg><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg><b>Ticket Resolver</b> executed <b>Re-issue Wi-Fi certificate (macOS)</b><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: #FBE3E3; color: #8C1D1D">1 step failed</span></div>
+<div class="exp"><div style="display: flex; gap: 8px; align-items: center"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg>Revoked the old certificate in Microsoft Intune</div><div style="display: flex; gap: 8px; align-items: center; color: #8C1D1D"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>Assign the new Corp-Secure Wi-Fi profile · permission denied</div><div style="display: flex; gap: 8px; align-items: center; color: #5A6B7D"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 12h10"></path></svg>Confirm the laptop checked in · not run</div></div>
+</div>
+
+<!-- 10 -->
+<div class="r">
+<div><span class="ty">Assist signal</span><div class="nm">Sentiment flag on a message</div><div class="why">The PRD lists sentiment analysis under Assist Humans but doesn’t say where it shows. A small flag on the requester’s message keeps it next to what triggered it.</div></div>
+<div class="pill"><span class="av" style="background:#F4D3C2;color:#7A3418">MB</span><b>Megan Brooks</b><span style="color: #5A6B7D">9:37 AM</span><span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: #FCE6C8; color: #7A4106">Frustrated · Time-sensitive</span></div>
+<div class="exp">Shown only to agents, never to the requester. Hover or click explains why: “Mentions a repeat issue and a demo at 11.”</div>
+</div>
+
+<!-- 11 -->
+<div class="r">
+<div><span class="ty">Assist signal</span><div class="nm">Drafted-with-Copilot marker</div><div class="why">When an agent sends a smart-reply draft, a marker lets the performance team count accepted suggestions, as the economics discussion requires, and tells colleagues the reply came from Copilot.</div></div>
+<div class="pill"><span class="av" style="background:#CFE1F5;color:#1A3E85">JR</span><b>Jordan Reyes</b><span style="color: #5A6B7D">9:44 AM</span><span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: #EEEAFD; color: #4B2FB8">Drafted with Freddy</span></div>
+<div class="pill"><span class="av" style="background:#CFE1F5;color:#1A3E85">JR</span><b>Jordan Reyes</b><span style="color: #5A6B7D">9:44 AM</span><span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: #EEEAFD; color: #4B2FB8">Drafted with Freddy · edited</span></div>
+</div>
+
+<!-- 12 -->
+<div class="r">
+<div><span class="ty">Scope note · existing state</span><div class="nm">Updates in external apps</div><div class="why">Not MVP. TR’s fixes run through Freshservice workflows, so changes in Intune, Workday or NetSuite appear as workflow steps. Keep this state for the tools-registry path Swathi agreed to add, where TR calls a connected app directly.</div></div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4a3 3 0 0 1 3 3V14"></path></svg><span style="color: #5A6B7D">MVP:</span> shown inside <b>executed Workflow Name</b> as steps</div>
+<div class="pill"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg><span style="color: #5A6B7D">Tools registry (later):</span> <b>Ticket Resolver</b> made updates in <b>App name</b></div>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

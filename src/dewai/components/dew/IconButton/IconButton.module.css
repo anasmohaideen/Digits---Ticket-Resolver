@@ -1,0 +1,152 @@
+/* fw-dew IconButton — transparent default; ::before multiply wash on hover/focus/active */
+
+.iconButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-medium);
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.iconButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--color-fill-container);
+  mix-blend-mode: multiply;
+  box-shadow: none;
+  transition:
+    opacity 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.iconButton:hover::before,
+.iconButton:focus-visible::before {
+  opacity: 1;
+  box-shadow: var(--shadow-sm);
+}
+
+.iconButton:active:not(:disabled)::before {
+  opacity: 1;
+  box-shadow: var(--shadow-xs);
+}
+
+.iconButton:active:not(:disabled) {
+  background: var(--color-fill-container);
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--color-fill-brand);
+  outline-offset: 2px;
+}
+
+.withBackground {
+  border-color: var(--color-border-mildest);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+}
+
+.withBackground:hover,
+.withBackground:focus-visible {
+  border-color: var(--color-border-milder);
+}
+
+.withBackground:active:not(:disabled) {
+  border-color: var(--color-border-mildest);
+  background: var(--color-fill-container);
+}
+
+.defaultTone {
+  color: var(--color-icon-default);
+}
+
+.secondary {
+  color: var(--color-icon-secondary);
+}
+
+.iconButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.iconButton:disabled::before {
+  opacity: 0;
+  box-shadow: none;
+}
+
+.iconContent {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.iconContent svg {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+.hasBadge {
+  overflow: visible;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* fw-dew Badge · variant=superscript — compact count on icon buttons */
+.badgeSuperscript {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--spacing-050);
+  border: 1px solid var(--color-fill-surface);
+  border-radius: var(--radius-circular);
+  background: var(--color-fill-error);
+  color: var(--color-text-on-brand);
+  font: 500 10px/16px var(--font-family);
+  letter-spacing: 0.08px;
+}
+
+/* fw-dew Badge · dot mode sm — TopNavigation notifications */
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  padding: 0;
+  border: 1px solid var(--color-fill-surface);
+  border-radius: var(--radius-large);
+  background: var(--color-fill-error);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconButton,
+  .iconButton::before {
+    transition: none;
+  }
+}

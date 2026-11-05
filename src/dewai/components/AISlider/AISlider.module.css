@@ -1,0 +1,178 @@
+.welcomeContent {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.welcomeBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-300);
+  text-align: center;
+}
+
+.welcomeLogoSlot {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.welcomeTextBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-050);
+  width: 100%;
+}
+
+.welcomePrefix {
+  margin: 0;
+  font: var(--font-callout-regular);
+  letter-spacing: var(--font-callout-tracking);
+  color: var(--color-text-primary);
+}
+
+.welcomeName {
+  margin: 0;
+  font: 700 24px/32px var(--font-family);
+  background: var(--ai-gradient-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Quiet — Figma welcome name: 24 Bold Primary (solid), not title rainbow */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .welcomeName {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+
+.footerStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  width: 100%;
+}
+
+.promptList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  width: 100%;
+}
+
+.promptItem {
+  width: 100%;
+}
+
+.promptMorphTarget {
+  width: 100%;
+  overflow: visible;
+}
+
+.conversationStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--spacing-050);
+}
+
+.conversationStack article,
+.thinkingBlock {
+  max-width: none;
+}
+
+.assistantTurn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  width: 100%;
+}
+
+.messageStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+}
+
+.messageStack article {
+  max-width: none;
+}
+
+.insightsBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  flex: 1;
+  min-width: 0;
+}
+
+.insightsIntro {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  line-height: 20px;
+}
+
+.insightsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+}
+
+.insightsSectionTitle {
+  margin: 0;
+  font: var(--font-callout);
+  letter-spacing: var(--font-callout-tracking);
+  color: var(--color-text-primary);
+}
+
+.insightsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+}
+
+.insightsList li {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--spacing-050) var(--spacing-100);
+  padding-left: 1em;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-secondary);
+  line-height: 20px;
+}
+
+.insightsList li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-text-secondary);
+}
+
+.bulletText {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.ticketChip {
+  flex-shrink: 0;
+}

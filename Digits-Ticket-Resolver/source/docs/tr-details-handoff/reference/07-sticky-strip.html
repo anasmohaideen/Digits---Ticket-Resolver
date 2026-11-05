@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sticky strip — minimal what has happened</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2C5CC5;text-decoration:none}a:hover{color:#1D4296;text-decoration:underline}
+.ic{width:16px;height:16px;flex:0 0 16px;color:#5A6B7D}
+.btn{font:inherit;font-size:12px;font-weight:500;border:1px solid #CFD7DF;background:#fff;color:#12344D;border-radius:8px;padding:0 10px;height:28px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.cap{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7A4106;background:#FCE6C8;border-radius:6px;padding:4px 10px;align-self:flex-start}
+.cap.ex{color:#1A3E85;background:#E3ECFA}
+.tabs{display:flex;gap:26px;padding:0 20px;border-bottom:1px solid #E4E8EC}
+.tab{font-size:14px;color:#2B3D50;padding:12px 2px;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:#2C5CC5;font-weight:600;border-bottom-color:#2C5CC5}
+.strip{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #DCD3FA;border-radius:10px;background:#FBFAFF;box-shadow:0 4px 10px rgba(18,52,77,.08);font-size:13px;min-width:0}
+.sc{font:inherit;font-size:12px;font-weight:600;border:1px solid #DDE3EA;background:#fff;color:#12344D;border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.sd{width:8px;height:8px;border-radius:50%;display:inline-block}
+.gd{background:#2E8B6A}.od{background:#E8A33D}.nd{background:#2C78E6}
+.tx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1;color:#2B3D50}
+.ghost{border:1px solid #E4E8EC;border-radius:12px;background:#fff;padding:14px 18px;font-size:14px;line-height:22px;color:#8796A6}
+.frame{border:1px solid #E4E8EC;border-radius:12px;background:#fff;overflow:hidden}
+.pop{position:absolute;left:300px;right:0;top:46px;z-index:2;border:1px solid #DCD3FA;border-radius:12px;background:#fff;box-shadow:0 12px 28px rgba(18,52,77,.18);display:flex;flex-direction:column}
+.chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.g{background:#DDF3E8;color:#0B5A3C}.o{background:#FCE6C8;color:#7A4106}
+.li{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:20px}
+.lb{font-size:13px;font-weight:600}
+.tbtn{font:inherit;font-size:13px;font-weight:500;color:#475867;background:transparent;border:0;border-bottom:2px solid transparent;padding:8px 10px;display:inline-flex;align-items:center;gap:6px;margin-bottom:-1px}
+.tbtn.on{color:#4B2FB8;font-weight:600;border-bottom-color:#7B4DF2}
+</style>
+</helmet>
+<div style="width: 1080px; min-height: 1500px; box-sizing: border-box; padding: 48px 56px; background: #fff; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #12344D; display: flex; flex-direction: column; gap: 44px">
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<span class="cap ex">S1 · Strip with a one-line “what has happened” (suggested)</span>
+<div class="frame">
+<div class="tabs"><span class="tab on">Details</span><span class="tab">Related tickets</span><span class="tab">Tasks</span><span class="tab">CMDB</span><span class="tab">Activity</span><span class="tab">Resolution</span></div>
+<div style="padding: 12px 20px 0">
+<div class="strip">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>
+<span class="tx">KB steps didn’t help. Ticket Resolver found the cause and ran the fix; the last step failed.</span>
+<button class="sc"><span class="sd gd"></span>Root cause · High</button>
+<button class="sc"><span class="sd od"></span>Fix · Blocked</button>
+<button class="btn">Show</button>
+</div>
+</div>
+<div style="padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 10px">
+<div class="ghost">Megan Brooks · replied in Slack · 9:37 AM — Ugh, second time this month. I have a client demo at 11.</div>
+<div class="ghost">Jordan Reyes · replied in Slack · 9:44 AM — Hi Megan, sorry about the hassle before your demo…</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<span class="cap ex">S2 · Strip, chips only (most minimal)</span>
+<div class="frame">
+<div class="tabs"><span class="tab on">Details</span><span class="tab">Related tickets</span><span class="tab">Tasks</span><span class="tab">CMDB</span><span class="tab">Activity</span><span class="tab">Resolution</span></div>
+<div style="padding: 12px 20px 0">
+<div class="strip">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>
+<button class="sc">Summary</button>
+<button class="sc"><span class="sd gd"></span>Root cause · High</button>
+<button class="sc"><span class="sd od"></span>Fix · Blocked</button>
+<span style="flex: 1"></span>
+<span style="font-size: 12px; color: #5A6B7D">Updated 9:35 AM</span>
+</div>
+</div>
+<div style="padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 10px">
+<div class="ghost">Megan Brooks · replied in Slack · 9:37 AM — Ugh, second time this month. I have a client demo at 11.</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<span class="cap">S3 · Option B: tapping a chip opens that tab as a panel under the strip</span>
+<div class="frame" style="min-height: 520px">
+<div class="tabs"><span class="tab on">Details</span><span class="tab">Related tickets</span><span class="tab">Tasks</span><span class="tab">CMDB</span><span class="tab">Activity</span><span class="tab">Resolution</span></div>
+<div style="padding: 12px 20px 0; position: relative">
+<div class="strip">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>
+<span class="tx">KB steps didn’t help. Ticket Resolver found the cause and ran the fix; the last step failed.</span>
+<button class="sc"><span class="sd gd"></span>Root cause · High</button>
+<button class="sc" style="background: #EEEAFD; border-color: #C9BEF7"><span class="sd od"></span>Fix · Blocked</button>
+<button class="btn">Hide</button>
+</div>
+<div class="pop" style="left: 20px; right: 20px; top: 56px">
+<div style="display: flex; align-items: center; gap: 4px; padding: 4px 10px 0 12px; border-bottom: 1px solid #EEEAFD">
+<button class="tbtn">Summary</button><button class="tbtn">Root cause <span class="chip g">High</span></button><button class="tbtn on">Suggested fix <span class="chip o">Blocked</span></button>
+<span style="flex: 1"></span>
+<button class="btn" style="border-color: transparent; background: transparent" aria-label="Close panel"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="padding: 14px 18px; display: flex; flex-direction: column; gap: 12px">
+<div><div class="lb">What happened</div>
+<div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px">
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0B7A4E" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 2px"><path d="M5 12l4 4 10-10"></path></svg><span>Approved by you · Revoked the old certificate in Intune</span></div>
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 2px"><path d="M6 6l12 12M18 6L6 18"></path></svg><span style="color: #8C1D1D">Assign the new Corp-Secure Wi-Fi profile · permission denied</span></div>
+</div></div>
+<div><div class="lb">What to do now</div><div style="font-size: 13px; line-height: 20px; margin-top: 2px">Assign the Corp-Secure Wi-Fi profile to <a href="#">ASSET-2291</a> in Intune, then ask Megan to rejoin.</div></div>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #FAF9FF; border-top: 1px solid #EEEAFD; border-radius: 0 0 12px 12px"><button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>Ask AI</button><span style="flex: 1"></span><button class="btn">View workflow run</button></div>
+</div>
+</div>
+<div style="padding: 330px 20px 20px; display: flex; flex-direction: column; gap: 10px">
+<div class="ghost">Megan Brooks · replied in Slack · 9:37 AM — Ugh, second time this month. I have a client demo at 11.</div>
+</div>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

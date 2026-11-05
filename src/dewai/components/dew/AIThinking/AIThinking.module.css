@@ -1,0 +1,169 @@
+/*
+ * AI Thinking — Figma Messages Think Collapsed / Expanded
+ * Collapsed 2386:1426 · Expanded 4010:20915
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-050);
+  width: 100%;
+  max-width: 340px;
+  min-height: 40px;
+  border-radius: var(--radius-large);
+  background: var(--color-fill-surface);
+  box-sizing: border-box;
+}
+
+.root[data-phase='active'] .snippet {
+  margin-left: -3px;
+}
+
+.snippet {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  width: 100%;
+  min-height: 40px;
+  padding: var(--spacing-100) 0;
+  box-sizing: border-box;
+  border-radius: var(--radius-large);
+  overflow: visible;
+}
+
+.message {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  gap: var(--spacing-100);
+  min-width: 0;
+  min-height: 24px;
+}
+
+.iconSlot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+
+.textContainer {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.labelQuiet,
+.labelComplete {
+  color: var(--color-text-placeholder);
+}
+
+/* Full-row expand hit when Details is on — icon + label + chevron */
+.headerToggle {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  gap: var(--spacing-100);
+  min-width: 0;
+  min-height: 24px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-large);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.headerToggle:focus-visible {
+  outline: 2px solid var(--color-boundary-brand);
+  outline-offset: 2px;
+}
+
+/* Mini chevron affordance — decorative; hover tied to headerToggle */
+.chevronButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-icon-primary);
+  box-sizing: border-box;
+}
+
+/* Figma glyph is 7×4 (down) / 4.11×7 (right) in a 14px slot. */
+.chevronButton .chevronDown {
+  width: 7px;
+  height: 4px;
+  color: inherit;
+}
+
+.chevronButton .chevronRight {
+  width: 4px;
+  height: 7px;
+  color: inherit;
+}
+
+/* Media Control 16px — Icon=Stop Colored */
+.stopButton {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: var(--radius-xsmall);
+  overflow: hidden;
+  background: transparent;
+  color: var(--color-icon-error);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stopButton:hover,
+.stopButton:focus-visible {
+  color: var(--color-icon-error);
+  outline: none;
+}
+
+.stopIcon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  width: 100%;
+  padding: 0 var(--spacing-100) var(--spacing-100) var(--spacing-400);
+  box-sizing: border-box;
+  overflow: hidden;
+}

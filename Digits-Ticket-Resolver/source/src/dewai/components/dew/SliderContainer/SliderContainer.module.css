@@ -1,0 +1,248 @@
+@property --slider-glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.container {
+  position: relative;
+  flex: 0 0 360px;
+  width: 360px;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-fill-surface);
+  border: 1px solid var(--color-border-milder);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  min-height: 0;
+  align-self: stretch;
+  isolation: isolate;
+  transition:
+    height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enterChrome {
+  overflow: visible;
+}
+
+.enterChromeOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+  border: 1px solid var(--ai-purple);
+  box-shadow: var(--motion-banner-hover-glow, 0 4px 14px rgb(15 23 42 / 0.07));
+  animation: sliderEnterChromeFade 0.9s cubic-bezier(0.33, 0, 0.2, 1) 0.2s forwards;
+}
+
+.isMinimized {
+  flex: none;
+  height: 52px;
+  min-height: 52px;
+  box-shadow:
+    0 1px 1.5px rgba(18, 51, 76, 0.1),
+    0 1px 1px rgba(18, 51, 76, 0.05);
+}
+
+.isMinimized .header {
+  flex: 1;
+  min-height: 0;
+  padding: var(--spacing-100) var(--spacing-200);
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: var(--spacing-150) var(--spacing-250) var(--spacing-100);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--spacing-050);
+}
+
+.headerAction {
+  width: 32px;
+  height: 32px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  color: var(--color-icon-default);
+  border-radius: var(--radius-medium);
+}
+
+.headerAction:hover,
+.headerAction:focus-visible {
+  background: var(--color-fill-container);
+  border-color: transparent;
+  color: var(--color-icon-default);
+}
+
+.headerIcon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+.glowBorder {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 3;
+  background: conic-gradient(
+    from var(--slider-glow-angle),
+    var(--ai-pink) 0deg,
+    var(--ai-purple) 72deg,
+    var(--ai-blue) 144deg,
+    transparent 168deg,
+    transparent 360deg
+  );
+  animation: sliderBorderGlow 2.4s ease-out forwards;
+}
+
+.glowAmbient {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  animation: sliderGlowFade 2.4s ease-out forwards;
+}
+
+.glowTop,
+.glowBottom {
+  position: absolute;
+  pointer-events: none;
+}
+
+.glowTop {
+  top: -9px;
+  right: -20px;
+  width: 234px;
+  height: 234px;
+  background: var(--ai-pink);
+  opacity: 0.4;
+  filter: blur(100px);
+}
+
+.glowBottom {
+  bottom: 92px;
+  left: -135px;
+  width: 223px;
+  height: 275px;
+  transform: rotate(2.83deg);
+  background: var(--ai-purple);
+  opacity: 0.4;
+  filter: blur(100px);
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  min-height: 0;
+  overflow: hidden;
+  padding: var(--spacing-100) var(--spacing-250);
+  opacity: 1;
+  transition:
+    opacity 0.2s ease,
+    flex-grow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.isMinimized .body {
+  flex: 0 0 0;
+  opacity: 0;
+  padding-block: 0;
+  pointer-events: none;
+}
+
+.content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  padding: var(--spacing-100) 0;
+}
+
+.footer {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+@keyframes sliderBorderGlow {
+  0% {
+    --slider-glow-angle: 0deg;
+    opacity: 0.9;
+  }
+  65% {
+    opacity: 0.35;
+  }
+  100% {
+    --slider-glow-angle: 360deg;
+    opacity: 0;
+  }
+}
+
+@keyframes sliderGlowFade {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes sliderEnterChromeFade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .container,
+  .body {
+    transition: none;
+  }
+
+  .glowBorder,
+  .glowAmbient {
+    animation: none;
+  }
+
+  .enterChromeOverlay {
+    animation: none;
+    opacity: 0;
+  }
+}

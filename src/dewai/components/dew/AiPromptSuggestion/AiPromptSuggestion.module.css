@@ -1,0 +1,329 @@
+/*
+ * AI Prompt Suggestion — Sweep/Glow baseline + Quiet Figma masters (2629:15)
+ */
+
+.chipWrap {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  isolation: isolate;
+  transition: border-radius var(--transition-fast);
+}
+
+.chipWrapLoading {
+  /* SoftSweep ring/halo bleeds outside the chip */
+  overflow: visible;
+}
+
+.wrapDefault {
+  border-radius: var(--radius-xlarge);
+  --sweep-radius: var(--radius-xlarge);
+}
+
+.wrapMini {
+  border-radius: var(--radius-large);
+  --sweep-radius: var(--radius-large);
+}
+
+.staticBorder {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ai-border-static-mild);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Quiet Loading — rainbow clip with sweep (Figma 2629:15 + motion) */
+.labelQuietLoading {
+  background: var(--ai-gradient-text-cycle);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ai-text-shimmer var(--ai-text-shimmer-duration, 3s) linear infinite;
+}
+
+.chip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-075);
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 36px;
+  padding: var(--spacing-100) var(--spacing-150);
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: var(--color-fill-surface);
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    padding var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.mini {
+  min-height: 24px;
+  padding: var(--spacing-025) var(--spacing-075);
+}
+
+.default {
+  border-color: var(--color-border-milder);
+}
+
+.hover,
+.loading {
+  border-color: transparent;
+  padding-left: var(--spacing-100);
+  background:
+    var(--ai-gradient-chip-focus),
+    var(--color-fill-surface);
+}
+
+.mini.hover,
+.mini.loading {
+  padding-left: var(--spacing-050);
+}
+
+.disabled {
+  border-color: var(--color-border-divider);
+  background: var(--color-fill-container);
+  color: var(--color-text-placeholder);
+  cursor: not-allowed;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--ai-purple);
+}
+
+.hover .icon,
+.loading .icon {
+  color: var(--ai-purple);
+}
+
+.iconDefault {
+  --prompt-icon-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.iconHoverDefault {
+  --prompt-icon-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.iconMini {
+  --prompt-icon-size: 12px;
+  width: 12px;
+  height: 12px;
+}
+
+.iconHoverMini {
+  --prompt-icon-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.iconSlot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transform-origin: center;
+  /* width/height from icon size classes */
+}
+
+.iconSlot .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  flex: 0 1 auto;
+  min-width: 0;
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  line-height: 20px;
+  word-break: break-word;
+}
+
+.labelLoading {
+  color: transparent;
+}
+
+.hover .label {
+  background: var(--ai-text-hover);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.disabled .label {
+  color: var(--color-text-placeholder);
+}
+
+.disabled .icon {
+  color: var(--color-icon-muted);
+  opacity: 0.4;
+}
+
+.chip:disabled {
+  cursor: not-allowed;
+}
+
+/* ── Quiet — Figma masters (2629:15) ───────────────────────────────────────── */
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  /* Hover stroke weight 1.5 */
+  padding: 1.5px;
+}
+
+/* Default — Surface + Border/Milder (Figma Default) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .default {
+  border-color: var(--color-border-milder);
+  background: var(--color-fill-surface);
+}
+
+:global([data-ai-motion='quiet']) .hover,
+:global([data-ai-motion='quiet']) .loading {
+  border-color: transparent;
+  background:
+    var(--ai-gradient-fill-rl),
+    var(--color-fill-surface);
+}
+
+/* Motion/Tweak — same Fill R-L + Static Mild structure; pink stops → violet */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  background: linear-gradient(
+    158.2deg,
+    var(--ai-indigo-mild) 14.645%,
+    var(--ai-blue-mild) 32.322%,
+    var(--ai-violet-mild) 50%,
+    var(--ai-violet-mild) 85.355%
+  );
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .loading {
+  border-color: transparent;
+  background:
+    linear-gradient(
+      175.53deg,
+      var(--ai-negative) 14.645%,
+      var(--ai-violet-mild) 64.142%,
+      var(--ai-violet-mild) 85.355%
+    ),
+    var(--color-fill-surface);
+}
+
+/* Motion — ease padding inset with icon morph */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .chip {
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    padding-left 180ms cubic-bezier(0.25, 1, 0.5, 1),
+    padding-right var(--transition-fast),
+    padding-top var(--transition-fast),
+    padding-bottom var(--transition-fast),
+    color var(--transition-fast);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .iconSlot {
+  transition:
+    width 180ms cubic-bezier(0.25, 1, 0.5, 1),
+    height 180ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .chip {
+    transition: none;
+  }
+
+  :global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .iconSlot {
+    transition: none;
+  }
+}
+
+/* Hover — Figma asymmetric left inset (Default 12→8, Mini 6→4) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover {
+  padding-left: var(--spacing-100);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .mini.hover {
+  padding-left: var(--spacing-050);
+}
+
+/* Loading in Motion/Quiet — match hover left inset + primary label */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .loading {
+  padding-left: var(--spacing-100);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .mini.loading {
+  padding-left: var(--spacing-050);
+}
+
+.sparkleIconSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .icon {
+  color: var(--color-icon-default);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover .icon,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .loading .icon {
+  color: var(--color-icon-default);
+}
+
+/* Motion loading — primary label; shimmer utility owns clip/animation */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .loading .label:not(:global(.ai-text-shine)):not(:global(.ai-text-shimmer-over-base)) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover .label {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .disabled {
+  border-color: var(--color-boundary-border-mild);
+  background: var(--color-fill-base);
+  color: var(--color-text-disabled);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .disabled .label {
+  color: var(--color-text-disabled);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .disabled .icon {
+  color: var(--color-text-disabled);
+  opacity: 1;
+}
+
+.loadingRing {
+  display: none;
+}

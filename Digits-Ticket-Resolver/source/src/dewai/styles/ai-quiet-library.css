@@ -1,0 +1,65 @@
+/**
+ * Quiet library paints — angles/stops from Dew AI Gradients page (MCP CSS export).
+ * Sweep keeps the older recipes from tokens.css (--ai-gradient-default, 45deg Fill R-L/L-R, etc.).
+ * Motion shares Quiet Fill R-L / Static ladder (toned chrome via isTonedChrome).
+ */
+
+:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak']) {
+  /*
+   * AI/Overlay/Fill R-L — library master 175.53° / 14.645 / 64.142 / 85.355
+   * Stacked over Color/Fill/Surface in components.
+   */
+  --ai-gradient-fill-rl: linear-gradient(
+    175.53deg,
+    var(--ai-negative) 14.645%,
+    var(--ai-soft-pink-mild) 64.142%,
+    var(--ai-pink-mild) 85.355%
+  );
+
+  /*
+   * AI/Overlay/Fill L-R — same angle; Hot Pink Mild → Soft Pink Mild → Negative
+   * (Reply Editor AI footer). Stacked over Color/Fill/Surface.
+   */
+  --ai-gradient-fill-lr: linear-gradient(
+    175.53deg,
+    var(--ai-pink-mild) 14.645%,
+    var(--ai-soft-pink-mild) 42.929%,
+    var(--ai-negative) 85.355%
+  );
+
+  /* AI/Border/Static Mild — Gradients swatch dump */
+  --ai-border-static-mild: linear-gradient(
+    158.2deg,
+    var(--ai-indigo-mild) 14.645%,
+    var(--ai-blue-mild) 32.322%,
+    var(--ai-soft-pink-mild) 50%,
+    var(--ai-pink-mild) 85.355%
+  );
+
+  /* AI/Border/Static Medium */
+  --ai-border-static-medium: linear-gradient(
+    158.2deg,
+    var(--ai-violet-medium) 14.645%,
+    var(--ai-blue-medium) 32.322%,
+    var(--ai-soft-pink-medium) 50%,
+    var(--ai-pink-medium) 85.355%
+  );
+
+  /* AI/Border/Mono Static Medium */
+  --ai-border-mono-static-medium: linear-gradient(
+    158.2deg,
+    var(--ai-pink-medium) 14.645%,
+    var(--ai-soft-pink-mild) 32.322%,
+    var(--ai-soft-pink-medium) 50%,
+    var(--ai-pink-medium) 85.355%
+  );
+
+  /* AI/Border/Static Bold */
+  --ai-border-static-bold: linear-gradient(
+    158.2deg,
+    var(--ai-purple) 14.645%,
+    var(--ai-blue-bright) 32.322%,
+    var(--ai-light-pink) 50%,
+    var(--ai-pink) 85.355%
+  );
+}

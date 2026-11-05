@@ -1,0 +1,488 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-100);
+  width: 100%;
+  min-height: 110px;
+  box-sizing: border-box;
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-xlarge);
+  --sweep-radius: var(--radius-xlarge);
+  isolation: isolate;
+}
+
+/* AI/Border/Static — always present except hover glow handoff */
+.staticBorder,
+.focusBorder {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.staticBorder {
+  background: var(--ai-border-static);
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Focus / Filled / Thinking — angular stroke layered on top of Static */
+.focusBorder {
+  background: var(--ai-border-input-focus);
+  opacity: 0;
+  z-index: 3;
+  transition: opacity 0s;
+}
+
+.inputBox {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-075);
+  min-height: 82px;
+  padding: var(--spacing-150);
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: var(--color-fill-surface);
+  box-sizing: border-box;
+  transition:
+    background var(--transition-fast),
+    border-color 400ms ease,
+    box-shadow 500ms ease;
+}
+
+/*
+ * Soft glow — centered box-shadow halo (no rotating sweep).
+ * Cycles border-color + dual shadows through Figma Hover 1→7 keyframes.
+ */
+@keyframes inputGlowCycle {
+  0% {
+    border-color: var(--ai-blue-bright);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.18),
+      0 0 34px 6px rgba(169, 135, 252, 0.14);
+  }
+  14.28% {
+    border-color: var(--ai-purple);
+    box-shadow:
+      0 0 14px 1px rgba(169, 135, 252, 0.18),
+      0 0 34px 6px rgba(251, 100, 182, 0.14);
+  }
+  28.57% {
+    border-color: var(--ai-pink);
+    box-shadow:
+      0 0 14px 1px rgba(251, 100, 182, 0.18),
+      0 0 34px 6px rgba(255, 194, 203, 0.18);
+  }
+  42.85% {
+    border-color: var(--ai-light-pink);
+    box-shadow:
+      0 0 14px 1px rgba(255, 194, 203, 0.2),
+      0 0 34px 6px rgba(39, 108, 240, 0.14);
+  }
+  57.14% {
+    border-color: var(--ai-blue);
+    box-shadow:
+      0 0 14px 1px rgba(39, 108, 240, 0.18),
+      0 0 34px 6px rgba(16, 176, 143, 0.14);
+  }
+  71.42% {
+    border-color: var(--ai-blue-bright);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.18),
+      0 0 34px 6px rgba(39, 108, 240, 0.14);
+  }
+  85.71% {
+    border-color: var(--ai-purple);
+    box-shadow:
+      0 0 14px 1px rgba(169, 135, 252, 0.18),
+      0 0 34px 6px rgba(106, 168, 255, 0.14);
+  }
+  100% {
+    border-color: var(--ai-blue-bright);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.18),
+      0 0 34px 6px rgba(169, 135, 252, 0.14);
+  }
+}
+
+@keyframes inputGlowCycleDark {
+  0% {
+    border-color: var(--ai-blue-bright);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.24),
+      0 0 34px 6px rgba(169, 135, 252, 0.2);
+  }
+  14.28% {
+    border-color: var(--ai-purple);
+    box-shadow:
+      0 0 14px 1px rgba(169, 135, 252, 0.24),
+      0 0 34px 6px rgba(251, 100, 182, 0.2);
+  }
+  28.57% {
+    border-color: var(--ai-pink);
+    box-shadow:
+      0 0 14px 1px rgba(251, 100, 182, 0.24),
+      0 0 34px 6px rgba(255, 194, 203, 0.22);
+  }
+  42.85% {
+    border-color: var(--ai-light-pink);
+    box-shadow:
+      0 0 14px 1px rgba(255, 194, 203, 0.26),
+      0 0 34px 6px rgba(39, 108, 240, 0.2);
+  }
+  57.14% {
+    border-color: var(--ai-blue);
+    box-shadow:
+      0 0 14px 1px rgba(39, 108, 240, 0.24),
+      0 0 34px 6px rgba(16, 176, 143, 0.2);
+  }
+  71.42% {
+    border-color: var(--ai-blue-bright);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.24),
+      0 0 34px 6px rgba(39, 108, 240, 0.2);
+  }
+  85.71% {
+    border-color: var(--ai-purple);
+    box-shadow:
+      0 0 14px 1px rgba(169, 135, 252, 0.24),
+      0 0 34px 6px rgba(106, 168, 255, 0.2);
+  }
+  100% {
+    border-color: var(--ai-blue-bright);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.24),
+      0 0 34px 6px rgba(169, 135, 252, 0.2);
+  }
+}
+
+/* Focus/Filled/Thinking: add angular ring — Static stays visible underneath */
+.inputWrap[data-interactive]:focus-within .focusBorder,
+.inputWrap.hasText .focusBorder,
+.inputWrap.filled .focusBorder,
+.inputWrap.thinking .focusBorder {
+  opacity: 1;
+}
+
+/* Hover glow hides gradient rings in favor of cycling solid border + halo */
+.inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking) .staticBorder,
+.inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking) .focusBorder {
+  opacity: 0;
+}
+
+.inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking) .inputBox {
+  animation: inputGlowCycle 6s linear infinite;
+}
+
+:global([data-surface='dark'])
+  .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking)
+  .inputBox {
+  animation: inputGlowCycleDark 6s linear infinite;
+}
+
+.inputWrap[data-interactive]:focus-within .inputBox,
+.inputWrap.hasText .inputBox,
+.inputWrap.filled .inputBox,
+.inputWrap.thinking .inputBox {
+  border-color: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.disabled {
+  opacity: 0.56;
+  pointer-events: none;
+}
+
+.textFrame {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  flex: 1 1 auto;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 20px;
+  max-height: 120px;
+  padding: 0 var(--spacing-100);
+  overflow: hidden;
+}
+
+.quoteBlock {
+  display: flex;
+  gap: var(--spacing-100);
+  align-items: flex-start;
+  padding: var(--spacing-050) 0;
+  width: 100%;
+}
+
+.quoteBar {
+  width: 2px;
+  align-self: stretch;
+  flex-shrink: 0;
+  border-radius: var(--radius-circular);
+  background: var(--color-border-divider);
+}
+
+.quoteText {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-secondary);
+  line-height: 20px;
+  white-space: pre-wrap;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.quoteChip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: var(--spacing-100) var(--spacing-100) var(--spacing-100) var(--spacing-150);
+  border: none;
+  border-radius: var(--radius-large);
+  background: var(--color-fill-container);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.quoteChipSurface {
+  background: var(--color-fill-surface);
+}
+
+.quoteChipText {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-secondary);
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quoteChipTextExpanded {
+  white-space: pre-wrap;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.quoteChipChevron {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-icon-secondary);
+  transition: transform var(--transition-fast);
+}
+
+.quoteChipChevronExpanded {
+  transform: rotate(180deg);
+}
+
+.placeholder {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-placeholder);
+  word-break: break-word;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 20px;
+  max-height: 80px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  resize: none;
+  overflow-y: auto;
+  background: transparent;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  word-break: break-word;
+}
+
+.textarea:focus {
+  outline: none;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.textarea:disabled {
+  color: var(--color-text-placeholder);
+  cursor: not-allowed;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.actionButton {
+  flex-shrink: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.actionButton:hover,
+.actionButton:focus-visible {
+  background: var(--color-fill-container);
+  border-color: transparent;
+}
+
+.actionIcon {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+.actionButton:hover .actionIcon,
+.actionButton:focus-visible .actionIcon {
+  color: var(--color-icon-default);
+}
+
+.stopButton {
+  color: var(--color-icon-error);
+}
+
+.stopButton:hover,
+.stopButton:focus-visible {
+  color: var(--color-icon-error);
+}
+
+.stopIcon {
+  width: 10px;
+  height: 10px;
+  color: inherit;
+}
+
+.disclaimer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-050);
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-placeholder);
+}
+
+.disclaimer button {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--color-text-brand);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking) .inputBox {
+    animation: none;
+    border-color: var(--ai-purple);
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.18),
+      0 0 34px 6px rgba(169, 135, 252, 0.14);
+  }
+
+  :global([data-surface='dark'])
+    .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking)
+    .inputBox {
+    box-shadow:
+      0 0 14px 1px rgba(106, 168, 255, 0.24),
+      0 0 34px 6px rgba(169, 135, 252, 0.2);
+  }
+}
+
+/* ── Quiet — Static Bold always; Figma dual hover shadow; no focus conic / glow cycle ─ */
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  background: var(--ai-border-static-bold);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap[data-interactive]:focus-within .focusBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap.hasText .focusBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap.filled .focusBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap.thinking .focusBorder {
+  opacity: 0;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak']))
+  .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking)
+  .staticBorder {
+  opacity: 1;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak']))
+  .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking)
+  .focusBorder {
+  opacity: 0;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak']))
+  .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking)
+  .inputBox {
+  animation: none;
+  border-color: transparent;
+  box-shadow:
+    0 4px 8px 4px rgba(106, 168, 255, 0.1),
+    0 0 24px 8px rgba(169, 135, 252, 0.1);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak']))
+  .inputWrap[data-interactive]:focus-within
+  .inputBox,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap.hasText .inputBox,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap.filled .inputBox,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .inputWrap.thinking .inputBox {
+  animation: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak']))
+    .inputWrap[data-interactive]:hover:not(:focus-within):not(.hasText):not(.thinking)
+    .inputBox {
+    animation: none;
+    border-color: transparent;
+    box-shadow:
+      0 4px 8px 4px rgba(106, 168, 255, 0.1),
+      0 0 24px 8px rgba(169, 135, 252, 0.1);
+  }
+}
+

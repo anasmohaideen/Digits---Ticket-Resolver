@@ -1,0 +1,86 @@
+.panel {
+  width: 100%;
+  height: 100%;
+}
+
+/* Shared with AISlider .conversationStack */
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--spacing-050);
+  padding-bottom: 48px;
+  box-sizing: border-box;
+}
+
+.thread article {
+  max-width: none;
+}
+
+.hint {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-placeholder);
+  line-height: 20px;
+}
+
+.rewriteBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-250);
+  width: 100%;
+  min-width: 0;
+}
+
+.rewriteIntro {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-secondary);
+  line-height: 20px;
+}
+
+.rewriteIntro strong {
+  font: var(--font-body-semibold);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-secondary);
+}
+
+.divider {
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--color-border-mildest);
+}
+
+.rewriteText {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  line-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.addToComposerBtn {
+  align-self: flex-start;
+}
+
+.addIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.rewriteFollowUp {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-secondary);
+  line-height: 20px;
+}

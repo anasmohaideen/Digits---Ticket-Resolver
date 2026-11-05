@@ -1,0 +1,63 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.blank {
+  justify-content: center;
+  /* Figma Blank: sparkle glyph is 5/6 of the size box (2px inset @ 24) */
+  width: var(--dew-ai-size, 16px);
+  height: var(--dew-ai-size, 16px);
+}
+
+.dew {
+  gap: var(--dew-ai-gap, 4px);
+}
+
+.toneDefault {
+  --dew-ai-wordmark-color: var(--color-wordmark-default);
+}
+
+.toneInverse {
+  --dew-ai-wordmark-color: var(--color-wordmark-inverse);
+}
+
+:global([data-surface='dark']) .toneDefault {
+  --dew-ai-wordmark-color: var(--color-wordmark-inverse);
+}
+
+.sparkle,
+.mark,
+.wordmark {
+  display: block;
+  flex-shrink: 0;
+}
+
+.blank .sparkle {
+  width: calc(var(--dew-ai-size, 16px) * 5 / 6);
+  height: calc(var(--dew-ai-size, 16px) * 5 / 6);
+}
+
+.mark {
+  width: var(--dew-ai-size, 16px);
+  height: var(--dew-ai-size, 16px);
+}
+
+/* Figma wordmark frame ≈ 3.122 × size × 0.748 (50×12 @ 16px mark) */
+.wordmark {
+  width: calc(var(--dew-ai-size, 16px) * 3.122);
+  height: calc(var(--dew-ai-size, 16px) * 0.748);
+  color: var(--dew-ai-wordmark-color, var(--color-wordmark-default));
+}
+
+.title {
+  font: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--dew-ai-wordmark-color);
+  white-space: nowrap;
+}
+
+.titleIcon { display: block; flex-shrink: 0; object-fit: contain; }

@@ -1,0 +1,103 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  width: 100%;
+  min-height: 20px;
+}
+
+.iconSlot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.iconSlotCompleted {
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.iconSlotThinking {
+  width: 16px;
+  height: 16px;
+}
+
+.iconLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity var(--ai-motion-resolve-duration, 250ms) ease-out,
+    transform var(--ai-motion-resolve-duration, 250ms) ease-out;
+}
+
+.iconLayerVisible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: none;
+}
+
+.iconLayerHidden {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.tick {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-disabled);
+}
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  animation: ai-thinking-spin 0.8s linear infinite;
+}
+
+.label {
+  margin: 0;
+  letter-spacing: var(--font-caption-tracking);
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.labelCompleted {
+  font: var(--font-caption-regular);
+  color: var(--color-text-disabled);
+}
+
+.labelThinking {
+  font: var(--font-caption-medium);
+}
+
+@keyframes ai-thinking-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+
+  .iconLayer {
+    transition: none;
+  }
+
+  .iconLayerHidden {
+    transform: none;
+  }
+
+  .iconLayerVisible {
+    transform: none;
+  }
+}

@@ -1,0 +1,132 @@
+/*
+ * Shared AI thinking / processing text shimmer.
+ * Readable base tone with a mild highlight sweep — never fully hides the label.
+ */
+
+@keyframes ai-text-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/*
+ * Sweep/Glow/Quiet fallback — full-cycle palette (legacy). Prefer over-base for labels.
+ */
+.ai-text-shimmer {
+  background: var(--ai-gradient-text-cycle);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: ai-text-shimmer var(--ai-text-shimmer-duration, 3s) linear infinite;
+}
+
+/*
+ * Readable-base shimmer — primary text with a mild AI palette highlight.
+ * Used for thinking labels outside Motion.
+ */
+@keyframes ai-text-shimmer-over-base {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: -100% 50%;
+  }
+}
+
+.ai-text-shimmer-over-base {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-text-primary) 0%,
+    var(--color-text-primary) 20%,
+    color-mix(in srgb, var(--ai-pink) 65%, var(--color-text-primary)) 32%,
+    color-mix(in srgb, var(--ai-purple) 60%, var(--color-text-primary)) 44%,
+    color-mix(in srgb, var(--ai-blue) 58%, var(--color-text-primary)) 54%,
+    color-mix(in srgb, var(--ai-teal) 52%, var(--color-text-primary)) 64%,
+    var(--color-text-primary) 76%,
+    var(--color-text-primary) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ai-text-shimmer-over-base var(--ai-text-shimmer-duration, 3s) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-text-shimmer {
+    animation: none;
+    background: var(--ai-gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .ai-text-shimmer-over-base {
+    animation: none;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--color-text-primary);
+  }
+}
+
+/* Dark — brighter clip-text FX (primary is already light; UI AI solids are @70%) */
+[data-surface='dark'] .ai-text-shimmer-over-base {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-text-secondary) 0%,
+    var(--color-text-secondary) 20%,
+    color-mix(in srgb, #fb64b6 58%, var(--color-text-secondary)) 32%,
+    color-mix(in srgb, #c4b5fd 58%, var(--color-text-secondary)) 44%,
+    color-mix(in srgb, #6aa8ff 55%, var(--color-text-secondary)) 54%,
+    color-mix(in srgb, #2dd4bf 50%, var(--color-text-secondary)) 64%,
+    var(--color-text-secondary) 76%,
+    var(--color-text-secondary) 100%
+  );
+}
+
+/*
+ * Motion mode — soft white highlight over solid Primary.
+ * Mild opacity so glyphs stay readable under the sweep.
+ */
+@keyframes ai-text-shine {
+  0% {
+    background-position: 120% 50%;
+  }
+
+  100% {
+    background-position: -20% 50%;
+  }
+}
+
+.ai-text-shine {
+  background-image: var(--ai-gradient-text-shine);
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: ai-text-shine var(--ai-text-shine-duration, 3.6s) linear infinite;
+}
+
+[data-surface='dark'] .ai-text-shine {
+  background-image: var(--ai-gradient-text-shine);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-text-shine {
+    animation: none;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--color-text-primary) !important;
+  }
+
+  [data-surface='dark'] .ai-text-shine {
+    color: var(--color-text-primary) !important;
+  }
+}

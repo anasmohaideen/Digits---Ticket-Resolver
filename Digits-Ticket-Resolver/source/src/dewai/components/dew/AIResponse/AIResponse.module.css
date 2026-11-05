@@ -1,0 +1,409 @@
+/* Sweep / default — main baseline (hover-reveal actions) */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-050);
+  width: 100%;
+  max-width: 340px;
+  transition: gap var(--transition-fast);
+}
+
+.bubbleWrap {
+  position: relative;
+  border-radius: var(--radius-large);
+  isolation: isolate;
+}
+
+.bubbleWrapLoading {
+  overflow: visible;
+}
+
+.bubble {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  padding: var(--spacing-100) 0;
+  border: none;
+  border-radius: inherit;
+  background: var(--color-fill-surface);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.bubbleError {
+  background: var(--color-fill-error-mildest);
+}
+
+.messageRow {
+  display: flex;
+  gap: var(--spacing-100);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.iconSlot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+
+.iconLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 250ms ease-out;
+  pointer-events: none;
+}
+
+.iconLayerVisible {
+  opacity: 1;
+}
+
+.iconLayerHidden {
+  opacity: 0;
+}
+
+.sparkleLayer {
+  /* fitSize=20 keeps glyph centered in 24 box without layout jump */
+}
+
+.sparkleLayer.iconLayerHidden :global(.halo) {
+  opacity: 0;
+}
+
+.brandLayer {
+  /* Same sparkle.svg asset as DewAiIcon blank @ 24 — optical match */
+}
+
+.brandSparkle {
+  display: block;
+  width: calc(24px * 5 / 6);
+  height: calc(24px * 5 / 6);
+  transform-origin: center;
+  background-color: var(--ai-logo);
+  mask-image: url('/assets/dew-ai/sparkle.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url('/assets/dew-ai/sparkle.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+/* Tweak — completed sparkle uses Color/Icon/Placeholder */
+:global([data-ai-motion='tweak']) .brandSparkle {
+  background-color: var(--color-icon-placeholder);
+}
+
+/* Tweak — slow scale breathe while reply text is still generating */
+:global([data-ai-motion='tweak']) .brandSparkleThinking {
+  animation: sparkle-breathe 5s ease-in-out infinite;
+}
+
+@keyframes sparkle-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* Tweak — no white card fill; sit on the slider/page surface */
+:global([data-ai-motion='tweak']) .bubble {
+  background: transparent;
+}
+
+:global([data-ai-motion='tweak']) .bubbleError {
+  background: var(--color-fill-error-mildest);
+}
+
+.bubbleLoading {
+  overflow: visible;
+}
+
+.root[data-state='loading'] {
+  overflow: visible;
+}
+
+.root[data-state='loading'] .messageRow {
+  margin-left: -3px;
+}
+
+.errorIconSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  padding: var(--spacing-025);
+  color: var(--color-icon-error);
+}
+
+.errorIcon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-primary);
+  line-height: 20px;
+  word-break: break-word;
+}
+
+.textError {
+  color: var(--color-text-error);
+}
+
+.textLoading {
+  /* Mild shimmer utility keeps glyphs readable — do not force transparent */
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  min-height: 24px;
+  max-height: 32px;
+  padding: 0 var(--spacing-050);
+  margin-bottom: var(--spacing-050);
+  width: 100%;
+  overflow: hidden;
+  transform: translateY(0);
+  transition:
+    opacity 120ms ease-out,
+    transform var(--transition-fast),
+    max-height var(--transition-fast),
+    min-height var(--transition-fast),
+    margin-bottom var(--transition-fast);
+}
+
+.actionsHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.actionsLoading {
+  display: none;
+}
+
+.actionsError {
+  justify-content: flex-start;
+}
+
+.actionButtons {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  flex-shrink: 0;
+}
+
+.timestamp {
+  font: var(--font-caption-regular);
+  font-style: italic;
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-placeholder);
+  white-space: nowrap;
+}
+
+.actions .actionButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 1px solid var(--color-border-mildest);
+  border-radius: var(--radius-small);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-icon-default);
+}
+
+.actions .actionButton:hover,
+.actions .actionButton:focus-visible {
+  background: var(--color-fill-container);
+  border-color: var(--color-border-milder);
+  color: var(--color-icon-default);
+}
+
+.actionIcon {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+.sourcesTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  flex-shrink: 0;
+  height: 20px;
+  padding: 0 var(--spacing-025) 0 var(--spacing-050);
+  border: 1px solid var(--color-border-mildest);
+  border-radius: 4px;
+  background: var(--color-fill-surface);
+  font: 500 12px/20px var(--font-family);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-primary);
+}
+
+.sourcesIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-icon-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .actions {
+    transition: none;
+  }
+
+  :global([data-ai-motion='tweak']) .brandSparkleThinking {
+    animation: none;
+  }
+}
+
+/* Quiet — Messaging Hover = resting chrome (loading shimmer via .ai-text-shimmer utility) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .text {
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  line-height: unset;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions {
+  justify-content: flex-end;
+  transition:
+    opacity 120ms ease-out,
+    transform var(--transition-fast),
+    max-height var(--transition-fast),
+    min-height var(--transition-fast),
+    margin-bottom var(--transition-fast);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actionsHidden {
+  display: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton {
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-icon-secondary);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton:hover,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton:focus-visible {
+  background: var(--color-fill-surface);
+  border-color: var(--color-border-mildest);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-icon-default);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton :global(svg) {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .sourcesTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-100);
+  min-height: 24px;
+  height: auto;
+  padding: var(--spacing-025) var(--spacing-075);
+  border-radius: var(--radius-small);
+  box-shadow: var(--shadow-xs);
+  font: var(--font-caption);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .sourcesIcon {
+  width: 12px;
+  height: 12px;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .sourcesIcon :global(path) {
+  fill: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton {
+    transition: none;
+  }
+}
+
+/* Prior turns: tuck the toolbar away until hover or focus */
+.root[data-latest='false'] {
+  gap: 0;
+  overflow: hidden;
+}
+
+.root[data-latest='false'] .actions {
+  position: relative;
+  z-index: 0;
+  max-height: 0;
+  min-height: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+.root[data-latest='false']:is(:hover, :focus-within) {
+  gap: var(--spacing-050);
+  overflow: visible;
+}
+
+.root[data-latest='false']:is(:hover, :focus-within) .actions {
+  max-height: 32px;
+  min-height: 24px;
+  margin-bottom: var(--spacing-050);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition:
+    opacity 200ms ease-out,
+    transform var(--transition-fast),
+    max-height var(--transition-fast),
+    min-height var(--transition-fast),
+    margin-bottom var(--transition-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-latest='false'] .actions {
+    transform: none;
+  }
+}

@@ -1,0 +1,101 @@
+/**
+ * Motion border shine — traveling highlight along the stroke (not a fill wash).
+ * Base border ring stays underneath; this overlay adds the light sweep.
+ */
+
+@property --motion-border-shine-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.motionBorderShineRoot {
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--sweep-radius, var(--radius-large)) + 1px);
+  pointer-events: none;
+  z-index: 5;
+  overflow: visible;
+}
+
+.motionBorderShineRing {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  animation: motionBorderShineRotate 4.5s linear infinite;
+}
+
+/* Summary banner hover — soft white + violet highlight over solid border */
+.motionBorderShineRingHover {
+  composes: motionBorderShineRing;
+  background: conic-gradient(
+    from var(--motion-border-shine-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 52deg,
+    rgb(255 255 255 / 0.92) 88deg,
+    var(--ai-purple) 102deg,
+    rgb(255 255 255 / 0.55) 118deg,
+    transparent 152deg,
+    transparent 360deg
+  );
+}
+
+/* Summary banner thinking — purple shine (stronger arc) */
+.motionBorderShineRingThinking {
+  composes: motionBorderShineRing;
+  animation-duration: 5.5s;
+  background: conic-gradient(
+    from var(--motion-border-shine-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 45deg,
+    var(--ai-purple) 95deg,
+    rgb(169 135 252 / 0.55) 130deg,
+    transparent 185deg,
+    transparent 360deg
+  );
+}
+
+/* Prompt loading — same family as hover, slightly faster */
+.motionBorderShineRingLoading {
+  composes: motionBorderShineRing;
+  animation-duration: 3.8s;
+  background: conic-gradient(
+    from var(--motion-border-shine-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 50deg,
+    rgb(255 255 255 / 0.9) 86deg,
+    var(--ai-purple) 100deg,
+    rgb(255 255 255 / 0.5) 114deg,
+    transparent 148deg,
+    transparent 360deg
+  );
+}
+
+@keyframes motionBorderShineRotate {
+  to {
+    --motion-border-shine-angle: 360deg;
+  }
+}
+
+/* Legacy aliases — HoverMotionThinkingOverlay */
+.motionThinkingRoot {
+  composes: motionBorderShineRoot;
+}
+
+.motionThinkingRing {
+  composes: motionBorderShineRingThinking;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motionBorderShineRing {
+    animation: none;
+  }
+
+  .motionBorderShineRingHover,
+  .motionBorderShineRingLoading,
+  .motionBorderShineRingThinking {
+    background: var(--ai-purple);
+  }
+}

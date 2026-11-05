@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Summary, Root cause and Suggested fix — card states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2C5CC5;text-decoration:none}a:hover{color:#1D4296;text-decoration:underline}
+.ic{width:16px;height:16px;flex:0 0 16px;color:#5A6B7D}
+.btn{font:inherit;font-size:13px;font-weight:500;border:1px solid #CFD7DF;background:#fff;color:#12344D;border-radius:8px;padding:0 12px;height:30px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.btn.pri{background:#2C5CC5;border-color:#2C5CC5;color:#fff}
+.hd{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475867;padding-bottom:10px;border-bottom:2px solid #12344D}
+.sl{font-size:12px;font-weight:600;color:#475867;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.sl.new{color:#7A4106}
+.sl .n{width:18px;height:18px;border-radius:50%;background:#E3ECFA;color:#1A3E85;font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+.sl.new .n{background:#FCE6C8;color:#7A4106}
+.mc{border:1px solid #DCD3FA;border-radius:12px;background:#fff;display:flex;flex-direction:column;gap:10px;padding:14px 16px;font-size:13px;line-height:20px}
+.mh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px;background:#EEEAFD;color:#4B2FB8}
+.tag.ap{background:#FCE6C8;color:#7A4106}
+.tt{font-size:14px;font-weight:600}
+.tm{font-size:12px;color:#5A6B7D}
+.lb{font-size:13px;font-weight:600}
+.chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.g{background:#DDF3E8;color:#0B5A3C}.o{background:#FCE6C8;color:#7A4106}.gr{background:#EEF1F4;color:#475867}.r{background:#FBE3E3;color:#8C1D1D}.b{background:#E3ECFA;color:#1A3E85}
+.live{display:flex;align-items:center;gap:8px;font-size:13px;color:#2B3D50}
+.sk{height:10px;border-radius:5px;background:#EEEAFD}
+.ban{display:flex;align-items:center;gap:8px;background:#E3ECFA;color:#1A3E85;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:500;flex-wrap:wrap}
+.ft{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.li{display:flex;gap:8px;align-items:flex-start}
+.sp{display:inline-block;width:12px;height:12px;border:2px solid #C9BEF7;border-top-color:#7B4DF2;border-radius:50%}
+</style>
+</helmet>
+<div style="width: 1440px; min-height: 2500px; box-sizing: border-box; padding: 56px 72px; background: #fff; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #12344D; display: flex; flex-direction: column; gap: 28px">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 30px; font-weight: 700">Card states: Summary, Root cause, Suggested fix</h1>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #475867; max-width: 960px">The same states apply to Option A (three cards) and Option B (tabs). In Option B the tab chip shows the state. Blue numbers use today’s states; orange numbers are proposed.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 32px; align-items: start">
+
+<div class="hd">Summary</div><div class="hd">Root cause</div><div class="hd">Suggested fix</div>
+
+<!-- row 1 -->
+<div>
+<div class="sl"><span class="n">1</span>Not generated</div>
+<div class="mc" style="flex-direction: row; align-items: center; gap: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg><span style="font-size: 15px; font-weight: 500">Summarize ticket</span></div>
+</div>
+<div>
+<div class="sl"><span class="n">1</span>Not analyzed</div>
+<div class="mc"><div class="mh"><span class="tag">Root cause</span><span class="chip gr">Not analyzed</span></div><div>No root cause yet.</div><div><button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>Find initiating changes</button></div></div>
+</div>
+<div>
+<div class="sl"><span class="n">1</span>Needs your approval</div>
+<div class="mc"><div class="mh"><span class="tag ap">Approval needed</span><span class="tt">Re-issue Megan’s Wi-Fi certificate</span><span class="tm">9:22 AM</span></div>
+<div><div class="lb">What this action</div><div>Revoke the certificate on ASSET-2291 and issue a new one. Ticket Resolver will run the “Re-issue Wi-Fi certificate (macOS)” workflow after approval.</div></div>
+<div><div class="lb">Why this action</div><div>The same fix resolved 3 of the 7 similar tickets since CHG-2187.</div></div>
+<div class="ft"><button class="btn">Ask AI</button><button class="btn">3 comments</button><span style="flex: 1"></span><button class="btn">Reject</button><button class="btn pri">Approve</button></div></div>
+</div>
+
+<!-- row 2 -->
+<div>
+<div class="sl"><span class="n">2</span>Generating</div>
+<div class="mc"><div class="mh"><span class="tag">Summary</span></div><div class="live"><span class="sp"></span>Thinking <span style="color: #5A6B7D">2.1s</span></div><div class="sk" style="width: 92%"></div><div class="sk" style="width: 78%"></div><div class="sk" style="width: 60%"></div></div>
+</div>
+<div>
+<div class="sl"><span class="n">2</span>Analyzing</div>
+<div class="mc"><div class="mh"><span class="tag">Root cause</span></div><div class="live"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Searching for similar tickets <span style="color: #5A6B7D">2.1s</span></div><div class="sk" style="width: 88%"></div><div class="sk" style="width: 64%"></div></div>
+</div>
+<div>
+<div class="sl"><span class="n">2</span>Running</div>
+<div class="mc"><div class="mh"><span class="tag">Suggested fix</span><span class="chip b">Running</span></div><div class="live"><span class="sp"></span>Executing workflow: Re-issue Wi-Fi certificate (macOS) <span style="color: #5A6B7D">2.1s</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0B7A4E" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 2px"><path d="M5 12l4 4 10-10"></path></svg><span>Revoked the old certificate</span></div>
+<div class="li"><span class="sp" style="margin: 3px 2px 0"></span><span>Assigning the new Wi-Fi profile…</span></div>
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8796A6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 2px"><path d="M7 12h10"></path></svg><span style="color: #5A6B7D">Confirm the laptop checked in</span></div>
+</div></div>
+</div>
+
+<!-- row 3 -->
+<div>
+<div class="sl"><span class="n">3</span>Ready</div>
+<div class="mc"><div class="mh"><span class="tag">Summary</span><span class="tt">Megan can’t join Corp-Secure Wi-Fi</span><span class="tm">9:35 AM</span></div><div><div class="lb">Issue</div><div>Megan’s MacBook can’t join Corp-Secure Wi-Fi on the 3rd floor. Guest Wi-Fi works.</div></div><div><div class="lb">What was tried</div><div>KB steps didn’t help. The certificate workflow’s last step failed.</div></div><div class="ft"><button class="btn">Ask AI</button><a href="#" style="font-size: 13px">View more</a></div></div>
+</div>
+<div>
+<div class="sl"><span class="n">3</span>Found</div>
+<div class="mc"><div class="mh"><span class="tag">Root cause</span><span class="chip g">High · 0.84</span><span class="tm">9:21 AM</span></div><div class="tt">Wi-Fi certificate not renewed after CHG-2187</div><div><div class="lb">Evidence</div><div>7 similar tickets · CHG-2187 · only Megan’s laptop affected</div></div><div class="ft"><button class="btn">Ask AI</button><button class="btn">How this was found</button></div></div>
+</div>
+<div>
+<div class="sl"><span class="n">3</span>Applied</div>
+<div class="mc"><div class="mh"><span class="tag">Suggested fix</span><span class="chip g">Applied</span><span class="tm">9:36 AM</span></div><div class="tt">Re-issue Megan’s Wi-Fi certificate</div>
+<div><div class="lb">What happened</div><div>Certificate re-issued. Workflow confirmed the laptop checked in. Megan confirmed she’s back on Corp-Secure.</div></div><div class="ft"><button class="btn">Ask AI</button><button class="btn">View workflow run</button></div></div>
+</div>
+
+<!-- row 4 -->
+<div>
+<div class="sl new"><span class="n">4</span>Out of date</div>
+<div class="mc"><div class="ban"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#1A3E85" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"></path></svg>3 new messages since 9:35 AM<span style="flex: 1"></span><a href="#">Update summary</a></div><div class="mh"><span class="tag">Summary</span><span class="tt">Megan can’t join Corp-Secure Wi-Fi</span></div><div>Megan’s MacBook can’t join Corp-Secure Wi-Fi on the 3rd floor. KB steps didn’t help…</div></div>
+</div>
+<div>
+<div class="sl"><span class="n">4</span>Inconclusive</div>
+<div class="mc"><div class="mh"><span class="tag">Root cause</span><span class="chip o">Low · 0.41</span><span class="tm">9:21 AM</span></div><div class="tt">Couldn’t determine a root cause</div><div><div class="lb">What was checked</div><div>4 similar tickets, 1 recent change, the requester’s device. 2 similar tickets were fixed in different ways, so the evidence conflicts.</div></div><div><div class="lb">Confidence</div><div>0.41 · below your 0.75 threshold</div></div><div class="ft"><button class="btn">Ask AI</button><button class="btn">View similar tickets</button></div></div>
+</div>
+<div>
+<div class="sl"><span class="n">4</span>Blocked</div>
+<div class="mc"><div class="mh"><span class="tag">Suggested fix</span><span class="chip o">Blocked</span><span class="tm">9:35 AM</span></div><div class="tt">Re-issue Megan’s Wi-Fi certificate</div>
+<div><div class="lb">What happened</div><div>Step 2 failed: assigning the new Wi-Fi profile in Intune was denied (permission).</div></div><div><div class="lb">What to do now</div><div>Assign the profile to ASSET-2291 in Intune, then ask Megan to rejoin.</div></div><div class="ft"><button class="btn">Ask AI</button><button class="btn">View workflow run</button></div></div>
+</div>
+
+<!-- row 5 -->
+<div>
+<div class="sl new"><span class="n">5</span>Edited by an agent</div>
+<div class="mc"><div class="mh"><span class="tag">Summary</span><span class="tt">Megan can’t join Corp-Secure Wi-Fi</span><span class="chip gr">Edited by Jordan Reyes · 9:52 AM</span></div><div>Megan’s MacBook can’t join Corp-Secure Wi-Fi on the 3rd floor. Intune profile assigned manually at 9:44.</div><div class="ft"><button class="btn">Ask AI</button><a href="#" style="font-size: 13px">Restore Ticket Resolver’s version</a></div></div>
+</div>
+<div>
+<div class="sl new"><span class="n">5</span>Marked not helpful</div>
+<div class="mc"><div class="mh"><span class="tag">Root cause</span><span class="chip g">High · 0.84</span><span class="chip gr">You marked this not helpful</span></div><div class="tt">Wi-Fi certificate not renewed after CHG-2187</div><div style="color: #475867">Your feedback goes to your admin so they can tune Ticket Resolver. Add a reason (optional):</div><div style="border: 1px solid #CFD7DF; border-radius: 8px; height: 34px; display: flex; align-items: center; padding: 0 10px; color: #8796A6">What was wrong?</div><div class="ft"><span style="flex: 1"></span><button class="btn">Skip</button><button class="btn pri">Send</button></div></div>
+</div>
+<div>
+<div class="sl new"><span class="n">5</span>No fix suggested</div>
+<div class="mc"><div class="mh"><span class="tag">Suggested fix</span><span class="chip gr">No fix suggested</span></div><div>No fix can be suggested without a root cause. Ticket Resolver handed this over as inconclusive.</div><div class="ft"><button class="btn">Ask AI</button></div></div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

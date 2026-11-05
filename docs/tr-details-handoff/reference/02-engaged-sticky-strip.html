@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Unified ticket details — after the agent engages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:#12344D;background:#F3F5F7}
+a{color:#2C5CC5;text-decoration:none}a:hover{color:#1D4296;text-decoration:underline}
+.ic{width:16px;height:16px;flex:0 0 16px;color:#5A6B7D}
+.btn{font:inherit;font-size:13px;font-weight:500;border:1px solid #CFD7DF;background:#fff;color:#12344D;border-radius:8px;padding:0 12px;height:32px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.btn.pri{background:#2C5CC5;border-color:#2C5CC5;color:#fff}
+.ib{width:32px;height:32px;border:1px solid #DDE3EA;border-radius:8px;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.av{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:0 0 28px}
+.tab{font-size:14px;color:#2B3D50;padding:12px 2px;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:#2C5CC5;font-weight:600;border-bottom-color:#2C5CC5}
+.rail{width:36px;height:36px;border-radius:10px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;color:#475867}
+.pane{background:#fff;border:1px solid #E4E8EC;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.pl{font-size:12px;color:#5A6B7D}
+.pv{font-size:14px;font-weight:500}
+.sla{font-size:12px;font-weight:600;background:#E3F5EC;color:#0B5A3C;border-radius:6px;padding:3px 8px;white-space:nowrap}
+.fld{border:1px solid #CFD7DF;border-radius:8px;height:34px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px;font-size:13px;background:#fff}
+.chip{font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;display:inline-flex;align-items:center;gap:4px}
+.m{border:1px solid #E4E8EC;border-radius:12px;background:#fff;padding:14px 18px;display:flex;gap:12px}
+.m.req{background:#EEF4FD;border-color:#D3E2F8}
+.m.note{background:#FCEEDF;border-color:#F3D3AE}
+.mn{font-size:14px;font-weight:600;color:#2C5CC5}
+.mm{font-size:13px;color:#5A6B7D;margin-top:2px}
+.mb{font-size:14px;line-height:22px;margin-top:10px}
+.acts{display:flex;gap:6px;margin-left:auto}
+.ev{display:flex;align-items:center;gap:8px;font-size:13px;color:#2B3D50;flex-wrap:wrap;padding:2px 4px}
+.ev b{font-weight:600;color:#12344D}
+.comp{background:#F5F7F9;border-radius:12px;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; overflow: hidden; display: flex; background: #F3F5F7">
+
+<nav aria-label="Primary" style="flex: 0 0 60px; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 0">
+<div style="width: 34px; height: 34px; border-radius: 10px; background: #2C78E6; display: flex; align-items: center; justify-content: center; margin-bottom: 8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"></path></svg></div>
+<button class="rail" aria-label="Dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 12l4-4"></path></svg></button>
+<button class="rail" aria-label="Tickets" style="background: #DCE7FA"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#2C5CC5" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"></path></svg></button>
+<button class="rail" aria-label="Changes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"></path></svg></button>
+<button class="rail" aria-label="Assets"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="2"></rect><path d="M8 20h8"></path></svg></button>
+</nav>
+
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+
+<header style="display: flex; align-items: center; gap: 16px; padding: 10px 20px">
+<nav aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; flex: 1 1 auto"><a href="#">Tickets</a><span style="color: #6B7A89">›</span><span>#INC-4127</span></nav>
+<label style="display: flex; align-items: center; gap: 8px; width: 340px; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid #DDE3EA; border-radius: 10px; background: #fff; font-size: 14px; color: #5A6B7D"><span style="position: absolute; left: -9999px">Search</span><input type="search" placeholder="Search" style="border: 0; outline: 0; font: inherit; background: transparent; flex: 1; min-width: 0"></label>
+<span class="av" style="width: 34px; height: 34px; flex-basis: 34px; background: #CFE1F5; color: #1A3E85">JR</span>
+</header>
+
+<div style="display: flex; gap: 8px; flex: 1; min-height: 0; padding: 0 8px 8px 0">
+<main style="flex: 1; min-width: 0; background: #fff; border: 1px solid #E4E8EC; border-radius: 14px; display: flex; flex-direction: column; overflow: hidden">
+
+<div style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-bottom: 1px solid #EEF1F4">
+<span class="chip" style="font-size: 13px; padding: 5px 10px; background: #E3ECFA; color: #1A3E85">Requester responded</span>
+<span style="font-size: 16px; font-weight: 600; margin-left: 6px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Can’t connect to Corp-Secure Wi-Fi</span>
+<button class="btn">Share</button><button class="btn">Edit</button><button class="btn">Reply</button><button class="btn">Associate</button><button class="btn">Close</button>
+</div>
+
+<div style="display: flex; flex: 1; min-height: 0">
+
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0">
+<div role="tablist" aria-label="Ticket sections" style="display: flex; gap: 26px; padding: 0 28px; border-bottom: 1px solid #E4E8EC">
+<span class="tab on" role="tab" aria-selected="true">Details</span><span class="tab" role="tab" aria-selected="false">Related tickets</span><span class="tab" role="tab" aria-selected="false">Tasks</span><span class="tab" role="tab" aria-selected="false">CMDB</span><span class="tab" role="tab" aria-selected="false">Activity</span><span class="tab" role="tab" aria-selected="false">Resolution</span>
+</div>
+
+<div style="padding: 12px 28px 0">
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid #DCD3FA; border-radius: 10px; background: #FBFAFF; box-shadow: 0 4px 10px rgba(18, 52, 77, 0.08); font-size: 13px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>
+<b style="font-weight: 600">Summary</b>
+<span style="color: #8796A6">·</span>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0"><span style="color: #475867">Root cause:</span> certificate not renewed after CHG-2187 <span style="color: #8796A6">·</span> <span style="color: #475867">Next:</span> assign the Corp-Secure profile in Intune</span>
+<span style="flex: 1"></span>
+<button class="btn" style="height: 28px; font-size: 12px">Show summary</button>
+</div>
+</div>
+
+<div style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 16px; padding: 16px 28px 24px">
+
+<div class="m">
+<span class="av" style="background: #F1EBFE"><svg width="18" height="12" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg></span>
+<div style="flex: 1; min-width: 0"><div class="mn">Ticket Resolver</div><div class="mm">replied in Slack via Workplace Concierge · 9:35 AM</div><div class="mb">Megan, I’ve hit a permissions issue I can’t fix myself, so I’ve passed this to Jordan on the Network team with everything I found. You won’t need to repeat anything.</div></div>
+</div>
+
+<div class="m req">
+<span class="av" style="background: #F4D3C2; color: #7A3418">MB</span>
+<div style="flex: 1; min-width: 0"><div style="display: flex; align-items: flex-start; gap: 8px"><div><div class="mn">Megan Brooks</div><div class="mm">replied in Slack · 9:37 AM</div></div><span class="chip" style="background: #FCE6C8; color: #7A4106; margin-left: auto">Frustrated · Time-sensitive</span></div><div class="mb">Ugh, second time this month. I have a client demo at 11.</div></div>
+</div>
+
+<div class="m note">
+<span class="av" style="background: #CFE1F5; color: #1A3E85">JR</span>
+<div style="flex: 1; min-width: 0"><div style="display: flex; align-items: flex-start; gap: 8px"><div><div class="mn">Jordan Reyes</div><div class="mm">added a private note · 9:41 AM</div></div><div class="acts"><button class="ib" aria-label="Edit note"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button></div></div><div class="mb" style="display: flex; gap: 10px"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#B5651D" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true" style="margin-top: 3px"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg><span>Assigning the Corp-Secure profile manually in Intune. Also checking the 3 other open CHG-2187 tickets.</span></div></div>
+</div>
+
+<div class="m">
+<span class="av" style="background: #CFE1F5; color: #1A3E85">JR</span>
+<div style="flex: 1; min-width: 0"><div style="display: flex; align-items: flex-start; gap: 8px"><div><div class="mn">Jordan Reyes</div><div class="mm">replied in Slack · 9:44 AM</div></div><div class="acts"><button class="ib" aria-label="Forward"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l6 6-6 6M21 11H9a6 6 0 0 0-6 6v1"></path></svg></button></div></div><div class="mb">Hi Megan, sorry about the hassle before your demo. I’ve pushed the fix to your laptop. Could you rejoin Corp-Secure and let me know if it works?</div></div>
+</div>
+
+<div class="m req">
+<span class="av" style="background: #F4D3C2; color: #7A3418">MB</span>
+<div style="flex: 1; min-width: 0"><div class="mn">Megan Brooks</div><div class="mm">replied in Slack · 9:46 AM</div><div class="mb">Working now. Thanks, Jordan!</div></div>
+</div>
+
+<div class="comp">
+<span class="av" style="background: #CFE1F5; color: #1A3E85">JR</span>
+<button class="btn">Reply <span class="chip" style="background: #EEF1F4; color: #475867">in Slack</span></button>
+<button class="btn">Forward</button>
+<button class="btn">Add note</button>
+</div>
+
+</div>
+</div>
+
+<aside aria-label="Ticket information" style="flex: 0 0 360px; box-sizing: border-box; border-left: 1px solid #EEF1F4; background: #F8F9FB; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+<div class="pane">
+<div style="font-size: 14px; font-weight: 600">IT Service</div>
+<div style="font-size: 19px; font-weight: 600">Open</div>
+<div><div class="pl">Priority</div><div class="pv" style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #E8A33D"></span>Medium</div></div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><div><div class="pl">Resolution due</div><div class="pv" style="font-size: 13px">by Tue, Oct 20, 9:17 AM</div></div><span class="sla">23h 31m</span></div>
+<div style="border-top: 1px solid #EEF1F4; padding-top: 10px"><div class="pl">Digital worker</div><div style="display: flex; align-items: center; gap: 6px; font-size: 13px; margin-top: 4px"><svg width="18" height="12" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg><b style="font-weight: 600">Ticket Resolver</b><span style="color: #5A6B7D">handed over · Blocked</span></div></div>
+</div>
+<div class="pane">
+<div style="font-size: 14px; font-weight: 600">Requester information</div>
+<div style="display: flex; gap: 10px; align-items: center"><span class="av" style="width: 36px; height: 36px; flex-basis: 36px; background: #F4D3C2; color: #7A3418">MB</span><div><a href="#" style="font-size: 15px; font-weight: 600">Megan Brooks</a><div class="pl">Product Analyst · San Mateo HQ</div></div></div>
+</div>
+<div class="pane">
+<div style="font-size: 14px; font-weight: 600">Properties</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div><div class="pl">Priority</div><div class="fld">Medium</div></div>
+<div><div class="pl">Status</div><div class="fld">Open</div></div>
+<div><div class="pl">Group</div><div class="fld">Network Team</div></div>
+<div><div class="pl">Agent</div><div class="fld">Jordan Reyes</div></div>
+</div>
+<button class="btn pri" style="justify-content: center; height: 38px">Update</button>
+</div>
+</aside>
+
+</div>
+</main>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

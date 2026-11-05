@@ -1,0 +1,39 @@
+/**
+ * Shared press micro-feedback for AI controls.
+ * Apply `.ai-pressable` on the interactive element (button / chip root).
+ * Use `.ai-pressable-soft` for larger surfaces (panels, banners).
+ */
+
+:root {
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ai-press-duration: 120ms;
+  --ai-enter-duration: 200ms;
+  --ai-exit-duration: 150ms;
+}
+
+.ai-pressable {
+  transition: transform var(--ai-press-duration) var(--ease-out-quart);
+}
+
+.ai-pressable:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.ai-pressable-soft {
+  transition: transform var(--ai-press-duration) var(--ease-out-quart);
+}
+
+.ai-pressable-soft:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-pressable,
+  .ai-pressable-soft,
+  .ai-pressable:active:not(:disabled),
+  .ai-pressable-soft:active:not(:disabled) {
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,2392 @@
+@import '@freshworks/dew-styles/colors.css';
+@import '@freshworks/dew-styles/numbers.css';
+@import '@freshworks/dew-styles/fonts.css';
+@import '@freshworks/dew-components/assets/dew-cmp-reset.css';
+@import '@freshworks/dew-components/assets/dew-cmp-lib.css';
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* Ticket details: Dew semantic colours with the soft AI border from the
+   reference. The radius is deliberately 16px for every card in this area. */
+.tr-details-tab .tr-ai-card {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-large);
+  background:
+    linear-gradient(var(--color-fill-surface), var(--color-fill-surface)) padding-box,
+    linear-gradient(105deg, var(--color-boundary-semantic-highlight-mildest), var(--color-boundary-semantic-info-mildest)) border-box;
+  padding: var(--spacing-250) var(--spacing-300);
+  color: var(--color-text-primary);
+}
+
+.tr-details-tab .tr-ai-empty {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  min-height: 56px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font: var(--font-headline);
+}
+
+.tr-ai-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.tr-ai-card-title {
+  margin: 0;
+  font: var(--font-callout);
+}
+
+.tr-ai-card-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  margin-inline-start: var(--spacing-150);
+  color: var(--color-text-secondary);
+  font: var(--font-body);
+}
+
+.tr-ai-card-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  margin-top: var(--spacing-200);
+  font: var(--font-body);
+}
+
+.tr-ai-card-content.tr-ai-animated {
+  overflow: hidden;
+  transition: height 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tr-ai-card-content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  width: 100%;
+}
+
+.tr-ai-card-content.tr-ai-animated::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 32px;
+  background: linear-gradient(transparent, var(--color-fill-surface));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.tr-ai-card-content.tr-ai-preview::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-ai-card-content.tr-ai-animated {
+    transition: none;
+  }
+
+  .tr-ai-card-content.tr-ai-animated::after {
+    transition: none;
+  }
+}
+
+.tr-ai-section ul {
+  margin: var(--spacing-050) 0 0;
+  padding-inline-start: var(--spacing-250);
+}
+
+.tr-ai-section li + li { margin-top: var(--spacing-050); }
+
+.tr-ai-card-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  margin-top: var(--spacing-150);
+}
+
+.tr-ai-footer-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--color-boundary-divider-mildest);
+}
+
+
+
+
+
+.tr-details-tab .tr-reply-bar {
+  width: 100%;
+  padding: var(--spacing-200);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-large);
+  background: var(--color-fill-surface);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tr-live-reveal,
+.tr-conversation-reveal {
+  animation: tr-live-reveal 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tr-stream-word {
+  display: inline;
+  animation: tr-stream-word 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tr-live-shine {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@keyframes tr-live-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tr-stream-word {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-live-shine,
+  .tr-live-reveal,
+  .tr-conversation-reveal,
+  .tr-stream-word { animation: none; }
+}
+
+.tr-details-tab .tr-approval-card {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-large);
+  background: var(--color-fill-surface);
+}
+
+
+
+
+
+
+
+.tr-details-tab [id^="stream-"] {
+  scroll-margin-top: var(--spacing-200);
+}
+
+.tr-approval-card-body {
+  padding: var(--spacing-300);
+}
+
+.tr-approval-badge {
+  width: fit-content;
+  height: auto;
+  padding: var(--spacing-025) var(--spacing-075);
+  background: var(--color-fill-semantic-highlight-mildest);
+  color: var(--color-text-semantic-highlight);
+}
+
+.tr-approval-decision {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-075);
+  min-width: 0;
+  color: var(--color-text-primary);
+  line-height: 20px;
+}
+
+.tr-approval-decision-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: 50%;
+}
+
+.tr-approval-decision strong {
+  font-weight: var(--font-weight-semi-bold);
+}
+
+.tr-approval-decision-time {
+  color: var(--color-text-secondary);
+}
+
+.tr-approval-card-footer {
+  box-sizing: border-box;
+  padding: var(--spacing-200) var(--spacing-300);
+  background: var(--color-fill-container);
+}
+
+.delight-open-v1 [data-testid='dropdown-button'] {
+  transition:
+    transform 200ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 200ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.delight-open-v1 [data-testid='dropdown-button'][aria-expanded='true'] {
+  transform: scale(1.03);
+  box-shadow: var(--shadow-clicked-button);
+}
+
+.delight-open-v1 [data-testid='dropdown-button'] span.fw-transition-transform {
+  transition: transform 220ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.delight-open-v1 [data-testid='dropdown-button'][aria-expanded='true'] span.fw-transition-transform {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .delight-open-v1 [data-testid='dropdown-button'],
+  .delight-open-v1 [data-testid='dropdown-button'] span.fw-transition-transform {
+    transition: none;
+  }
+
+  .delight-open-v1 [data-testid='dropdown-button'][aria-expanded='true'] {
+    transform: none;
+  }
+
+  .delight-open-v1 [data-testid='dropdown-button'][aria-expanded='true'] span.fw-transition-transform {
+    transform: rotate(180deg);
+  }
+}
+
+/*
+ * Ticket list: let the table fill the width it is given.
+ *
+ * Dew sizes every column but the LAST one inline, leaving that one to absorb
+ * whatever slack is going — which only works if the table itself is stretched.
+ * Left alone the table shrinks to the sum of its columns, so closing the filter
+ * panel handed back 416px and the list simply left it blank.
+ */
+.fs-tickets-table table {
+  width: 100%;
+}
+
+/*
+ * App chrome: the product paints the top bar AND the left rail #eff6ff, a
+ * pale blue. They are one surface that happens to turn a corner, so the
+ * colour is declared once here — set it on either alone and the two drift.
+ *
+ * Dew has no token for it. The nearest by colour distance is
+ * --color-fill-semantic-highlight-mildest (#f0ebff), which is a violet and
+ * means "highlight"; the nearest blue, --color-fill-semantic-info-mildest
+ * (#def0ff), is a full step stronger. Neither is right, so the measured
+ * value is used directly and flagged rather than quietly borrowing a token
+ * that means something else.
+ */
+:root {
+  --fs-app-chrome: #eff6ff;
+}
+
+.dew-dark-theme, [data-surface='dark'] { --fs-app-chrome: var(--color-fill-container); }
+
+[aria-label='Application'] {
+  background: var(--fs-app-chrome);
+}
+[aria-label='Application'] svg [stroke='#12334C'], [aria-label='Application'] svg [stroke='#12334c'] { stroke: var(--color-icon-primary); }
+
+/*
+ * Admin search: measured at 1600x48 spanning the content column. Dew's Search
+ * sizes to its own default, so the band stretches it.
+ */
+.fs-admin-search > *,
+.fs-kb-search > *,
+.fs-assets-search > *,
+.fs-reports-search > *,
+.fs-changes-search > * {
+  width: 100%;
+  max-width: none;
+}
+
+/*
+ * Dashboard hover states, measured on the live product.
+ *
+ * Both surfaces swap --shadow-xs for a 0 4px 16px lift on --color-shadow-10.
+ * The scorecard additionally grows 1%; the chart widget does not. Kept in CSS
+ * rather than React state because that is the mechanism live uses, and because
+ * a :hover rule cannot fall out of step with the real pointer the way a
+ * mouseenter/mouseleave pair can.
+ */
+.fs-dash-tile,
+.fs-dash-widget {
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+
+.fs-dash-tile:hover {
+  box-shadow: var(--shadow-md);
+  transform: scale(1.01);
+}
+
+.fs-dash-widget:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/*
+ * Dew's SliderPanel names an entry animation the shipped stylesheet never
+ * defines, so a right-docked sheet appears rather than slides.
+ *
+ * SliderPanelContent applies fw-animate-[slider-entry-right-md_0.5s_ease_1],
+ * which resolves to `animation: slider-entry-right-md .5s ease 1`. There is no
+ * @keyframes by that name anywhere in dew-cmp-lib.css. Every other animation in
+ * the library is both fw-prefixed and defined -- fw-modal-entry,
+ * fw-toast-message-entry, fw-spin -- and these six slider names are neither.
+ *
+ * Supplying the keyframes Dew asks for, rather than overriding its class with
+ * one of our own, means this block stops mattering the moment the library ships
+ * them. The three slider-entry-left-* names are missing in exactly the same way;
+ * only the right-hand ones are written out here, because those are the ones
+ * this app opens.
+ */
+@keyframes slider-entry-right-sm {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slider-entry-right-md {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slider-entry-right-lg {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/*
+ * Redefining the keyframes is how the motion is withdrawn, rather than an
+ * animation:none override: the animation is applied by a Dew class we do not
+ * own, and a later @keyframes of the same name simply wins.
+ */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes slider-entry-right-sm {
+    from {
+      transform: none;
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes slider-entry-right-md {
+    from {
+      transform: none;
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes slider-entry-right-lg {
+    from {
+      transform: none;
+    }
+    to {
+      transform: none;
+    }
+  }
+}
+
+/*
+ * Knowledge Base and rail-flyout rows.
+ *
+ * Measured with a real pointer on the live product, on both the sidebar and
+ * the Solutions flyout, and the rule is the same in each: an UNSELECTED row
+ * takes --color-fill-container on hover, with its text colour and weight
+ * unchanged, and the SELECTED row has no hover state at all. So the class only
+ * ever goes on rows that are not current, and there is nothing to override.
+ */
+.fs-kb-row:hover,
+.fs-rail-flyout-row:hover {
+  background: var(--color-fill-container);
+}
+
+/*
+ * Assets' Export and Import are bare text links, and live underlines them on
+ * hover. Dew's `link` button variant changes nothing on hover, so the rule is
+ * added here rather than left off: an underline is what tells a text link
+ * apart from a label, and it is the one thing these two have.
+ */
+.fs-assets-link:hover {
+  text-decoration: underline;
+}
+
+/* ───────────── Ticket Resolver · Option 2 (exploration) ─────────────
+ *
+ * Additive only. Everything above is Option 1's and is untouched; Option 2
+ * reuses `.tr-details-tab .tr-ai-card` and its content/footer rules so the two
+ * explorations differ in structure rather than in styling, and adds only what
+ * the single tabbed card and its collapsed strip need.
+ */
+
+/* The strip pins under the sticky ticket tabs (42px) but takes no space in
+   the flow — otherwise an empty band would sit above the card at scroll top. */
+.tr-o2-strip-slot {
+  position: sticky;
+  top: 42px;
+  z-index: 4;
+  height: 0;
+}
+
+.tr-o2-strip {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  padding: var(--spacing-200) var(--spacing-400);
+  background: var(--color-fill-surface);
+  border-block-end: 1px solid var(--color-boundary-border-mildest);
+  box-shadow: var(--shadow-xs);
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tr-o2-strip.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* The line itself is the main target: clicking it returns to the card. */
+.tr-o2-strip-line {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  flex: 1;
+  min-width: 0;
+  padding: var(--spacing-050) 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.tr-o2-strip-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--font-body);
+}
+
+
+
+.tr-o2-strip-line:hover .tr-o2-strip-text {
+  text-decoration: underline;
+}
+
+/* The title leads the card; the header actions close it. */
+.tr-o2-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  width: 100%;
+}
+
+/* The title and "Ticket Resolver · 2 days ago" on one line, 12px apart. */
+.tr-o2-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+/* Dew's segmented tabs sit on the card's own white, so an unselected tab read
+   as plain text. A tinted track under them makes every tab look like a tab. */
+.tr-o2-card-title-group [role='tablist'] {
+  box-sizing: border-box;
+  padding: var(--spacing-025);
+  height: 32px;
+  gap: var(--spacing-025);
+  border: 1px solid var(--color-boundary-border-mildest);
+  background: var(--color-fill-container);
+}
+
+.tr-o2-card-title-group [role='tab'][aria-selected='false'] {
+  background: transparent;
+}
+
+.tr-o2-card-title-group [role='tab'][aria-selected='false']:hover {
+  background: var(--color-fill-surface);
+}
+
+.tr-o2-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  flex-wrap: wrap;
+  color: var(--color-text-secondary);
+  font: var(--font-body);
+}
+
+/* One panel's own stack. The card's content wrapper supplies the animated
+   height; the panel supplies the rhythm between sections. */
+.tr-o2-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+}
+
+/*
+ * Body lines sit flush with their labels.
+ *
+ * Every line of body copy in every tab sits inside `.tr-ai-section ul`, so one
+ * rule fixes the left edge for Issue, Cause, Evidence, Steps and Next step
+ * alike. Scoped to the panel so Option 1's cards keep their own spacing.
+ */
+.tr-o2-panel .tr-ai-section ul {
+  margin: var(--spacing-050) 0 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.tr-o2-panel .tr-ai-section li + li {
+  margin-top: var(--spacing-050);
+}
+
+/* The meta line is already spaced off the tabs, so the body does not need the
+   shared card rule's second gap on top of it. */
+.tr-o2-card .tr-ai-card-content {
+  margin-top: var(--spacing-150);
+}
+
+/* 21 Oct review ─────────────────────────────────────────────────────────── */
+
+/* The tab's content column. With the side pane hidden it would otherwise run
+   the full width of an ultra-wide monitor, so it caps and centres. */
+.tr-o2-content {
+  box-sizing: border-box;
+  /* Fill whatever the tab leaves under a short thread, so the reply dock always sits at the bottom. */
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  /* The text of the first tab ("D" in Details) is the left edge of everything
+     below it: the tab list inset + the trigger's margin + its padding. */
+  padding: var(--spacing-400) var(--spacing-400) var(--spacing-400) var(--tr-content-inset);
+}
+:root { --tr-content-inset: calc(var(--spacing-400) + var(--spacing-025) + var(--spacing-100)); }
+
+/* The title is the switcher: "Root cause ⌄" opens Summary / Resolution note. */
+
+
+
+
+/* Option 2's fold: faces, "N messages" and up/down chevrons on a hairline. */
+.tr-o2-messages-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  padding: var(--spacing-100) var(--spacing-150) var(--spacing-100) var(--spacing-100);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-circular);
+  background: var(--color-fill-container);
+  color: var(--color-text-primary);
+  font: inherit;
+  font: var(--font-body-semibold);
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.tr-o2-messages-pill:hover {
+  border-color: var(--color-boundary-border-milder);
+}
+
+.tr-o2-messages-pill:focus-visible {
+  outline: 2px solid var(--color-boundary-brand);
+  outline-offset: 2px;
+}
+
+/* No "View more": only an unusually long artifact scrolls inside the card. */
+.tr-o2-card-body {
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+/* The "accent edge" treatment for internal AI content, applied to the top card
+   as well so both read as the same kind of thing. */
+.tr-details-tab .tr-ai-card.is-accent {
+  background: var(--color-fill-surface);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-inline-start: 3px solid var(--color-boundary-semantic-highlight);
+}
+
+/* The subject, moved into the header bar once it has scrolled away. */
+.tr-o2-header-subject {
+  min-width: 0;
+  max-width: 420px;
+  margin-inline-start: var(--spacing-100);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--font-body-semibold);
+  color: var(--color-text-primary);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 160ms ease, transform 200ms ease;
+}
+
+.tr-o2-header-subject.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ask AI, in the side pane where Properties was. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Dew sets `Admin/Chat` to 24px inline, whatever the button size. The reply
+   count wants the 16px its twin, the Ask AI button, carries. */
+
+
+
+
+/* Replies shares the ticket toolbar and starts alongside the subject/tabs. */
+.tr-o2-copilot {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: clamp(300px, 27vw, 400px);
+  flex-shrink: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border-milder, var(--color-boundary-border-mildest));
+  border-radius: var(--border-radius-large, 12px);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
+  background: var(--color-fill-surface);
+  height: 100%;
+}
+
+/* AI Design System slider: the panel floats as its own card on a container-fill canvas. */
+.tr-o2-copilot-dock {
+  display: flex;
+  flex-shrink: 0;
+  min-height: 0;
+  padding: var(--spacing-100) var(--spacing-100) var(--spacing-100) var(--spacing-100);
+  background: var(--color-fill-container);
+  border-inline-start: 1px solid var(--color-boundary-border-mildest);
+}
+
+.tr-o2-compose-ai-anchor {
+  display: inline-flex;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Dew sets `Admin/Chat` to 24px inline whatever `size` says; the chips want 16px. */
+
+
+
+
+
+
+
+
+/* The composer's border fades from grey to the AI pink-violet. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* The dock and composer remain mounted so both height changes can animate. */
+.tr-o2-reply-transition {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+}
+
+/* Let the collapsed dock surface consume the content column's bottom inset.
+   Its controls retain their own tokenized padding, including the larger
+   bottom inset used when an approval is present. */
+.tr-o2-reply-transition {
+  margin-top: auto;
+  /* The content column's 24px gap, less the 8px the stack above it keeps for
+     its peeking cards, leaves the 16px the conversation list used to have. */
+  margin-bottom: calc(-1 * (var(--spacing-400) + var(--spacing-050)));
+}
+
+.tr-o2-reply-compose-wrap {
+  pointer-events: auto;
+  display: none;
+}
+
+.tr-o2-reply-compose-wrap > .tr-o2-compose-slot {
+  min-height: 0;
+}
+
+/* Opening is a short fade and rise. The card used to grow open by animating a
+   grid row, which some browsers painted only part-way and left stuck. */
+.tr-o2-reply-transition.is-open .tr-o2-reply-compose-wrap {
+  display: block;
+  margin-bottom: var(--spacing-150);
+  animation: tr-o2-compose-in 200ms ease-out both;
+}
+
+@keyframes tr-o2-compose-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* The composer: modes, writing area, AI tools, and a separate action footer. */
+.tr-o2-compose {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  padding: 0;
+  /* The border says where the words go: grey replies to the requester,
+     orange is a private note, purple is Ask AI. */
+  border: 2px solid var(--color-boundary-border-mild);
+  border-radius: var(--border-radius-large);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+  overflow: visible;
+  container-type: inline-size;
+  /* One height for Reply, Private note and Ask AI on a ticket, so switching
+     between them never rescales the card. Email and portal tickets carry the
+     From and Reply to rows, so they get more room. */
+  height: clamp(340px, 46vh, 420px);
+  max-height: calc(100vh - 200px);
+}
+
+.tr-o2-compose.is-tall {
+  height: clamp(440px, 60vh, 560px);
+}
+
+.tr-o2-compose-modes,
+.tr-o2-compose-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  flex-wrap: wrap;
+}
+
+/* Warning is Dew's orange, highlight its purple. */
+.tr-o2-compose[data-mode='reply'] { border-color: var(--color-boundary-semantic-info-mild); }
+.tr-o2-compose[data-mode='note'] { border-color: var(--color-boundary-semantic-warning-mild); }
+
+/* A pressed toolbar button: blue edge and a mild blue fill. */
+.tr-o2-compose-toolbar button[aria-pressed='true'] {
+  border-color: var(--color-boundary-semantic-info-mild);
+  background: var(--color-fill-semantic-info-mildest);
+}
+.tr-o2-compose[data-mode='ask'] { border-color: var(--color-boundary-semantic-highlight-mild); }
+
+.tr-o2-compose-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-100);
+  padding: var(--spacing-150) var(--spacing-150) 0 var(--spacing-200);
+}
+
+.tr-o2-compose-title {
+  font: var(--font-body-semibold);
+  color: var(--color-text-primary);
+}
+
+.tr-o2-compose-ai-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  height: 52px;
+  padding: var(--spacing-100) var(--spacing-200);
+  border-block: 1px solid var(--color-boundary-border-mildest);
+  background: var(--color-fill-container);
+  flex-wrap: nowrap;
+  transition: max-height 220ms ease, min-height 220ms ease, padding-block 220ms ease, opacity 160ms ease, border-color 220ms ease, border-width 220ms ease;
+}
+
+.tr-o2-compose-ai-strip.is-hidden {
+  min-height: 0;
+  max-height: 0;
+  padding-block: 0;
+  border-block-width: 0;
+  border-color: transparent;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-o2-compose-ai-strip { transition: none; }
+}
+
+
+
+
+
+@container (max-width: 560px) {
+  .tr-o2-compose-ai-strip { gap: var(--spacing-050); padding-inline: var(--spacing-100); flex-wrap: nowrap; }
+  .tr-o2-compose-ai-mark { width: 16px; height: 16px; margin-right: 0; }
+  .tr-o2-compose-ai-inactive,
+  .tr-o2-compose-ai { gap: var(--spacing-050); padding-inline: var(--spacing-100); font: var(--font-caption-regular); white-space: nowrap; }
+}
+
+.tr-o2-compose-foot {
+  padding: var(--spacing-200);
+  background: var(--color-fill-container);
+  border-radius: 0 0 14px 14px;
+}
+
+.tr-o2-compose-mode,
+.tr-o2-compose-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  height: 32px;
+  padding: 0 var(--spacing-150);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-medium, 8px);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-text-primary);
+  font: inherit;
+  font: var(--font-body-semibold);
+  cursor: pointer;
+}
+
+.tr-o2-compose-mode:hover,
+.tr-o2-compose-ai:hover {
+  background: var(--color-fill-container);
+}
+
+
+
+/* The AI strip supplies the gradient; the active menu trigger stays white. */
+.tr-o2-compose-ai {
+  background: var(--color-fill-surface);
+}
+
+.tr-o2-compose-ai:hover {
+  background: var(--color-fill-container);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tr-o2-compose-mode:focus-visible,
+.tr-o2-compose-ai:focus-visible {
+  outline: 2px solid var(--color-boundary-brand);
+  outline-offset: 2px;
+}
+
+
+
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-o2-strip,
+  .tr-o2-header-subject {
+    transition: none;
+  }
+}
+
+/* Option 2 · the prototype's own controls (`option2/ReviewControls.tsx`).
+ *
+ * Deliberately outside the Dew design system — no Dew tokens, no Dew
+ * components — and styled like a developer toolbar (dark glass, system font,
+ * monospace labels), so it can never be read as part of the product. Pinned
+ * in the empty foot of the 48px widget rail. */
+.tr-proto {
+  --proto-bg: rgba(17, 17, 19, 0.92);
+  --proto-line: rgba(255, 255, 255, 0.1);
+  --proto-text: #ededed;
+  --proto-muted: #8f8f95;
+  --proto-hover: rgba(255, 255, 255, 0.06);
+  --proto-accent: #3ecf8e;
+  position: fixed;
+  inset-block-end: 16px;
+  inset-inline-end: 8px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-100);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tr-proto.tr-proto-views { inset-block-end: 80px; }
+.tr-proto.tr-proto-views.is-beside { inset-block-end: 16px; inset-inline-end: 56px; }
+
+.tr-proto-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--proto-line);
+  border-radius: var(--border-radius-circular);
+  background: var(--proto-bg);
+  color: var(--proto-text);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.tr-proto-trigger:hover,
+.tr-proto-trigger.is-open {
+  background: #000;
+  transform: scale(1.06);
+}
+
+.tr-proto-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  width: 240px;
+  padding: var(--spacing-150);
+  border: 1px solid var(--proto-line);
+  border-radius: var(--border-radius-large);
+  background: var(--proto-bg);
+  color: var(--proto-text);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.tr-proto-head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  padding: 0 var(--spacing-025);
+}
+
+.tr-proto-title {
+  flex: 1;
+  font: var(--font-body-semibold);
+  
+  letter-spacing: -0.01em;
+}
+
+.tr-proto-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--border-radius-small);
+  background: transparent;
+  color: var(--proto-muted);
+  cursor: pointer;
+}
+
+.tr-proto-close:hover {
+  background: var(--proto-hover);
+  color: var(--proto-text);
+}
+
+.tr-proto-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-025);
+}
+
+.tr-proto-label {
+  padding: 0 var(--spacing-025) var(--spacing-050);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: var(--font-caption-regular);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--proto-muted);
+}
+
+.tr-proto-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  width: 100%;
+  padding: 7px var(--spacing-100);
+  border: 0;
+  border-radius: var(--border-radius-small);
+  background: transparent;
+  color: var(--proto-text);
+  font: inherit;
+  font: var(--font-body);
+  text-align: start;
+  cursor: pointer;
+}
+
+.tr-proto-option:hover {
+  background: var(--proto-hover);
+}
+
+.tr-proto-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--proto-muted);
+  border-radius: 50%;
+}
+
+.tr-proto-option[aria-checked='true'] .tr-proto-dot {
+  border-color: var(--proto-accent);
+  background: var(--proto-accent);
+  box-shadow: 0 0 0 3px rgba(62, 207, 142, 0.18);
+}
+
+.tr-proto-action {
+  width: 100%;
+  padding: var(--spacing-075) var(--spacing-100);
+  border: 1px solid var(--proto-line);
+  border-radius: var(--border-radius-small);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--proto-text);
+  font: inherit;
+  font: var(--font-body-medium);
+  
+  cursor: pointer;
+}
+
+.tr-proto-action:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tr-proto-trigger:focus-visible,
+.tr-proto-close:focus-visible,
+.tr-proto-option:focus-visible,
+.tr-proto-action:focus-visible {
+  outline: 2px solid var(--proto-accent);
+  outline-offset: 2px;
+}
+
+/* The root cause's sections read as short paragraphs, on the label's edge. */
+.tr-o2-paragraph {
+  margin: var(--spacing-050) 0 0;
+  color: var(--color-text-primary);
+}
+
+/* Option 2 · smooth open/close (`option2/Reveal.tsx`). A one-row grid eases
+   between 0fr and 1fr — the content's own height — with a fade alongside. */
+.tr-o2-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 240ms ease;
+}
+
+.tr-o2-reveal.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms ease 80ms;
+}
+
+.tr-o2-reveal-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The fold: the pill and the earlier messages share one slot in the stream.
+   A dozen messages is a long way to grow, so it takes a little longer. */
+.tr-o2-fold-body.is-open {
+  transition:
+    grid-template-rows 640ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 420ms ease 120ms;
+}
+
+.tr-o2-fold-body .tr-o2-reveal-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+}
+
+/* The earlier messages open downwards from where the pill was, rather than the
+   browser's scroll anchoring holding the newest message still and pushing the
+   page up past the reader. */
+[data-ticket-conversation-scroller]:has(.tr-o2-fold) {
+  overflow-anchor: none;
+}
+
+/* "Worked for" chevron turns rather than swapping icons. */
+
+
+
+
+/* The conversation before the ticket: a read-only record at the foot of the
+   top card, behind a text-link disclosure under a hairline. */
+.tr-o2-log {
+  box-sizing: border-box;
+  width: 100%;
+  margin-block-start: var(--spacing-200);
+  padding-block-start: var(--spacing-150);
+  border-block-start: 1px solid var(--color-boundary-border-mildest);
+  color: var(--color-text-primary);
+  font: var(--font-body);
+}
+
+.tr-o2-log-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  padding: var(--spacing-025) var(--spacing-050);
+  margin-inline-start: calc(-1 * var(--spacing-050));
+  border: 0;
+  border-radius: var(--border-radius-small);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-weight: var(--font-weight-semi-bold);
+  cursor: pointer;
+}
+
+.tr-o2-log-toggle:hover {
+  background: var(--color-fill-container);
+  color: var(--color-text-primary);
+}
+
+.tr-o2-log-meta {
+  margin: var(--spacing-100) 0 var(--spacing-200);
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.tr-o2-log-time-inline {
+  margin-inline-end: var(--spacing-100);
+}
+
+
+
+/* The Description box: a clean white surface, the same on every ticket. */
+.tr-o2-desc {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--spacing-250);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-large);
+  background: var(--color-fill-surface);
+  color: var(--color-text-primary);
+  font: var(--font-body);
+}
+
+.tr-o2-desc-head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+}
+
+.tr-o2-desc-title {
+  margin: 0;
+  font: var(--font-callout);
+}
+
+.tr-o2-desc-meta {
+  margin: var(--spacing-050) 0 0;
+  padding-block-end: var(--spacing-150);
+  border-block-end: 1px solid var(--color-boundary-border-mildest);
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.tr-o2-desc-body {
+  margin-block-start: var(--spacing-150);
+  overflow-wrap: anywhere;
+}
+
+/* Folded: a few lines, fading out, never scrolling. */
+.tr-o2-desc-body.is-folded {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+
+.tr-o2-desc-body .tr-o2-log-lines {
+  max-height: none;
+  overflow: visible;
+}
+
+.tr-o2-desc-more {
+  margin-block-start: var(--spacing-100);
+  padding: 0;
+}
+
+.tr-o2-desc-files {
+  margin-block-start: var(--spacing-200);
+}
+
+.tr-o2-desc-files-label {
+  margin-block-end: var(--spacing-100);
+  font: var(--font-body-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Nothing generated (or all deleted): the card falls back to the single
+   "Summarize ticket" row, with the record still below it. */
+
+
+.tr-o2-log-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+  max-height: 360px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tr-o2-log-who {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-100);
+  margin-block-end: var(--spacing-025);
+}
+
+.tr-o2-log-who strong {
+  font-weight: var(--font-weight-semi-bold);
+}
+
+.tr-o2-log-time {
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tr-o2-log-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tr-o2-log-tag {
+  display: inline-block;
+  padding: 0 var(--spacing-050);
+  border-radius: var(--border-radius-xsmall);
+  background: var(--color-fill-container);
+  color: var(--color-text-brand);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: var(--font-caption-regular);
+}
+
+.tr-o2-log-snippet {
+  box-sizing: border-box;
+  margin: var(--spacing-050) 0 0;
+  padding: var(--spacing-100) var(--spacing-150);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-small);
+  background: var(--color-fill-container);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: var(--font-caption-regular);
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+
+
+/* Files on a conversation card: the same tiles, set just under the message. */
+.tr-o2-card-files {
+  margin-block-start: var(--spacing-100);
+}
+
+
+
+
+
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-o2-reveal,
+  .tr-o2-reveal.is-open,
+  .tr-o2-chevron {
+    transition: none;
+  }
+}
+
+/* The Details tab is the size container the reply dock measures itself by. */
+.tr-details-tab.tr-o2 {
+  container-type: inline-size;
+}
+
+/* Option 2 · the reply dock. Sticky to the bottom of the conversation column,
+   so it floats over the stream at any scroll position and settles at the end.
+   Behind the buttons, a progressive blur: none at the top edge, most at the
+   bottom. One backdrop blur can only be uniform, so six layers of doubling
+   strength are each masked to a band, and the bands overlap down the strip.
+   A light fade to the surface colour sits on top to settle the text. */
+.tr-o2-reply-dock {
+  position: relative;
+  /* Edge to edge of the conversation column, not just the 1080px content
+     column it sits in: the content is centred, so the overshoot is the same
+     on both sides — half the difference to the column's width (`cqw`). */
+  margin-inline: 0;
+  padding: var(--spacing-250) 0 var(--spacing-200);
+  pointer-events: none;
+  opacity: 1;
+}
+
+/* The fade runs edge to edge of the conversation column, as before; the
+   dock's own content is only as wide as the conversation cards. */
+.tr-o2-reply-dock::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(-1 * var(--tr-content-inset));
+  width: 100cqw;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--color-fill-container);
+  border-block-start: 1px solid var(--color-boundary-border-mildest);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-o2-reply-compose-wrap,
+  .tr-o2-reply-transition.is-open .tr-o2-reply-compose-wrap,
+  .tr-o2-reply-dock { transition: none; }
+}
+
+.tr-o2-reply-dock-blur {
+  display: none;
+  position: absolute;
+  inset-block: 0;
+  inset-inline: calc((100% - 100cqw) / 2);
+  z-index: -1;
+}
+
+.tr-o2-reply-dock-blur > span {
+  position: absolute;
+  inset: 0;
+}
+
+.tr-o2-reply-dock-blur > span:nth-child(1) {
+  backdrop-filter: blur(0.5px);
+  -webkit-backdrop-filter: blur(0.5px);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12.5%, #000 25%, transparent 37.5%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12.5%, #000 25%, transparent 37.5%);
+}
+
+.tr-o2-reply-dock-blur > span:nth-child(2) {
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  mask-image: linear-gradient(to bottom, transparent 12.5%, #000 25%, #000 37.5%, transparent 50%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 12.5%, #000 25%, #000 37.5%, transparent 50%);
+}
+
+.tr-o2-reply-dock-blur > span:nth-child(3) {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to bottom, transparent 25%, #000 37.5%, #000 50%, transparent 62.5%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 25%, #000 37.5%, #000 50%, transparent 62.5%);
+}
+
+.tr-o2-reply-dock-blur > span:nth-child(4) {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, transparent 37.5%, #000 50%, #000 62.5%, transparent 75%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 37.5%, #000 50%, #000 62.5%, transparent 75%);
+}
+
+.tr-o2-reply-dock-blur > span:nth-child(5) {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, transparent 50%, #000 62.5%, #000 75%, transparent 87.5%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 50%, #000 62.5%, #000 75%, transparent 87.5%);
+}
+
+.tr-o2-reply-dock-blur > span:nth-child(6) {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  mask-image: linear-gradient(to bottom, transparent 62.5%, #000 75%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 62.5%, #000 75%);
+}
+
+.tr-o2-reply-dock-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-150);
+  flex-wrap: wrap;
+  pointer-events: auto;
+}
+
+.tr-o2-reply-dock-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-0);
+  width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tr-o2-approval-properties,
+.tr-o2-approval-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.tr-o2-approval-fields {
+  gap: var(--spacing-100);
+  margin: var(--spacing-0);
+  padding: var(--spacing-0);
+}
+
+.tr-o2-approval-field {
+  display: grid;
+  /* A 120px label, 16px apart from a 240px value — fixed, so every field's
+     control starts and ends on the same edge whatever the label's length. */
+  grid-template-columns: 120px 240px;
+  align-items: center;
+  gap: var(--spacing-200);
+}
+
+.tr-o2-approval-field dt,
+.tr-o2-approval-field dd {
+  margin: var(--spacing-0);
+}
+
+
+
+@container (max-width: 720px) {
+  .tr-o2-approval-attention-actions {
+    justify-content: flex-end;
+  }
+}
+
+/* Option 2 · card edges.
+ *
+ * Conversation cards are flat: surface or container fill, 1px border-mildest,
+ * told apart by a chip (see ResponseCard). No gradient, glow or tint.
+ *
+ * The one exception is the pinned AI card, which wears the Dew-AI two-tone
+ * border. The installed dew-styles (1.0.0) does not ship the AI Tokens yet, so
+ * the two stops are the Dew-AI "Violet Medium" and "Indigo Medium" values from
+ * the Figma library, named once here. Replace with the AI tokens when the
+ * package carries them, and with the exact AI/Border/Border-Two Tone stops once
+ * the Dew-AI owners confirm them. No glow at rest, no gradient fill. */
+.tr-details-tab {
+  --dew-ai-border-from: rgba(169, 135, 252, 0.5); /* AI/Color/Violet Medium */
+  --dew-ai-border-to: rgba(39, 108, 240, 0.5);    /* AI/Color/Indigo Medium */
+}
+
+.tr-details-tab .tr-o2-card {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--color-fill-surface), var(--color-fill-surface)) padding-box,
+    linear-gradient(105deg, var(--dew-ai-border-from), var(--dew-ai-border-to)) border-box;
+}
+
+.tr-o2-edge {
+  border: 1px solid var(--color-boundary-border-mildest);
+  background: var(--color-fill-surface);
+}
+
+/* Replies keep the conversation glow, but the Digit reply has a purple edge
+   on every side rather than fading into the blue end of the shared AI edge. */
+.ticket-sentiment {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin-top: var(--spacing-100);
+  z-index: 8;
+}
+
+.ticket-sentiment-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  padding: var(--spacing-050) var(--spacing-100);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-small);
+  background: var(--color-fill-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+  font: var(--font-caption);
+  cursor: pointer;
+}
+
+.ticket-sentiment-trigger:focus-visible,
+.ticket-sentiment-footer button:focus-visible {
+  outline: 2px solid var(--color-boundary-brand);
+  outline-offset: 2px;
+}
+
+.ticket-sentiment-popover {
+  position: absolute;
+  top: calc(100% + var(--spacing-100));
+  left: 0;
+  width: min(510px, calc(100vw - 48px));
+  padding: var(--spacing-200);
+  border-radius: var(--border-radius-large);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xl);
+  color: var(--color-text-primary);
+  font: var(--font-body);
+  line-height: 1.5;
+}
+
+.ticket-sentiment-popover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--spacing-100));
+  height: var(--spacing-100);
+}
+
+.ticket-sentiment-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--spacing-150);
+  padding: var(--spacing-200);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-large);
+  text-align: center;
+}
+
+.ticket-sentiment-comparison > div { display: grid; gap: var(--spacing-100); color: var(--color-text-secondary); }
+.ticket-sentiment-comparison > div > span { font: var(--font-caption-regular); }
+.ticket-sentiment-value { display: inline-flex; justify-self: center; width: max-content; align-items: center; gap: var(--spacing-050); padding: var(--spacing-050) var(--spacing-150); border-radius: var(--border-radius-circular); font: var(--font-caption-regular); white-space: nowrap; }
+.ticket-sentiment-value.is-negative { background: var(--color-fill-semantic-error-mildest); color: var(--color-text-semantic-error); }
+.ticket-sentiment-value.is-positive { background: var(--color-fill-semantic-success-mildest); color: var(--color-text-semantic-success); }
+.ticket-sentiment-value.is-neutral { background: var(--color-fill-container); color: var(--color-text-secondary); }
+.ticket-sentiment-arrow { display: inline-flex; padding: var(--spacing-100); border-radius: 50%; background: var(--color-fill-container); color: var(--color-text-secondary); }
+.ticket-sentiment-popover p { margin: var(--spacing-200) 0 0; }
+.ticket-sentiment-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-100); margin-top: var(--spacing-250); color: var(--color-text-secondary); font: var(--font-caption-regular); }
+.ticket-sentiment-footer > div { display: flex; }
+
+
+/* Option 2 · the approval, inline as the last card in the conversation.
+   The card itself is a conversation card (`tr-o2-edge` supplies the surface
+   and gradient edge); these rules only lay out its header, body and stack. */
+.tr-o2-approval-deck {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  /* Room for the cards peeking out beneath the front one. */
+  padding-bottom: calc(var(--peeks, 0) * var(--spacing-100));
+}
+
+/* The dock overlaps the column's last few pixels, so a stack needs clearance
+   below its peeking cards or they would sit under the dock's blur. */
+.tr-o2-approval-deck:not([data-count="1"]) {
+  margin-bottom: var(--spacing-200);
+}
+
+.tr-o2-approval {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-0);
+  padding: var(--spacing-200);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-xs);
+}
+
+.tr-o2-approval-peek {
+  position: absolute;
+  z-index: calc(2 - var(--i));
+  inset-inline: calc(var(--i) * var(--spacing-150));
+  bottom: calc((var(--peeks) - var(--i)) * var(--spacing-100));
+  height: var(--spacing-600);
+  border: 1px solid var(--color-boundary-border-mild);
+  border-radius: var(--border-radius-large);
+  background: var(--color-fill-container);
+}
+
+.tr-o2-approval-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-100);
+  min-height: 32px;
+}
+
+.tr-o2-approval-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  font: var(--font-caption-regular);
+  color: var(--color-text-secondary);
+}
+
+.tr-o2-approval-title {
+  margin: var(--spacing-100) 0 0;
+}
+
+/* A complete sentence in every state. It wraps rather than cutting off
+   mid-thought; two lines is a safety net for unusually long text. */
+.tr-o2-approval-reason {
+  margin: var(--spacing-025) 0 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.tr-o2-approval-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+  padding-top: var(--spacing-200);
+}
+
+.tr-o2-approval-footer {
+  margin-top: var(--spacing-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-100);
+}
+
+.tr-o2-approval-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-100);
+  margin-inline-start: auto;
+}
+
+/* Cycling slides the next approval in from the side it was asked for. */
+@keyframes tr-o2-approval-next {
+  from { opacity: 0; transform: translateX(var(--spacing-400)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes tr-o2-approval-prev {
+  from { opacity: 0; transform: translateX(calc(-1 * var(--spacing-400))); }
+  to { opacity: 1; transform: none; }
+}
+
+.tr-o2-approval.is-next { animation: tr-o2-approval-next 220ms ease; }
+.tr-o2-approval.is-prev { animation: tr-o2-approval-prev 220ms ease; }
+
+/* The pill rides above the reply buttons without moving them. */
+@keyframes tr-o2-approval-pill-in {
+  from { opacity: 0; transform: translateY(var(--spacing-100)); }
+  to { opacity: 1; transform: none; }
+}
+
+.tr-o2-approval-pill {
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(100% + var(--spacing-100));
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-100);
+  pointer-events: none;
+  animation: tr-o2-approval-pill-in 200ms ease;
+}
+
+.tr-o2-approval-pill > * {
+  pointer-events: auto;
+}
+
+.tr-o2-approval-pill button,
+.tr-o2-approval-pill button:hover {
+  border-radius: var(--border-radius-circular);
+  border-color: transparent;
+  background: var(--color-fill-brand);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm, var(--shadow-xs));
+}
+
+.tr-o2-approval-pill button:hover {
+  filter: brightness(0.92);
+}
+
+.tr-o2-approval-pill button svg,
+.tr-o2-approval-pill button svg * {
+  color: var(--color-text-inverse);
+  fill: currentColor;
+}
+
+/* A message the pill just took you to: a brief ring so the eye finds it. */
+@keyframes tr-o2-flash {
+  0% { box-shadow: 0 0 0 3px var(--color-boundary-semantic-info); }
+  100% { box-shadow: 0 0 0 3px transparent; }
+}
+
+.tr-o2-flash {
+  border-radius: var(--border-radius-large);
+  animation: tr-o2-flash 1600ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-o2-flash { animation: none; }
+  .tr-o2-approval.is-next,
+  .tr-o2-approval.is-prev,
+  .tr-o2-approval-pill { animation: none; }
+}
+
+
+/* Option 2 · the dock's buttons as the mode switch. The selected one takes
+   the colour of the editor's border, as a ring so nothing shifts. */
+.tr-o2-reply-dock-actions { --tab-edge: var(--color-boundary-semantic-info-mild); --tab-fill: var(--color-fill-semantic-info-mildest); }
+.tr-o2-reply-dock-actions[data-open-mode='note'] { --tab-edge: var(--color-boundary-semantic-warning-mild); --tab-fill: var(--color-fill-semantic-warning-mildest); }
+.tr-o2-reply-dock-actions[data-open-mode='ask'] { --tab-edge: var(--color-boundary-semantic-highlight-mild); --tab-fill: var(--color-fill-semantic-highlight-mildest); }
+
+.tr-o2-reply-dock-actions button[aria-pressed='true'] {
+  border-color: var(--tab-edge);
+  background: var(--tab-fill);
+  box-shadow: 0 0 0 1px var(--tab-edge);
+}
+
+/* Unsent words in a mode you are not looking at. */
+.tr-o2-draft-dot {
+  display: inline-block;
+  width: var(--spacing-100);
+  height: var(--spacing-100);
+  margin-inline-start: var(--spacing-100);
+  border-radius: 50%;
+  background: var(--color-text-brand);
+}
+
+
+/* Option 2 · the editor's anatomy. Header, mail rows, toolbar, AI strip and
+   foot keep their size; the body takes whatever the fixed card has left. */
+.tr-o2-compose-head,
+.tr-o2-compose-row,
+.tr-o2-compose-toolbar,
+.tr-o2-compose-foot { flex: 0 0 auto; }
+
+.tr-o2-compose-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  min-height: 44px;
+  padding: var(--spacing-050) var(--spacing-200);
+  border-top: 1px solid var(--color-boundary-border-mildest);
+  background: var(--color-fill-container);
+}
+
+.tr-o2-compose-head + .tr-o2-compose-row { border-top: 0; }
+
+.tr-o2-compose-row-label {
+  flex: 0 0 64px;
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.tr-o2-compose-row-field { flex: 1 1 auto; min-width: 0; }
+
+/* The row already names its field; the input's own label is for assistive tech. */
+.tr-o2-compose-row-field label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tr-o2-compose-row-links { display: inline-flex; align-items: center; gap: var(--spacing-100); }
+
+.tr-o2-compose-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-025);
+  padding: var(--spacing-050) var(--spacing-150);
+}
+
+.tr-o2-compose-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  font: var(--font-callout-regular);
+}
+
+/* The sparkle is a shape; the mask lets it take Dew's purple. */
+.tr-o2-compose-title-sparkle {
+  background-color: var(--color-text-semantic-highlight);
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
+.tr-o2-compose-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+.tr-o2-compose-title-icon > * { width: 24px !important; height: 24px !important; }
+.tr-o2-compose-title-icon svg { width: 100% !important; height: 100% !important; }
+
+/* More air between the title, the toolbar and the text. */
+.tr-o2-compose-head + .tr-o2-compose-toolbar { margin-top: var(--spacing-100); }
+.tr-o2-compose-toolbar + .tr-o2-compose-body { padding-top: var(--spacing-150); }
+
+.tr-o2-compose-toolbar-sep {
+  width: 1px;
+  height: 20px;
+  margin-inline: var(--spacing-050);
+  background: var(--color-boundary-divider-mildest);
+}
+
+.tr-o2-compose-body {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  padding: var(--spacing-150) var(--spacing-200);
+  cursor: text;
+}
+
+.tr-o2-compose-editor {
+  min-height: 48px;
+  outline: none;
+  font: var(--font-body);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.tr-o2-compose-editor:empty::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.tr-o2-compose-editor ul,
+.tr-o2-compose-editor ol { margin: 0; padding-inline-start: var(--spacing-300); }
+.tr-o2-compose-editor a { color: var(--color-text-brand); }
+
+.tr-o2-compose-signature {
+  white-space: pre-line;
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+
+
+.tr-o2-compose-quote {
+  margin: var(--spacing-100) 0 0;
+  padding-inline-start: var(--spacing-150);
+  border-inline-start: 2px solid var(--color-boundary-border-mild);
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+.tr-o2-compose-quote > span { display: block; margin-bottom: var(--spacing-050); font: var(--font-caption-regular); }
+
+.tr-o2-compose-tools { display: inline-flex; align-items: center; gap: var(--spacing-050); }
+
+.tr-o2-compose-saved {
+  min-width: 56px;
+  text-align: end;
+  font: var(--font-caption-regular);
+  color: var(--color-text-secondary);
+}
+
+/* A new message eases in from just below, as in Slack or Teams. */
+@keyframes tr-o2-arrive {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+[data-incoming-id] {
+  animation: tr-o2-arrive 220ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-incoming-id] { animation: none; }
+}
+
+/* The empty top card, where a summary can be generated: the whole row is the button. */
+
+
+
+
+
+/* Who an email went to, above its words. */
+.tr-o2-mail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-025);
+  margin-block-end: var(--spacing-100);
+  font: var(--font-body);
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* The editor's recipient rows: tags first, then the field that makes more. */
+.tr-o2-recipients {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-050);
+  min-height: 32px;
+}
+
+
+
+
+
+
+/* Option 2 · Related tickets: one white card per ticket. */
+.tr-o2-related, .tr-o2-related-empty { padding: var(--spacing-300) var(--spacing-400); }
+.tr-o2-related-empty p { margin: 0; font: var(--font-body); color: var(--color-text-secondary); }
+.tr-o2-related-title { margin: 0 0 var(--spacing-200); font: var(--font-callout);   color: var(--color-text-primary); }
+.tr-o2-related-list { display: flex; flex-direction: column; gap: var(--spacing-150); margin: 0; padding: 0; list-style: none; }
+.tr-o2-related-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-300);
+  border: 1px solid var(--color-boundary-border-mildest);
+  border-radius: var(--border-radius-large, 12px);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+}
+.tr-o2-related-tile {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-medium, 8px);
+  background: var(--color-fill-semantic-info-mildest);
+}
+.tr-o2-related-main { flex: 1 1 auto; min-width: 0; }
+.tr-o2-related-line { display: flex; align-items: center; gap: var(--spacing-100); min-width: 0; font: var(--font-body);  }
+.tr-o2-related-source { display: inline-flex; padding: var(--spacing-025); border-radius: var(--border-radius-small, 6px); background: var(--color-fill-semantic-success-mildest); }
+.tr-o2-related-code { flex: 0 0 auto; color: var(--color-text-primary); }
+.tr-o2-related-subject { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text-brand); font-weight: var(--font-weight-medium); text-decoration: none; }
+.tr-o2-related-subject:hover { text-decoration: underline; }
+.tr-o2-related-sub { display: flex; align-items: center; gap: var(--spacing-100); margin-block-start: var(--spacing-025); font: var(--font-body);  color: var(--color-text-secondary); }
+.tr-o2-related-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--color-boundary-border-mild); }
+.tr-o2-related-facts { display: flex; flex-direction: column; gap: var(--spacing-050); flex: 0 0 200px; margin: 0; padding-inline-start: var(--spacing-300); border-inline-start: 1px solid var(--color-boundary-border-mildest); }
+.tr-o2-related-facts div { display: flex; gap: var(--spacing-200); font: var(--font-body);  }
+.tr-o2-related-facts dt { flex: 0 0 52px; color: var(--color-text-secondary); }
+.tr-o2-related-facts dd { margin: 0; color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+
+/* A note on an email ticket can be private (orange) or public (blue). */
+.tr-o2-compose[data-mode='note'][data-note='public'] { border-color: var(--color-boundary-semantic-info-mild); }
+.tr-o2-reply-dock-actions[data-open-mode='note'][data-open-note='public'] { --tab-edge: var(--color-boundary-semantic-info-mild); --tab-fill: var(--color-fill-semantic-info-mildest); }
+
+.tr-o2-note-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  padding: var(--spacing-025) var(--spacing-100);
+  border: 0;
+  border-radius: var(--border-radius-medium, 8px);
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.tr-o2-note-kind:hover, .tr-o2-note-kind[aria-expanded='true'] { background: var(--color-fill-container); }
+
+/* With an editor open the dock is hundreds of pixels tall, and six masked
+   backdrop blurs over that much area made the browser drop the editor's paint
+   (a faint, see-through card). The blur is only for the folded dock's buttons,
+   so it steps aside while an editor is open. */
+.tr-o2-reply-transition.is-open .tr-o2-reply-dock-blur { display: none; }
+
+/* The Concierge's two-line orientation: bolder than the chat beneath it. */
+.tr-o2-desc-meta.has-brief { padding-block-end: 0; border-block-end: 0; }
+
+.tr-o2-desc-brief {
+  margin: var(--spacing-100) 0 0;
+  padding-block-end: var(--spacing-150);
+  border-block-end: 1px solid var(--color-boundary-border-mildest);
+  font: var(--font-body);
+  
+  color: var(--color-text-primary);
+}
+
+/* Slim rows under the top card: what a person can ask for when the Digit did not produce it. */
+.tr-o2-ambient { display: flex; flex-direction: column; gap: var(--spacing-100); margin-block-start: var(--spacing-150); }
+
+
+
+
+
+
+
+/* Reply's split button: the main part and the chevron read as one control. */
+
+
+
+
+
+
+
+
+
+/* The sparkle sits on a text baseline by default; centre it in the chevron's button. */
+
+
+/* A menu opened from inside the editor must float above the reply dock, which is a sticky layer. */
+div:has(> [role='menu']) { z-index: 1000; }
+
+/* The note menu marks the current choice with a blue row, as the product's own does. */
+.tr-o2-note-menu.is-private [data-testid='menu-item-private'],
+.tr-o2-note-menu.is-public [data-testid='menu-item-public'] {
+  background: var(--color-fill-semantic-info-mildest);
+  color: var(--color-text-brand);
+}
+.tr-o2-note-menu [role='menuitem'] { align-items: flex-start; }
+
+/* Room between the editor's title and the first row beneath it. */
+.tr-o2-compose-head { padding-block-end: var(--spacing-100); }
+
+/* The suggested resolution: numbered steps for the person it is assigned to. */
+.tr-o2-resolution-list { margin: 0; padding-inline-start: var(--spacing-300); list-style: decimal outside; }
+.tr-o2-resolution-list li { display: list-item; padding-inline-start: var(--spacing-050); }
+.tr-o2-resolution-list li + li { margin-block-start: var(--spacing-050); }
+
+/* Flat Description (toggle via FLAT_DESCRIPTION in DescriptionBox.tsx) */
+.tr-o2-desc.is-flat {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Overlay-style scrollbars: invisible until the element is scrolling. */
+* { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+*[data-scrolling] { scrollbar-color: var(--color-fill-base, rgba(0, 0, 0, 0.3)) transparent; }
+*::-webkit-scrollbar-thumb { background: transparent; }
+*[data-scrolling]::-webkit-scrollbar-thumb { background: var(--color-fill-base, rgba(0, 0, 0, 0.3)); border-radius: var(--border-radius-medium); }
+
+/* Ask AI / Edit with Copilot: AI Design System slider inside the dock. */
+.tr-o2-copilot-dock > .tr-o2-ai-slider[data-state='default'] { height: 100%; }
+.tr-o2-copilot-dock > .tr-o2-ai-slider[data-state='minimize'] { height: 52px; align-self: flex-start; }
+.tr-o2-copilot-dock:has(> [data-state='minimize']) { position: relative; width: 0; padding: 0; overflow: visible; background: transparent; z-index: 5; }
+.tr-o2-copilot-dock > .tr-o2-ai-slider[data-state='minimize'] { position: absolute; bottom: calc(var(--spacing-100) + 56px); right: var(--spacing-100); top: auto; }
+
+
+
+
+
+
+.tr-o2-ai-text { margin: 0; white-space: pre-wrap; }
+
+/* Regenerating: the card's own border carries the AI motion; content stays put. */
+.tr-details-tab .tr-o2-card.is-regenerating {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-fill-surface), var(--color-fill-surface)) padding-box,
+    linear-gradient(105deg, #a987fc, #276cf0, #ff8fb8, #a987fc, #276cf0) border-box;
+  background-size: 100% 100%, 300% 100%;
+  animation: tr-o2-border-drift 2.2s linear infinite;
+}
+@keyframes tr-o2-border-drift {
+  from { background-position: 0 0, 0% 0; }
+  to { background-position: 0 0, 300% 0; }
+}
+@media (prefers-reduced-motion: reduce) { .tr-details-tab .tr-o2-card.is-regenerating { animation: none; } }
+
+/* Rich message bodies: a neutral content well, whatever was pasted in. */
+.tr-rich { font: inherit; color: inherit; overflow-wrap: anywhere; line-height: 1.5; }
+.tr-rich > :first-child { margin-top: 0; }
+.tr-rich > :last-child { margin-bottom: 0; }
+.tr-rich p, .tr-rich div { margin: 0 0 var(--spacing-100); }
+.tr-rich ul, .tr-rich ol { margin: 0 0 var(--spacing-100); padding-inline-start: var(--spacing-300); }
+.tr-rich li { margin-block: var(--spacing-025, 2px); }
+.tr-rich h1, .tr-rich h2, .tr-rich h3, .tr-rich h4 { margin: var(--spacing-100) 0 var(--spacing-050); font-weight: 600; line-height: 1.3; }
+.tr-rich h1 { font: var(--font-headline); } .tr-rich h2 { font: var(--font-callout-regular); } .tr-rich h3, .tr-rich h4 { font: var(--font-body); }
+.tr-rich a { color: var(--color-text-semantic-info); text-decoration: underline; }
+.tr-rich mark { background: var(--color-fill-semantic-warning-mild); color: inherit; padding: 0 var(--spacing-025); border-radius: var(--border-radius-2xsmall); }
+.tr-rich hr { border: 0; border-top: 1px solid var(--color-boundary-border-mildest); margin: var(--spacing-100) 0; }
+.tr-rich blockquote { margin: 0 0 var(--spacing-100); padding: var(--spacing-050) var(--spacing-150); border-inline-start: 3px solid var(--color-boundary-border-mild); color: var(--color-text-secondary); }
+.tr-rich code { font-family: var(--tr-mono); font: var(--font-caption-regular); padding: var(--spacing-025) var(--spacing-050); border-radius: var(--border-radius-small); background: var(--tr-code-bg); border: 1px solid var(--tr-code-border); color: var(--tr-code-ink); }
+.tr-rich img { display: block; max-width: 100%; max-height: 360px; height: auto; margin: var(--spacing-050) 0; border: 1px solid var(--color-boundary-border-mildest); border-radius: var(--border-radius-medium, 8px); }
+.tr-rich-broken { display: inline-block; padding: var(--spacing-050) 10px; font: var(--font-caption-regular); color: var(--color-text-secondary); background: var(--color-fill-container); border: 1px dashed var(--color-boundary-border-mild); border-radius: var(--border-radius-small); }
+.tr-rich-table { max-width: 100%; overflow-x: auto; margin: 0 0 var(--spacing-100); }
+.tr-rich table { border-collapse: collapse; min-width: 320px; font: var(--font-body); }
+.tr-rich th, .tr-rich td { padding: var(--spacing-075) 10px; text-align: start; border: 1px solid var(--color-boundary-border-mildest); vertical-align: top; }
+.tr-rich th { background: var(--color-fill-container); font-weight: 600; }
+
+
+.tr-rich { --tr-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --tr-code-bg: color-mix(in srgb, var(--color-text-primary) 5%, transparent);
+  --tr-code-head: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  --tr-code-border: color-mix(in srgb, var(--color-text-primary) 14%, transparent);
+  --tr-code-ink: var(--color-text-primary);
+  --tr-tok-comment: var(--color-text-secondary); --tr-tok-string: var(--color-text-semantic-success); --tr-tok-number: var(--color-text-semantic-warning); --tr-tok-flag: var(--color-text-semantic-highlight); --tr-tok-keyword: var(--color-text-semantic-info); }
+
+/* Code block, dev style: a tinted panel with a language bar, copy, optional line numbers. */
+.tr-rich-code { margin: 0 0 var(--spacing-100); border: 1px solid var(--tr-code-border); border-radius: var(--border-radius-medium, 8px); background: var(--tr-code-bg); overflow: hidden; }
+.tr-rich-code-head { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-100); padding: var(--spacing-025) var(--spacing-100) var(--spacing-025) var(--spacing-150); background: var(--tr-code-head); border-bottom: 1px solid var(--tr-code-border); }
+.tr-rich-code-lang { font: 600 11px/20px var(--tr-mono); letter-spacing: 0.02em; color: var(--color-text-secondary); text-transform: none; }
+.tr-rich-copy { padding: 1px var(--spacing-100); font: inherit; font: var(--font-caption-regular);  cursor: pointer; color: var(--color-text-secondary); background: transparent; border: 1px solid transparent; border-radius: var(--border-radius-small); }
+.tr-rich-copy:hover { color: var(--color-text-primary); background: var(--tr-code-bg); border-color: var(--tr-code-border); }
+.tr-rich-code pre { margin: 0; padding: var(--spacing-100) var(--spacing-150); overflow: auto; max-height: 320px; white-space: pre; font: 12.5px/1.6 var(--tr-mono); color: var(--tr-code-ink); background: transparent; border: 0; counter-reset: ln; tab-size: 4; }
+.tr-rich-ln { display: block; min-width: max-content; }
+.tr-rich-code[data-numbered] .tr-rich-ln::before { counter-increment: ln; content: counter(ln); display: inline-block; width: 2.4ch; margin-inline-end: 1.4ch; text-align: end; color: var(--color-text-secondary); opacity: 0.6; user-select: none; }
+.tr-tok-comment { color: var(--tr-tok-comment); font-style: italic; }
+.tr-tok-string { color: var(--tr-tok-string); }
+.tr-tok-number { color: var(--tr-tok-number); }
+.tr-tok-flag { color: var(--tr-tok-flag); }
+.tr-tok-keyword { color: var(--tr-tok-keyword); font-weight: 600; }
+
+/* The editor shares the same well. */
+.tr-o2-compose-editor table, .tr-o2-compose-editor th, .tr-o2-compose-editor td { border: 1px solid var(--color-boundary-border-mildest); border-collapse: collapse; padding: var(--spacing-050) var(--spacing-100); }
+.tr-o2-compose-editor pre { padding: var(--spacing-100); background: color-mix(in srgb, var(--color-text-primary) 5%, transparent); border: 1px solid color-mix(in srgb, var(--color-text-primary) 14%, transparent); border-radius: var(--border-radius-medium); overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font: var(--font-caption-regular); }
+.tr-o2-compose-editor code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font: var(--font-caption-regular); padding: 1px var(--spacing-050); border-radius: var(--border-radius-small); background: color-mix(in srgb, var(--color-text-primary) 6%, transparent); }
+.tr-o2-compose-editor img { max-width: 100%; height: auto; border-radius: var(--border-radius-medium); }
+.tr-o2-compose-editor blockquote { margin: 0 0 var(--spacing-100); padding-inline-start: var(--spacing-150); border-inline-start: 3px solid var(--color-boundary-border-mild); }
+
+/* Ask AI: the Freddy mark, painted with the primary icon colour. */
+
+
+/* Editing a summary / resolution note: the reply editor's toolbar and writing surface in the card. */
+.tr-o2-card-editor {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-boundary-border-mild);
+  border-radius: var(--border-radius-medium);
+  background: var(--color-fill-surface);
+  overflow: hidden;
+}
+.tr-o2-card-editor:focus-within { border-color: var(--color-boundary-brand); }
+.tr-o2-card-editor-body {
+  min-height: 160px;
+  padding: var(--spacing-150);
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.tr-details-tab.tr-o2 { flex: 1 0 auto; }
+
+/* Event rows: a toggle that says what is inside, and a rail the opened detail hangs from. */
+
+
+
+
+
+.tr-o2-event-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-050);
+  /* The line drops from the centre of the last avatar in the lead, and the
+     text still lines up with the headline. */
+  padding: var(--spacing-050) 0 var(--spacing-100) calc(var(--tr-lead-w, var(--spacing-300)) + var(--spacing-100) - var(--tr-lead-line, var(--spacing-150)) - 1px);
+  border-inline-start: 2px solid var(--color-boundary-border-milder);
+}
+
+/* A Digit at work: the AI Design System's thinking row, on the timeline grid. */
+.tr-o2-run {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-050);
+  padding: var(--spacing-050) 0;
+}
+.tr-o2-run-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-100);
+}
+.tr-o2-run-outcome {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  animation: tr-live-reveal 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) { .tr-o2-run-outcome { animation: none; } }
+
+.tr-o2-desc-byline{display:flex;align-items:center;gap:var(--spacing-050);margin-top:var(--spacing-050);font: var(--font-caption-regular);color:var(--color-text-placeholder)}
+.tr-rich-removed{display:flex;align-items:center;gap:var(--spacing-100);margin:0;font: var(--font-body);color:var(--color-text-placeholder)}
+.tr-o2-unread-divider{display:flex;align-items:center;gap:var(--spacing-100);margin-block:var(--spacing-100);color:var(--color-text-brand);font: var(--font-caption-medium);}
+.tr-o2-unread-divider{justify-content:center}
+.tr-o2-unread-divider span{padding:var(--spacing-025) var(--spacing-150);border-radius:var(--border-radius-circular);background:var(--color-fill-semantic-info-mildest)}
+
+/* Timeline lead: overlapping chips, "+n", and the who/what popover. */
+.tr-lead{position:relative;display:inline-flex;align-items:center;min-height:var(--spacing-300);outline:none}
+.tr-lead-stack{display:inline-flex;align-items:center}
+.tr-lead-chip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:var(--spacing-300);height:var(--spacing-300);box-sizing:border-box;border-radius:var(--border-radius-circular);background:var(--color-fill-container);box-shadow:0 0 0 2px var(--color-fill-surface);overflow:hidden}
+.tr-lead-more{font: var(--font-caption);color:var(--color-text-secondary);background:var(--color-fill-container)}
+.tr-lead:focus-visible .tr-lead-chip{box-shadow:0 0 0 2px var(--color-boundary-brand)}
+.tr-lead-pop{position:absolute;inset-block-start:calc(100% + var(--spacing-050));inset-inline-start:0;z-index:30;display:none;flex-direction:column;gap:var(--spacing-050);min-width:220px;max-width:min(320px, calc(100vw - var(--spacing-400)));padding:var(--spacing-150);border-radius:var(--border-radius-medium);background:var(--color-fill-surface);border:1px solid var(--color-boundary-border-mild);box-shadow:var(--shadow-md);font: var(--font-body);color:var(--color-text-primary)}
+.tr-lead:hover .tr-lead-pop,.tr-lead:focus-within .tr-lead-pop{display:flex}
+.tr-lead-pop-head{margin-top:var(--spacing-050);font: var(--font-caption);color:var(--color-text-secondary)}
+.tr-lead.is-up .tr-lead-pop{inset-block-start:auto;inset-block-end:calc(100% + var(--spacing-050))}
+.tr-lead.is-end .tr-lead-pop{inset-inline-start:auto;inset-inline-end:0}
+.tr-lead-pop-head:first-child{margin-top:0}
+.tr-lead-pop-row{display:flex;align-items:center;gap:var(--spacing-100)}
+
+.tr-o2-event-reveal{margin-inline-start:calc(var(--tr-lead-line, var(--spacing-150)) - var(--tr-lead-w, var(--spacing-300)) - var(--spacing-100) - 1px)}
+
+.tr-mask-icon{display:inline-block;flex-shrink:0;background-color:var(--mask-color, var(--color-icon-default));-webkit-mask:var(--mask-src) center / contain no-repeat;mask:var(--mask-src) center / contain no-repeat}
+
+.tr-att-readonly [data-attachment-remove]{display:none}
+.tr-att-readonly{opacity:1}
+.tr-att-readonly ul{display:flex;flex-direction:row;flex-wrap:wrap;gap:var(--spacing-100);margin:0;padding:0;list-style:none}
+.tr-att-readonly li{flex:0 1 auto;min-width:0;max-width:280px}
+.tr-o2-day-separator{display:flex;align-items:center;gap:var(--spacing-100);color:var(--color-text-secondary);font:var(--font-caption-regular)}
+.tr-o2-day-separator{justify-content:center}
+.tr-o2-day-separator time{padding:var(--spacing-025) var(--spacing-150);border-radius:var(--border-radius-circular);background:var(--color-fill-container)}
+
+.tr-att-thumbs{display:flex;flex-wrap:wrap;gap:var(--spacing-100);margin:0 0 var(--spacing-100);padding:0;list-style:none}
+.tr-att-thumb{display:flex;flex-direction:column;gap:var(--spacing-050);width:96px}
+.tr-att-thumb-art{display:flex;align-items:center;justify-content:center;height:72px;overflow:hidden;border:1px solid var(--color-boundary-border-mildest);border-radius:var(--border-radius-medium);background:var(--color-fill-container)}
+.tr-att-thumb-art img{width:100%;height:100%;object-fit:cover}
+.tr-att-thumb-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:var(--font-caption-regular);color:var(--color-text-secondary)}

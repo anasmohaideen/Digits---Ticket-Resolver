@@ -1,0 +1,149 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  align-items: flex-start;
+  width: var(--ai-shimmer-width, 104px);
+}
+
+.patternViewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.patternMeasure {
+  position: relative;
+  width: 100%;
+}
+
+.patternStage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: var(--spacing-100);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.linesColumn {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  align-items: stretch;
+  min-width: 0;
+}
+
+.linesEnd {
+  align-items: flex-end;
+}
+
+.rootFullWidth {
+  align-items: stretch;
+  width: 100%;
+}
+
+.patternStageFullWidth {
+  align-items: stretch;
+  width: 100%;
+}
+
+.bar {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-medium);
+  background: var(--color-fill-surface);
+}
+
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ai-gradient-hover);
+}
+
+.bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    var(--ai-violet-mild) 42%,
+    var(--ai-blue-mild) 58%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: aiShimmerSweep var(--ai-shimmer-duration, 2s) ease-in-out infinite;
+}
+
+.line {
+  width: 100%;
+  height: var(--ai-shimmer-line-height, 8px);
+}
+
+.lineShort {
+  width: var(--ai-shimmer-short-width, 60px);
+}
+
+.lineVariable {
+  width: var(--ai-shimmer-line-width, 100%);
+  max-width: 100%;
+}
+
+.linesVariable {
+  width: 100%;
+  align-items: flex-start;
+}
+
+.block {
+  width: var(--ai-shimmer-block-size, 36px);
+  height: var(--ai-shimmer-block-size, 36px);
+}
+
+.blockMedia {
+  flex-shrink: 0;
+  width: var(--ai-shimmer-media-size, 40px);
+  height: var(--ai-shimmer-media-size, 40px);
+}
+
+:global([data-surface='dark']) .bar::after {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    var(--ai-pink-mild) 38%,
+    var(--ai-violet-mild) 50%,
+    var(--ai-blue-mild) 62%,
+    transparent 100%
+  );
+}
+
+@keyframes aiShimmerSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .patternViewport {
+    transition: none;
+  }
+
+  .bar::after {
+    animation: none;
+    transform: none;
+    opacity: 0.35;
+  }
+}

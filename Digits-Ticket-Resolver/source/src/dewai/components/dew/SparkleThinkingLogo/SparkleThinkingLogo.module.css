@@ -1,0 +1,368 @@
+.root {
+  --sparkle-size: 64px;
+  --sparkle-wrap-size: calc(var(--sparkle-size) * 1.5);
+  --sparkle-mini-size: calc(var(--sparkle-size) * 0.22);
+  --sparkle-orbit-mini-top: calc(var(--sparkle-wrap-size) * 0.04);
+  --sparkle-core: var(--ai-purple);
+  --sparkle-bright: var(--ai-logo);
+  --sparkle-deep: color-mix(in srgb, var(--ai-purple) 65%, #4a1d96);
+  --sparkle-glow-soft: color-mix(in srgb, var(--ai-purple) 16%, transparent);
+  --sparkle-glow-mid: color-mix(in srgb, var(--ai-purple) 10%, transparent);
+
+  position: relative;
+  width: var(--sparkle-size);
+  height: var(--sparkle-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
+  transform-origin: center;
+}
+
+.inner {
+  position: relative;
+  width: var(--sparkle-wrap-size);
+  height: var(--sparkle-wrap-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+}
+
+.size20 {
+  --sparkle-size: 20px;
+}
+
+.size24 {
+  --sparkle-size: 24px;
+}
+
+.size64 {
+  --sparkle-size: 64px;
+}
+
+/* Thinking-state monochrome — welcome/primary button keep brand purple */
+.mono {
+  --sparkle-core: var(--color-icon-primary);
+  --sparkle-bright: var(--color-icon-primary);
+  --sparkle-deep: var(--color-icon-secondary);
+  --sparkle-glow-soft: transparent;
+  --sparkle-glow-mid: transparent;
+}
+
+.mono .sparkle {
+  filter: none;
+}
+
+.mono .halo {
+  opacity: 0.12;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-icon-primary) 8%, transparent) 0%,
+    transparent 78%
+  );
+}
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.halo {
+  position: absolute;
+  width: var(--sparkle-wrap-size);
+  height: var(--sparkle-wrap-size);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--sparkle-glow-soft) 0%,
+    var(--sparkle-glow-mid) 42%,
+    transparent 78%
+  );
+  animation: halo-breathe 1.8s ease-in-out infinite;
+}
+
+.orbit {
+  position: absolute;
+  inset: 0;
+  animation: orbit-spin 2.6s linear infinite;
+}
+
+.orbitReverse {
+  animation-duration: 3.8s;
+  animation-direction: reverse;
+}
+
+.miniSparkle {
+  position: absolute;
+  top: var(--sparkle-orbit-mini-top);
+  left: 50%;
+  width: var(--sparkle-mini-size);
+  height: calc(var(--sparkle-mini-size) * 0.32);
+  margin-left: calc(var(--sparkle-mini-size) * -0.5);
+  transform: scale(0);
+  transform-origin: center;
+  animation: mini-twinkle 2.6s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+.miniSparkleSmall {
+  width: calc(var(--sparkle-mini-size) * 0.78);
+  height: calc(var(--sparkle-mini-size) * 0.25);
+  margin-left: calc(var(--sparkle-mini-size) * -0.39);
+}
+
+.orbitReverse .miniSparkle {
+  animation-duration: 3.8s;
+  animation-delay: 1.4s;
+}
+
+.sparkle {
+  width: var(--sparkle-size);
+  height: var(--sparkle-size);
+  color: var(--sparkle-core);
+  transform-origin: center;
+  animation: think-pulse 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  filter:
+    drop-shadow(0 0 calc(var(--sparkle-size) * 0.06) var(--sparkle-glow-soft))
+    drop-shadow(0 0 calc(var(--sparkle-size) * 0.12) var(--sparkle-glow-mid));
+}
+
+.sparklePath {
+  transform-origin: center;
+  animation: think-rotate 3.2s cubic-bezier(0.45, 0.05, 0.3, 1) infinite;
+}
+
+.sparklePathFull {
+  transform-origin: center;
+  animation: think-rotate-full 2.4s linear infinite;
+}
+
+@keyframes think-rotate-full {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes think-pulse {
+  0%,
+  100% {
+    transform: scale(0.86);
+    opacity: 0.78;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes think-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  45% {
+    transform: rotate(95deg);
+  }
+
+  55% {
+    transform: rotate(95deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mini-twinkle {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes halo-breathe {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.55;
+  }
+}
+
+.playOnce {
+  --sparkle-once-duration: 5s;
+}
+
+.playOnce .halo {
+  animation: halo-breathe-once var(--sparkle-once-duration) cubic-bezier(0.33, 0, 0.1, 1) forwards;
+}
+
+.playOnce .orbit {
+  animation: orbit-settle-once var(--sparkle-once-duration) cubic-bezier(0.33, 0, 0.1, 1) forwards;
+}
+
+.playOnce .orbitReverse {
+  animation: orbit-reverse-settle-once var(--sparkle-once-duration) cubic-bezier(0.33, 0, 0.1, 1) forwards;
+}
+
+.playOnce .miniSparkle {
+  animation: mini-twinkle-once var(--sparkle-once-duration) ease-out forwards;
+}
+
+.playOnce .orbitReverse .miniSparkle {
+  animation: mini-fade-out-once var(--sparkle-once-duration) ease-out forwards;
+  animation-delay: 0;
+}
+
+.playOnce .sparkle {
+  animation: think-pulse-once var(--sparkle-once-duration) cubic-bezier(0.33, 0, 0.1, 1) forwards;
+}
+
+.playOnce .sparklePath {
+  animation: think-rotate-once var(--sparkle-once-duration) cubic-bezier(0.45, 0.05, 0.25, 1) forwards;
+}
+
+@keyframes think-pulse-once {
+  0% {
+    transform: scale(0.86);
+    opacity: 0.78;
+  }
+
+  45% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes think-rotate-once {
+  0% {
+    transform: rotate(-95deg);
+  }
+
+  55% {
+    transform: rotate(12deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes orbit-settle-once {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes orbit-reverse-settle-once {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes mini-twinkle-once {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes mini-fade-out-once {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes halo-breathe-once {
+  0% {
+    transform: scale(0.82);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle,
+  .sparklePath,
+  .sparklePathFull,
+  .orbit,
+  .miniSparkle,
+  .halo {
+    animation: none;
+  }
+
+  .sparkle {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .miniSparkle {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+}

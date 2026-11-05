@@ -1,0 +1,15 @@
+.track {
+  display: inline;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+  word-break: inherit;
+}
+
+.generating:global(.ai-text-shimmer),
+.generating:global(.ai-text-shimmer-over-base),
+.generating:global(.ai-text-shine) {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+}

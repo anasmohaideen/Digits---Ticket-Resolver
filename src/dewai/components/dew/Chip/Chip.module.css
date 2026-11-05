@@ -1,0 +1,235 @@
+/* Core Dew Chip — Figma node 70011:25470 / page 67245:8352
+ * States: Default, Hover, Selected, Error, Er_hover, Focus, Disabled
+ * Style: Circular | Rectangle · Size: Default (32) | Mini (20)
+ */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  max-width: 100%;
+  border: 1px solid transparent;
+  background: var(--color-fill-container);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+  vertical-align: middle;
+  padding: 0;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.sizeDefault {
+  height: 32px;
+  padding-inline: var(--spacing-100);
+}
+
+.sizeMini {
+  height: 20px;
+  padding-inline: var(--spacing-050);
+}
+
+.shapeCircular {
+  border-radius: var(--radius-circular);
+}
+
+.shapeRectangle {
+  border-radius: var(--radius-small);
+}
+
+.textBlock {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-050);
+  min-width: 0;
+}
+
+.mainText {
+  font: var(--font-body-semibold);
+  letter-spacing: var(--font-body-tracking);
+  color: inherit;
+}
+
+.subText {
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-secondary);
+}
+
+.sizeMini .mainText,
+.sizeMini .subText {
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+}
+
+/* ── States (variable defs from Figma Chip set) ─────────────────────────── */
+
+.state_default {
+  background: var(--color-fill-container);
+  border-color: transparent;
+}
+
+.sizeDefault.state_default {
+  border-color: var(--color-border-divider); /* Color/Boundary/Border/Mild */
+}
+
+.state_hover {
+  background: var(--color-fill-container);
+  border-color: var(--color-border-milder); /* Color/Boundary/Border/Milder */
+}
+
+.state_selected {
+  background: var(--color-fill-info-mildest);
+  border-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.state_error {
+  background: var(--color-fill-error-mildest);
+  border-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.state_errorHover {
+  background: var(--color-fill-error-mildest);
+  border-color: var(--color-border-error-bold); /* Color/Boundary/Semantic/Error/Bold */
+  color: var(--color-text-primary);
+}
+
+.state_focus {
+  background: var(--color-fill-container);
+  border-color: var(--color-fill-brand); /* Color/Boundary/Brand */
+}
+
+.state_disabled {
+  background: var(--color-fill-base);
+  border-color: transparent;
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  opacity: 0.5; /* Opacity/Half */
+}
+
+.state_disabled .subText {
+  color: var(--color-text-disabled);
+}
+
+.chip:focus-visible {
+  outline: none;
+}
+
+/* ── Nested Avatar ──────────────────────────────────────────────────────── */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-fill-base);
+  color: var(--color-text-secondary);
+}
+
+.avatarDefault {
+  width: 24px;
+  height: 24px;
+}
+
+.avatarMini {
+  width: 16px;
+  height: 16px;
+}
+
+.avatarCircular {
+  border-radius: var(--radius-circular);
+}
+
+.avatarRectangle {
+  border-radius: var(--radius-xsmall);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatarIcon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  color: var(--color-icon-secondary);
+}
+
+.avatarIcon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.avatarText {
+  font: var(--font-caption);
+  letter-spacing: var(--font-caption-tracking);
+  line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+.sizeMini .avatarText {
+  font: 600 10px/12px var(--font-family);
+}
+
+/* ── Nested _Close Button · 24×24 Default / Hover fill-base ─────────────── */
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-inline-end: calc(var(--spacing-050) * -1);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-circular);
+  background: transparent;
+  color: var(--color-icon-default);
+  cursor: pointer;
+}
+
+.sizeMini .closeButton {
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 0;
+}
+
+.closeDefault {
+  background: transparent;
+}
+
+.closeHover {
+  background: var(--color-fill-base);
+}
+
+.closeIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.sizeMini .closeIcon {
+  width: 10px;
+  height: 10px;
+}
+
+.closeButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transition: none;
+  }
+}

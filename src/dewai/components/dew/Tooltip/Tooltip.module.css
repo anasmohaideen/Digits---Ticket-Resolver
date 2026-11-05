@@ -1,0 +1,55 @@
+.tooltip {
+  position: fixed;
+  z-index: 1000;
+  max-width: min(240px, calc(100vw - 16px));
+  padding: var(--spacing-025) var(--spacing-050);
+  border-radius: var(--radius-small);
+  background: var(--color-fill-neutral-mild);
+  box-shadow: var(--shadow-xs);
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-on-brand);
+  pointer-events: none;
+}
+
+.singleLine {
+  white-space: nowrap;
+}
+
+.multiLine {
+  white-space: normal;
+}
+
+.arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-fill-neutral-mild);
+  transform: rotate(45deg);
+}
+
+.placementTopLeft .arrow,
+.placementTopCentre .arrow,
+.placementTopRight .arrow {
+  bottom: -4px;
+}
+
+.placementBottomLeft .arrow,
+.placementBottomCentre .arrow,
+.placementBottomRight .arrow {
+  top: -4px;
+}
+
+.placementLeft .arrow {
+  right: -4px;
+}
+
+.placementRight .arrow {
+  left: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    transition: none;
+  }
+}

@@ -1,0 +1,443 @@
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: true;
+}
+
+.sweepRoot {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--sweep-radius, inherit);
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+  opacity: 1;
+  transition: opacity 0.35s ease-in-out;
+  --border-angle: 0deg;
+}
+
+.sweepRoot.sweepFading {
+  opacity: 0;
+}
+
+.borderRing {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: var(--sweep-radius, inherit);
+  padding: 1px;
+  background: conic-gradient(
+    from var(--border-angle),
+    var(--ai-stroke-hot-pink) 0deg,
+    var(--ai-stroke-violet) 72deg,
+    var(--ai-stroke-indigo) 144deg,
+    transparent 168deg,
+    transparent 360deg
+  );
+  opacity: 0;
+  z-index: 2;
+}
+
+/* ── Action Button: 1.5-cycle motion stroke on hover ── */
+.buttonSweep,
+.borderSweep,
+.chipSweep,
+.chipSweepLoop {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--sweep-radius, inherit);
+}
+
+.buttonSweep .borderRing {
+  animation: borderRingSweep var(--sweep-duration, 2.25s) linear forwards;
+}
+
+.borderSweep .borderRing {
+  animation: borderRingSweep var(--sweep-duration, 2.25s) linear forwards;
+}
+
+/* ── Soft upgrade-card sweep (banner / button / chip) ── */
+.softSweep {
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--sweep-radius, var(--radius-large)) + 1px);
+  pointer-events: none;
+}
+
+.softSweepRing {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--border-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 40deg,
+    rgb(251 100 182 / var(--ai-stroke-opacity)) 85deg,
+    rgb(169 135 252 / var(--ai-stroke-opacity)) 145deg,
+    transparent 195deg,
+    transparent 230deg,
+    rgb(106 168 255 / var(--ai-stroke-opacity)) 280deg,
+    rgb(251 100 182 / var(--ai-stroke-opacity)) 330deg,
+    transparent 360deg
+  );
+  opacity: 1;
+  z-index: 2;
+}
+
+.softSweepHalo {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: -8px;
+  border-radius: calc(var(--sweep-radius, var(--radius-large)) + 8px);
+  padding: 6px;
+  background: conic-gradient(
+    from var(--border-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 40deg,
+    rgba(251, 100, 182, 0.28) 85deg,
+    rgba(169, 135, 252, 0.24) 145deg,
+    transparent 195deg,
+    transparent 230deg,
+    rgba(106, 168, 255, 0.28) 280deg,
+    rgba(251, 100, 182, 0.22) 330deg,
+    transparent 360deg
+  );
+  filter: blur(16px);
+  opacity: 0.32;
+  z-index: 0;
+}
+
+.softSweepButton .softSweepHalo {
+  inset: -6px;
+  border-radius: calc(var(--sweep-radius, var(--radius-medium)) + 6px);
+  padding: 4px;
+  filter: blur(12px);
+  opacity: 0.3;
+}
+
+.softSweepActive .softSweepRing,
+.softSweepActive .softSweepHalo {
+  animation: softSweepRotate 6s linear infinite;
+}
+
+:global([data-surface='dark']) .softSweepRing {
+  background: conic-gradient(
+    from var(--border-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 40deg,
+    rgb(251 100 182 / var(--ai-stroke-opacity)) 85deg,
+    rgb(169 135 252 / var(--ai-stroke-opacity)) 145deg,
+    transparent 195deg,
+    transparent 230deg,
+    rgb(106 168 255 / var(--ai-stroke-opacity)) 280deg,
+    rgb(251 100 182 / var(--ai-stroke-opacity)) 330deg,
+    transparent 360deg
+  );
+}
+
+:global([data-surface='dark']) .softSweepHalo {
+  filter: blur(18px);
+  opacity: 0.38;
+  background: conic-gradient(
+    from var(--border-angle) at 50% 50%,
+    transparent 0deg,
+    transparent 40deg,
+    rgba(251, 100, 182, 0.34) 85deg,
+    rgba(169, 135, 252, 0.3) 145deg,
+    transparent 195deg,
+    transparent 230deg,
+    rgba(106, 168, 255, 0.34) 280deg,
+    rgba(251, 100, 182, 0.28) 330deg,
+    transparent 360deg
+  );
+}
+
+:global([data-surface='dark']) .softSweepButton .softSweepHalo {
+  filter: blur(14px);
+  opacity: 0.36;
+}
+
+@keyframes softSweepRotate {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+.outerHalo {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: -16px;
+  border-radius: calc(var(--sweep-radius, var(--radius-large)) + 16px);
+  padding: 14px;
+  background: conic-gradient(
+    from var(--border-angle),
+    rgba(251, 100, 182, 0.14) 0deg,
+    rgba(169, 135, 252, 0.11) 72deg,
+    rgba(106, 168, 255, 0.12) 144deg,
+    transparent 168deg,
+    transparent 360deg
+  );
+  filter: blur(12px);
+  opacity: 0;
+  z-index: 0;
+}
+
+:global([data-surface='dark']) .outerHalo {
+  filter: blur(14px);
+}
+
+.outerGlow {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: -8px;
+  border-radius: calc(var(--sweep-radius, var(--radius-large)) + 8px);
+  padding: 6px;
+  background: conic-gradient(
+    from var(--border-angle),
+    rgba(251, 100, 182, 0.26) 0deg,
+    rgba(169, 135, 252, 0.21) 72deg,
+    rgba(106, 168, 255, 0.24) 144deg,
+    transparent 168deg,
+    transparent 360deg
+  );
+  filter: blur(7px);
+  opacity: 0;
+  z-index: 1;
+}
+
+:global([data-surface='dark']) .outerGlow {
+  filter: blur(9px);
+}
+
+:global([data-surface='dark']) .chipSweep .outerGlow {
+  background: conic-gradient(
+    from var(--border-angle),
+    rgba(251, 100, 182, 0.36) 0deg,
+    rgba(169, 135, 252, 0.3) 72deg,
+    rgba(106, 168, 255, 0.34) 144deg,
+    transparent 168deg,
+    transparent 360deg
+  );
+}
+
+:global([data-surface='dark']) .chipSweep .outerHalo {
+  background: conic-gradient(
+    from var(--border-angle),
+    rgba(251, 100, 182, 0.22) 0deg,
+    rgba(169, 135, 252, 0.18) 72deg,
+    rgba(106, 168, 255, 0.2) 144deg,
+    transparent 168deg,
+    transparent 360deg
+  );
+}
+
+/* ── Chip: same 1.5-cycle motion, softer glow peaks ── */
+.chipSweep .borderRing {
+  animation: chipRingSweep var(--sweep-duration, 2.25s) linear forwards;
+}
+
+.chipSweep .outerGlow {
+  animation: chipGlowSweep var(--sweep-duration, 2.25s) linear forwards;
+}
+
+.chipSweep .outerHalo {
+  animation: chipHaloSweep var(--sweep-duration, 2.25s) linear forwards;
+}
+
+/* Looping chip sweep — clip glow to the chip's rounded rect */
+.chipSweepLoop {
+  overflow: hidden;
+  border-radius: var(--sweep-radius, inherit);
+}
+
+.chipSweepLoop .outerHalo {
+  inset: 0;
+  border-radius: var(--sweep-radius, inherit);
+  padding: 0;
+  filter: blur(8px);
+  opacity: 0.24;
+}
+
+.chipSweepLoop .outerGlow {
+  inset: 0;
+  border-radius: var(--sweep-radius, inherit);
+  padding: 0;
+  filter: blur(4px);
+  opacity: 0.32;
+}
+
+/* ── Chip: continuous loop for prompt loading ── */
+.chipSweepLoop .borderRing {
+  opacity: 0.65;
+  animation: chipRingSweepLoop var(--sweep-duration, 2.25s) linear infinite;
+}
+
+.chipSweepLoop .outerGlow {
+  opacity: 0.32;
+  animation: chipGlowSweepLoop var(--sweep-duration, 2.25s) linear infinite;
+}
+
+.chipSweepLoop .outerHalo {
+  opacity: 0.24;
+  animation: chipHaloSweepLoop var(--sweep-duration, 2.25s) linear infinite;
+}
+
+/* 1.5 rotations (540deg) — fade in by 20%, hold, fade out from 75% while still rotating */
+@keyframes borderRingSweep {
+  0% {
+    --border-angle: 0deg;
+    opacity: 0;
+  }
+
+  20% {
+    --border-angle: 108deg;
+    opacity: 1;
+  }
+
+  75% {
+    --border-angle: 405deg;
+    opacity: 1;
+  }
+
+  100% {
+    --border-angle: 540deg;
+    opacity: 0;
+  }
+}
+
+@keyframes chipRingSweep {
+  0% {
+    --border-angle: 0deg;
+    opacity: 0;
+  }
+
+  20% {
+    --border-angle: 108deg;
+    opacity: 0.65;
+  }
+
+  75% {
+    --border-angle: 405deg;
+    opacity: 0.65;
+  }
+
+  100% {
+    --border-angle: 540deg;
+    opacity: 0;
+  }
+}
+
+@keyframes chipGlowSweep {
+  0% {
+    --border-angle: 0deg;
+    opacity: 0;
+  }
+
+  20% {
+    --border-angle: 108deg;
+    opacity: 0.32;
+  }
+
+  75% {
+    --border-angle: 405deg;
+    opacity: 0.32;
+  }
+
+  100% {
+    --border-angle: 540deg;
+    opacity: 0;
+  }
+}
+
+@keyframes chipHaloSweep {
+  0% {
+    --border-angle: 0deg;
+    opacity: 0;
+  }
+
+  20% {
+    --border-angle: 108deg;
+    opacity: 0.24;
+  }
+
+  75% {
+    --border-angle: 405deg;
+    opacity: 0.24;
+  }
+
+  100% {
+    --border-angle: 540deg;
+    opacity: 0;
+  }
+}
+
+@keyframes chipRingSweepLoop {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+@keyframes chipGlowSweepLoop {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+@keyframes chipHaloSweepLoop {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+@keyframes chipGlowOpacity {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.32;
+  }
+
+  75% {
+    opacity: 0.32;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes chipHaloOpacity {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.24;
+  }
+
+  75% {
+    opacity: 0.24;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .borderSweep .borderRing,
+  .buttonSweep .borderRing,
+  .chipSweep .borderRing,
+  .chipSweep .outerGlow,
+  .chipSweep .outerHalo,
+  .chipSweepLoop .borderRing,
+  .chipSweepLoop .outerGlow,
+  .chipSweepLoop .outerHalo,
+  .softSweepActive .softSweepRing,
+  .softSweepActive .softSweepHalo {
+    animation: none;
+  }
+}

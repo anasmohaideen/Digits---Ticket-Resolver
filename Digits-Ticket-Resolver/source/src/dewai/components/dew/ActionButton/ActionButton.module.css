@@ -1,0 +1,312 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  --sweep-radius: var(--radius-medium);
+  border-radius: var(--radius-medium);
+  isolation: isolate;
+  overflow: visible;
+}
+
+.staticBorder {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ai-border-static);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.root {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-medium);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.defaultSize.root,
+.defaultSize.splitRoot {
+  min-height: 32px;
+}
+
+.mini.root,
+.mini.splitRoot {
+  min-height: 24px;
+}
+
+.buttonElement {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-100);
+  padding: var(--spacing-075) var(--spacing-150);
+}
+
+.mini .buttonElement,
+.mini.mainArea {
+  gap: var(--spacing-100);
+  padding: var(--spacing-025) var(--spacing-075);
+}
+
+.iconScale {
+  display: inline-flex;
+  flex-shrink: 0;
+  transform-origin: center;
+}
+
+.rte.wrap {
+  --sweep-radius: var(--radius-small);
+  border-radius: var(--radius-small);
+}
+
+.rte.root {
+  border-radius: var(--radius-small);
+}
+
+.rte .text {
+  font: var(--font-caption);
+  letter-spacing: var(--font-caption-tracking);
+}
+
+.rte.stateDefault .text {
+  color: var(--color-text-primary);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+}
+
+.rte .icon {
+  color: var(--color-icon-default);
+}
+
+.rte .dropdownChevron {
+  width: 8px;
+  height: 5px;
+}
+
+.stateDefault {
+  background: var(--color-fill-surface);
+}
+
+.hover {
+  background: var(--ai-gradient-chip-focus), var(--color-fill-surface);
+}
+
+.active {
+  background: var(--ai-gradient-chip-focus), var(--color-fill-surface);
+}
+
+.text {
+  font: var(--font-body-semibold);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.hover .text {
+  background: var(--ai-text-hover);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.active .text {
+  color: var(--color-text-primary);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+  color: var(--color-icon-default);
+}
+
+/* Label-only gradient on hover/active — icons stay default */
+.hover .icon,
+.active .icon,
+.splitArea .icon,
+.dropdownTrigger .icon {
+  color: var(--color-icon-default);
+}
+
+/* Motion — engage sparkle uses primary text color */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover .icon,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .active .icon {
+  color: var(--color-text-primary);
+}
+
+.mini .icon {
+  width: 12px;
+  height: 12px;
+}
+
+.dropdownTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-icon-default);
+}
+
+.dropdownChevron {
+  width: 8px;
+  height: 5px;
+  flex-shrink: 0;
+}
+
+.mini .dropdownChevron {
+  width: 8px;
+  height: 5px;
+}
+
+.splitRoot {
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+}
+
+.mainArea {
+  flex: 1;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  border-radius: var(--radius-medium) 0 0 var(--radius-medium);
+}
+
+.splitArea {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-100);
+  border: none;
+  border-left: 1px solid var(--color-border-mildest);
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0 var(--radius-medium) var(--radius-medium) 0;
+}
+
+.mini .splitArea {
+  padding: var(--spacing-050) var(--spacing-075);
+}
+
+.root:disabled,
+.mainArea:disabled,
+.splitArea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.root:focus-visible,
+.mainArea:focus-visible,
+.splitArea:focus-visible,
+.dropdownTrigger:focus-visible {
+  outline: 2px solid var(--color-fill-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+}
+
+/* Quiet mode — Mono Static Medium at rest; Static Medium + Fill R-L on hover/active (incl. RTE) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.wrap .staticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte .staticBorder {
+  background: var(--ai-border-mono-static-medium);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.active) .staticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.wrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.wrap:has(.active) .staticBorder {
+  background: var(--ai-border-static-medium);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .stateDefault,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.stateDefault {
+  background: var(--color-fill-surface);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .active,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.hover,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.active {
+  background: var(--ai-gradient-fill-rl), var(--color-fill-surface);
+}
+
+/* Motion — hover fill is the entry-origin overlay under the button face */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .active,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.hover,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.active {
+  background: var(--color-fill-surface);
+}
+
+/* Motion — match PrimaryButton hover elevation (wrap supplies the violet drop-shadow) */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.hover {
+  box-shadow: var(--shadow-xs);
+}
+
+/* Motion — Default button: grayscale rest; Violet on hover/active */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.wrap .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte .staticBorder {
+  background: var(--color-border-milder);
+  z-index: 3;
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.active) .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.wrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.wrap:has(.active) .staticBorder {
+  background: var(--ai-purple);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover .text,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .active .text,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.hover .text,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .rte.active .text {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+
+/* Split dropdown divider — mirrors staticBorder rest/engage ladder */
+:global([data-ai-motion='quiet']) .wrap:has(.hover) .splitArea,
+:global([data-ai-motion='quiet']) .wrap:has(.active) .splitArea {
+  border-left-color: var(--color-border-divider);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .splitArea {
+  border-left-color: var(--color-border-milder);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.hover) .splitArea,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.active) .splitArea {
+  border-left-color: var(--ai-purple);
+}

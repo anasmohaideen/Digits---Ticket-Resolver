@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option A — three separate cards</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2C5CC5;text-decoration:none}a:hover{color:#1D4296;text-decoration:underline}
+.ic{width:16px;height:16px;flex:0 0 16px;color:#5A6B7D}
+.btn{font:inherit;font-size:13px;font-weight:500;border:1px solid #CFD7DF;background:#fff;color:#12344D;border-radius:8px;padding:0 12px;height:32px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.btn.pri{background:#2C5CC5;border-color:#2C5CC5;color:#fff}
+.ib{width:32px;height:32px;border:1px solid transparent;border-radius:8px;background:transparent;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.card{border:1px solid #DCD3FA;border-radius:12px;background:#fff;display:flex;flex-direction:column}
+.ch{display:flex;align-items:center;gap:10px;padding:14px 18px 10px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px;background:#EEEAFD;color:#4B2FB8}
+.tt{font-size:15px;font-weight:600}
+.tm{font-size:12px;color:#5A6B7D}
+.cb{padding:0 18px 14px;display:flex;flex-direction:column;gap:14px}
+.lb{font-size:14px;font-weight:600}
+.tx{font-size:14px;line-height:22px;margin-top:2px;color:#12344D}
+.cf{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#FAF9FF;border-top:1px solid #EEEAFD;border-radius:0 0 12px 12px;flex-wrap:wrap}
+.chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.g{background:#DDF3E8;color:#0B5A3C}.o{background:#FCE6C8;color:#7A4106}.gr{background:#EEF1F4;color:#475867}
+.by{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#5A6B7D}
+.li{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:21px}
+.row{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #DCD3FA;border-radius:12px;background:#fff}
+.rp{font-size:14px;color:#2B3D50;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.cap{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7A4106;background:#FCE6C8;border-radius:6px;padding:4px 10px;align-self:flex-start}
+.ctx{border:1px solid #D3E2F8;background:#EEF4FD;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:14px}
+</style>
+</helmet>
+<div style="width: 1080px; min-height: 2300px; box-sizing: border-box; padding: 48px 56px; background: #fff; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #12344D; display: flex; flex-direction: column; gap: 56px">
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<span class="cap">A1 · Three cards, all expanded (default on landing)</span>
+
+<div class="card">
+<div class="ch">
+<span class="tag">Summary</span><span class="tt">Megan can’t join Corp-Secure Wi-Fi</span><span class="tm">9:35 AM</span>
+<span style="flex: 1"></span>
+<span class="by"><svg width="18" height="12" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg>Ticket Resolver</span>
+<button class="ib" aria-label="Collapse Summary"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg></button>
+</div>
+<div class="cb">
+<div><div class="lb">Issue</div><div class="tx">Megan’s MacBook can’t join Corp-Secure Wi-Fi on the 3rd floor of San Mateo HQ and shows “Unable to join the network.” Guest Wi-Fi works. Only her laptop is affected.</div></div>
+<div><div class="lb">What was tried</div>
+<div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px">
+<div class="li"><span style="color: #8796A6">•</span><span>Knowledge-base steps (forget the network, restart Wi-Fi, rejoin): didn’t help.</span></div>
+<div class="li"><span style="color: #8796A6">•</span><span>Ticket Resolver found the cause and ran the certificate workflow after your approval. The last step failed.</span></div>
+</div></div>
+<div><div class="lb">Where it stands</div><div class="tx">Handed over to the Network Team at 9:35 AM. Megan has a client demo at 11.</div></div>
+</div>
+<div class="cf">
+<button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>Ask AI</button>
+<span class="tm">Based on 8 messages and 19 actions</span>
+<span style="flex: 1"></span>
+<button class="ib" aria-label="Helpful"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 4h6a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 1H7"></path></svg></button>
+<button class="ib" aria-label="Not helpful"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M7 13V4H4v9zM7 13l4 7a2 2 0 0 0 3-2l-1-4h6a2 2 0 0 0 2-2l-2-7a2 2 0 0 0-2-1H7"></path></svg></button>
+<button class="ib" aria-label="Regenerate"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#2C5CC5" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"></path></svg></button>
+<button class="ib" aria-label="Copy"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M4 16V6a2 2 0 0 1 2-2h10"></path></svg></button>
+<button class="ib" aria-label="Edit"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button>
+</div>
+</div>
+
+<div class="card">
+<div class="ch">
+<span class="tag">Root cause</span><span class="tt">Wi-Fi certificate not renewed after CHG-2187</span><span class="tm">9:21 AM</span>
+<span style="flex: 1"></span>
+<span class="chip g">High · 0.84</span>
+<span class="by"><svg width="18" height="12" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg>Ticket Resolver</span>
+<button class="ib" aria-label="Collapse Root cause"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg></button>
+</div>
+<div class="cb">
+<div><div class="lb">Root cause</div><div class="tx">Megan’s laptop most likely didn’t renew its Wi-Fi certificate after <a href="#">CHG-2187</a> rotated the certificate authority in Intune on Fri, Oct 16, so Corp-Secure rejects it.</div></div>
+<div><div class="lb">Evidence</div>
+<div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px">
+<div class="li"><span style="color: #8796A6">•</span><span><a href="#">7 similar tickets</a> since Friday, all on Intune-managed Macs. 3 were fixed by re-issuing the certificate.</span></div>
+<div class="li"><span style="color: #8796A6">•</span><span><a href="#">CHG-2187</a> · certificate authority rotated in Intune on Fri, Oct 16.</span></div>
+<div class="li"><span style="color: #8796A6">•</span><span>Megan said only her laptop is affected.</span></div>
+</div></div>
+<div><div class="lb">Confidence</div>
+<div style="display: flex; align-items: center; gap: 14px; margin-top: 8px; flex-wrap: wrap">
+<div style="position: relative; height: 8px; width: 260px; border-radius: 4px; background: #E4E8EC"><div style="position: absolute; left: 0; top: 0; bottom: 0; width: 84%; border-radius: 4px; background: #2E8B6A"></div><div style="position: absolute; left: 75%; top: -3px; bottom: -3px; width: 2px; background: #12344D"></div></div>
+<span style="font-size: 13px; color: #2B3D50">0.84 · above your 0.75 threshold</span>
+</div></div>
+</div>
+<div class="cf">
+<button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>Ask AI</button>
+<button class="btn">How this was found <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<span style="flex: 1"></span>
+<button class="ib" aria-label="Helpful"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 4h6a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 1H7"></path></svg></button>
+<button class="ib" aria-label="Not helpful"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M7 13V4H4v9zM7 13l4 7a2 2 0 0 0 3-2l-1-4h6a2 2 0 0 0 2-2l-2-7a2 2 0 0 0-2-1H7"></path></svg></button>
+<button class="btn">View similar tickets</button>
+</div>
+</div>
+
+<div class="card">
+<div class="ch">
+<span class="tag">Suggested fix</span><span class="tt">Re-issue Megan’s Wi-Fi certificate</span><span class="tm">9:22 AM</span>
+<span style="flex: 1"></span>
+<span class="chip o">Blocked</span>
+<span class="by"><svg width="18" height="12" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="3.5" fill="#7B4DF2"></rect><circle cx="6" cy="7" r="1.5" fill="#fff"></circle><circle cx="10" cy="7" r="1.5" fill="#fff"></circle><circle cx="14" cy="7" r="1.5" fill="#fff"></circle></svg>Ticket Resolver</span>
+<button class="ib" aria-label="Collapse Suggested fix"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg></button>
+</div>
+<div class="cb">
+<div><div class="lb">What happened</div>
+<div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px">
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0B7A4E" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 3px"><path d="M5 12l4 4 10-10"></path></svg><span>Approved by you · 9:31 AM</span></div>
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0B7A4E" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 3px"><path d="M5 12l4 4 10-10"></path></svg><span>Revoked the old certificate in Microsoft Intune</span></div>
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 3px"><path d="M6 6l12 12M18 6L6 18"></path></svg><span style="color: #8C1D1D">Assign the new Corp-Secure Wi-Fi profile · permission denied</span></div>
+<div class="li"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8796A6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="margin-top: 3px"><path d="M7 12h10"></path></svg><span style="color: #5A6B7D">Confirm the laptop checked in · not run</span></div>
+</div></div>
+<div><div class="lb">What to do now</div><div class="tx">Assign the Corp-Secure Wi-Fi profile to <a href="#">ASSET-2291</a> in Intune, then ask Megan to rejoin and confirm Jira loads.</div></div>
+</div>
+<div class="cf">
+<button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7B4DF2" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"></path></svg>Ask AI</button>
+<span style="flex: 1"></span>
+<button class="btn">View workflow run</button>
+</div>
+</div>
+
+<div class="ctx"><span style="font-weight: 600">Description</span><span style="color: #5A6B7D; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Hi, my laptop keeps dropping off Corp-Secure Wi-Fi on the 3rd floor…</span><span style="color: #5A6B7D; font-size: 13px">1 attachment</span><a href="#" style="font-size: 13px">Show</a></div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<span class="cap">A2 · Same three cards, collapsed (one line each)</span>
+
+<div class="row">
+<span class="tag">Summary</span><span class="rp">Can’t join Corp-Secure Wi-Fi on the 3rd floor. KB steps didn’t help; the certificate workflow’s last step failed.</span>
+<span class="tm">9:35 AM</span>
+<button class="ib" aria-label="Expand Summary"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div>
+<div class="row">
+<span class="tag">Root cause</span><span class="chip g">High · 0.84</span><span class="rp">Wi-Fi certificate not renewed after CHG-2187</span>
+<span class="tm">9:21 AM</span>
+<button class="ib" aria-label="Expand Root cause"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div>
+<div class="row">
+<span class="tag">Suggested fix</span><span class="chip o">Blocked</span><span class="rp">Re-issue the certificate. Step 2 failed: assign the Corp-Secure profile to ASSET-2291 in Intune.</span>
+<span class="tm">9:22 AM</span>
+<button class="ib" aria-label="Expand Suggested fix"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div>
+
+<div class="ctx"><span style="font-weight: 600">Description</span><span style="color: #5A6B7D; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Hi, my laptop keeps dropping off Corp-Secure Wi-Fi on the 3rd floor…</span><span style="color: #5A6B7D; font-size: 13px">1 attachment</span><a href="#" style="font-size: 13px">Show</a></div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

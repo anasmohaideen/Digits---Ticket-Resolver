@@ -1,0 +1,79 @@
+/**
+ * Motion-mode hover chrome — border step, subtle float lift, soft rear glow.
+ * No gradient fills on hover (library Fill R-L stays in Quiet; Motion uses surface + border).
+ */
+
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) {
+  --motion-hover-lift-y: -1px;
+  --motion-hover-glow: 0 4px 14px rgb(121 53 255 / 0.1);
+  --motion-banner-hover-lift-y: -2px;
+  --motion-banner-hover-glow: 0 4px 14px rgb(15 23 42 / 0.07);
+  --motion-hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --motion-hover-duration: 0.28s;
+}
+
+/* Summary banner — minimal z lift (pairs with bannerHoverMotion border step) */
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) .motionHoverLift {
+  transform: translateY(var(--motion-banner-hover-lift-y));
+  z-index: 3;
+  box-shadow: var(--motion-banner-hover-glow);
+  transition:
+    transform var(--motion-hover-duration) var(--motion-hover-ease),
+    box-shadow var(--motion-hover-duration) var(--motion-hover-ease);
+}
+
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) .motionBannerRoot {
+  transition:
+    transform 0.5s cubic-bezier(0.33, 0, 0.2, 1),
+    box-shadow 0.55s cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+/* Summary banner — hover is violet ring + slate shadow, not a fill wash */
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) .motionBannerRoot[data-motion-hover='true'] {
+  transform: translateY(var(--motion-banner-hover-lift-y));
+  z-index: 3;
+  filter: none;
+  box-shadow: var(--motion-banner-hover-glow);
+}
+
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) .motionBannerRoot[data-motion-hover='true'][data-motion-fading='true'] {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Chips, action buttons, primary trigger — float + soft violet glow behind control */
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) [data-motion-hover='true'] {
+  transform: translateY(var(--motion-hover-lift-y));
+  transition:
+    transform var(--motion-hover-duration) var(--motion-hover-ease),
+    filter var(--motion-hover-duration) var(--motion-hover-ease);
+  filter: drop-shadow(0 2px 10px rgb(121 53 255 / 0.14));
+}
+
+/* Mini action buttons — subtler 1px lift; default size keeps --motion-hover-lift-y */
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) [data-motion-hover='true'][data-motion-size='mini'] {
+  --motion-hover-lift-y: -1px;
+}
+
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) [data-motion-hover='true'][data-motion-fading='true'] {
+  transform: translateY(0);
+  filter: none;
+}
+
+/* Banner already lifts — inner chips stay flat (color-only). ActionButton CTA floats like PrimaryButton. */
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) [data-banner-contained][data-motion-hover='true'],
+:is([data-ai-motion='motion'], [data-ai-motion='tweak']) [data-banner-contained][data-motion-hover='true'][data-motion-fading='true'] {
+  transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-ai-motion='motion'], [data-ai-motion='tweak']) .motionHoverLift,
+  :is([data-ai-motion='motion'], [data-ai-motion='tweak']) .motionBannerRoot,
+  :is([data-ai-motion='motion'], [data-ai-motion='tweak']) [data-motion-hover='true'] {
+    transition: none;
+    transform: none;
+    filter: none;
+    box-shadow: none;
+  }
+}

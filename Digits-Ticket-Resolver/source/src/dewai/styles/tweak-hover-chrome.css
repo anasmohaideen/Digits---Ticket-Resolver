@@ -1,0 +1,35 @@
+/**
+ * Tweak mode — experimental sandbox layered on Motion chrome.
+ * Inherits Motion behavior via shared :is([data-ai-motion='motion'], [data-ai-motion='tweak']) selectors.
+ * Override tokens here to demo deltas vs Motion for design review.
+ *
+ * Current deltas vs Motion:
+ * - Welcome sparkle settles at 90° (DewAiWelcomeIntro)
+ * - Summary thinking uses Static Bold gradient shimmer, not a traveling border halo
+ * - Banner thinking sparkle matches AIResponse (size 20 + fitSize 20)
+ * - Summary output hover: no card chrome — sparkle scales in, title yields right
+ * - Completed AIResponse sparkle is grayscale + receded (timestamp weight)
+ * - AIResponse sparkle breathes (slow scale pulse) while reply text is generating
+ * - Completed AIResponse bubble has no surface fill (transparent)
+ */
+
+[data-ai-motion='tweak'] {
+  /* Slightly stronger lift + glow than Motion defaults — edit freely */
+  --motion-hover-lift-y: -2px;
+  --motion-hover-glow: 0 6px 18px rgb(121 53 255 / 0.16);
+  --motion-banner-hover-lift-y: -3px;
+  --motion-banner-hover-glow: 0 6px 20px rgb(15 23 42 / 0.1);
+  --motion-hover-duration: 0.32s;
+}
+
+[data-ai-motion='tweak'] [data-motion-hover='true'] {
+  filter: drop-shadow(0 3px 14px rgb(121 53 255 / 0.2));
+}
+
+/* Summary output — sparkle-in is the hover; kill inherited card lift/glow */
+[data-ai-motion='tweak'] .motionBannerOutput,
+[data-ai-motion='tweak'] .motionBannerOutput:hover {
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}

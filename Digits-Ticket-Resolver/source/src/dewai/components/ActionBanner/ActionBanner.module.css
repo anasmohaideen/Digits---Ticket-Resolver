@@ -1,0 +1,471 @@
+.root {
+  position: relative;
+  display: block;
+  width: 100%;
+  align-self: stretch;
+  box-sizing: border-box;
+  overflow: visible;
+  border-radius: var(--radius-large);
+  --sweep-radius: var(--radius-large);
+  --banner-padding-y: var(--spacing-200);
+  --banner-padding-x: var(--spacing-250);
+  --banner-section-gap: var(--spacing-150);
+  --banner-header-gap: var(--spacing-150);
+  --banner-leading-gap: var(--spacing-100);
+  --banner-text-gap: var(--spacing-025);
+  --banner-chip-gap: var(--spacing-100);
+  --banner-slot-padding: var(--spacing-100);
+  --banner-footer-inset-x: var(--spacing-100);
+  isolation: isolate;
+}
+
+.compact {
+  min-height: var(--banner-height-compact);
+}
+
+.withChips {
+  min-height: var(--banner-height-default);
+}
+
+.expanded {
+  min-height: var(--banner-height-expanded);
+}
+
+.default,
+.hover {
+  cursor: default;
+}
+
+.compact.default,
+.compact.hover,
+.interactive {
+  cursor: pointer;
+}
+
+.surface {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: inherit;
+  border-radius: inherit;
+  /* Sweep — AI/Overlay/Extended over Surface */
+  background:
+    var(--ai-gradient-default),
+    var(--color-fill-surface);
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.surfaceDuringSweep {
+  border-color: transparent;
+}
+
+.thinking .surface {
+  border-color: transparent;
+}
+
+.output .surface {
+  border-color: transparent;
+  background: var(--color-fill-surface);
+}
+
+.outputBorder,
+.quietStaticBorder {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  /* Sweep — AI/Border/Static */
+  background: var(--ai-border-static);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Quiet — Static Medium at rest/output; Static Bold on hover */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .quietStaticBorder {
+  background: var(--ai-border-static-medium);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .interactive:hover .quietStaticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover:not(.output):not(.thinking) .quietStaticBorder {
+  background: var(--ai-border-static-bold);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .output .quietStaticBorder {
+  background: var(--ai-border-static-medium);
+}
+
+/* Motion — Default/Output: grayscale rest; Hover: solid Violet */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .quietStaticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .output .quietStaticBorder {
+  background: var(--color-border-milder);
+  z-index: 3;
+  transition: background 0.55s cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .interactive:hover .quietStaticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover:not(.output):not(.thinking) .quietStaticBorder {
+  background: var(--ai-purple);
+}
+
+/* Thinking — keep hover-grade solid Violet border under the light sweep */
+:global([data-ai-motion='motion']) .thinkingBorderRing,
+:global([data-ai-motion='motion']) .thinking .quietStaticBorder {
+  background: var(--ai-purple);
+  z-index: 3;
+}
+
+/* Tweak thinking — input-field Static Bold ring with a slow color drift (no traveling halo) */
+:global([data-ai-motion='tweak']) .thinkingBorderRing,
+:global([data-ai-motion='tweak']) .thinking .quietStaticBorder {
+  background: var(--ai-border-static-bold);
+  background-size: 240% 240%;
+  background-position: 0% 50%;
+  z-index: 3;
+  transition: none;
+  animation: tweak-thinking-border-shimmer 6.5s ease-in-out infinite;
+}
+
+@keyframes tweak-thinking-border-shimmer {
+  0%,
+  100% {
+    background-position: 0% 40%;
+  }
+
+  50% {
+    background-position: 100% 60%;
+  }
+}
+
+.output .container {
+  min-height: auto;
+}
+
+/* Figma Style=Subtle — Quiet Surface-only fill (see Quiet rules below) */
+.subtle {
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--banner-section-gap);
+  padding: var(--banner-padding-y) var(--banner-padding-x);
+  min-height: inherit;
+}
+
+.compact .container {
+  justify-content: center;
+  min-height: var(--banner-height-compact);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.headerRowWithAction {
+  justify-content: space-between;
+  gap: var(--banner-header-gap);
+}
+
+.leading {
+  display: flex;
+  align-items: center;
+  gap: var(--banner-leading-gap);
+  flex: 1;
+  min-width: 0;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--banner-text-gap);
+  min-width: 0;
+}
+
+/* Figma Circle Info — adjacent to title (2644:7591) */
+.headerSparkle {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tweak — same optical size as AIResponse loading sparkle (size 20 + fitSize 20) */
+:global([data-ai-motion='tweak']) .headerSparkle:not(.headerSparkleReveal) {
+  overflow: hidden;
+}
+
+/* Tweak output — sparkle slot collapsed; hover opens it and shifts the title */
+.headerSparkleReveal {
+  width: 0;
+  min-width: 0;
+  margin-right: calc(-1 * var(--banner-leading-gap));
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    width 0.2s cubic-bezier(0.4, 0, 1, 1),
+    margin-right 0.2s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.headerSparkleGlyph {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-color: var(--ai-logo);
+  mask-image: url('../../assets/dew-ai/sparkle.svg');
+  mask-size: 83.333%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url('../../assets/dew-ai/sparkle.svg');
+  -webkit-mask-size: 83.333%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  transform: scale(0.35) rotate(-32deg);
+  transform-origin: center;
+  opacity: 0;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 1, 1),
+    opacity 0.16s linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :global([data-ai-motion='tweak']) .output.root:hover .headerSparkleReveal {
+    width: 20px;
+    margin-right: 0;
+    transition:
+      width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+      margin-right 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global([data-ai-motion='tweak']) .output.root:hover .headerSparkleGlyph {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 40ms,
+      opacity 0.2s ease-out;
+  }
+}
+
+.headerInfoIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-icon-muted);
+}
+
+.title {
+  margin: 0;
+  font: var(--font-callout);
+  letter-spacing: var(--font-callout-tracking);
+  color: var(--color-text-primary);
+  line-height: 24px;
+}
+
+.titleThinking {
+  color: transparent;
+}
+
+.description {
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-secondary);
+  line-height: 20px;
+}
+
+.chipRow {
+  display: flex;
+  align-items: center;
+  gap: var(--banner-chip-gap);
+  flex-wrap: wrap;
+}
+
+.divider {
+  width: 1px;
+  height: 14px;
+  background: var(--color-border-divider);
+}
+
+.slot {
+  padding: var(--banner-slot-padding);
+  border-radius: var(--radius-medium);
+}
+
+.summaryBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  margin: 0;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  line-height: 20px;
+}
+
+.summaryIntro {
+  margin: 0;
+}
+
+.summaryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-050);
+}
+
+.summaryList li,
+.summaryListItem {
+  position: relative;
+  padding-left: 1em;
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  line-height: 20px;
+}
+
+.summaryList li::before,
+.summaryListItem::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-text-primary);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--banner-footer-inset-x);
+}
+
+.disclaimer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-placeholder);
+}
+
+.infoIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-icon-muted);
+}
+
+.feedback {
+  display: inline-flex;
+  align-items: center;
+}
+
+.feedbackAsk {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+}
+
+.feedbackThanks {
+  margin: 0;
+  font: var(--font-caption);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-brand);
+}
+
+.feedbackLabel {
+  font: var(--font-caption);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-placeholder);
+}
+
+.feedbackBtn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: var(--font-caption);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-icon-default);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-050);
+  border-radius: var(--radius-small);
+}
+
+.feedbackBtn:hover {
+  color: var(--color-icon-primary);
+}
+
+/* Quiet — Fill R-L wash; hover is stroke step-up (Medium → Bold), not denser fill */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .surface {
+  transition: background 0.25s ease;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .default .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .interactive:hover .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover:not(.output):not(.thinking) .surface {
+  background:
+    var(--ai-gradient-fill-rl),
+    var(--color-fill-surface);
+}
+
+/* Thinking + output — Surface only (no Fill R-L wash) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .thinking .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .output .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .output.root:hover .surface {
+  background: var(--color-fill-surface);
+}
+
+/* Motion — rest stays Surface; hover is border step only */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .default .surface,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .interactive:hover .surface,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover:not(.output):not(.thinking) .surface {
+  background: var(--color-fill-surface);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .thinking .surface,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .output .surface,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .output.root:hover .surface {
+  background: var(--color-fill-surface);
+}
+
+/* Quiet Style=Subtle — Surface only (no Fill R-L); stroke ladder unchanged */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .subtle.default .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .subtle.interactive:hover .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .subtle.hover:not(.output) .surface,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .subtle.thinking .surface {
+  background: var(--color-fill-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surface {
+    transition: none;
+  }
+
+  :global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .surface {
+    transition: none;
+  }
+
+  :global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .quietStaticBorder {
+    transition: none;
+  }
+
+  :global([data-ai-motion='tweak']) .thinkingBorderRing,
+  :global([data-ai-motion='tweak']) .thinking .quietStaticBorder {
+    animation: none;
+    background-position: 0% 50%;
+  }
+
+  .headerSparkleReveal,
+  .headerSparkleGlyph {
+    transition: none;
+  }
+}

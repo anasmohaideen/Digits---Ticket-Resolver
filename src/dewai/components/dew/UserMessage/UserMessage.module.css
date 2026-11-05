@@ -1,0 +1,252 @@
+/* Sweep / default — main baseline (hover-reveal actions) */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-050);
+  width: calc(100% - 24px);
+  max-width: none;
+  margin-left: auto;
+  transition: gap var(--transition-fast);
+}
+
+.bubbleWrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-large);
+  isolation: isolate;
+}
+
+.bubble {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  width: 100%;
+  padding: var(--spacing-150);
+  border: 1px solid var(--color-border-mildest);
+  border-radius: inherit;
+  background: var(--color-fill-container);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.root[data-state='hover'] .bubble {
+  border-color: var(--color-border-milder);
+}
+
+.quoteSlot {
+  width: 100%;
+  min-width: 0;
+}
+
+.messageRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-025);
+  width: 100%;
+}
+
+.senderName {
+  display: block;
+  margin: 0;
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  line-height: 16px;
+  color: var(--color-text-secondary);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-primary);
+  line-height: 20px;
+  word-break: break-word;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-100);
+  min-height: 24px;
+  max-height: 32px;
+  padding: 0 var(--spacing-050);
+  margin-bottom: var(--spacing-050);
+  width: 100%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0);
+  transition:
+    opacity 120ms ease-out,
+    transform var(--transition-fast),
+    max-height var(--transition-fast),
+    min-height var(--transition-fast),
+    margin-bottom var(--transition-fast);
+}
+
+.root[data-state='hover'] .actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.actionButtons {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  flex-shrink: 0;
+}
+
+.timestamp {
+  font: var(--font-caption-regular);
+  font-style: italic;
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-placeholder);
+  white-space: nowrap;
+}
+
+.actions .actionButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 1px solid var(--color-border-mildest);
+  border-radius: var(--radius-small);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-icon-default);
+}
+
+.actions .actionButton:hover,
+.actions .actionButton:focus-visible {
+  background: var(--color-fill-container);
+  border-color: var(--color-border-milder);
+  color: var(--color-icon-default);
+}
+
+.actionIcon {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .bubble,
+  .actions {
+    transition: none;
+  }
+}
+
+/* Quiet — Messaging resting chrome */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .bubble {
+  border-color: var(--color-border-milder);
+  transition: none;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .root[data-state='hover'] .bubble {
+  border-color: var(--color-border-milder);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .text {
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  line-height: unset;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions {
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    opacity 120ms ease-out,
+    transform var(--transition-fast),
+    max-height var(--transition-fast),
+    min-height var(--transition-fast),
+    margin-bottom var(--transition-fast);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton {
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-icon-secondary);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton:hover,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton:focus-visible {
+  background: var(--color-fill-surface);
+  border-color: var(--color-border-mildest);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-icon-default);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton :global(svg) {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .actions .actionButton {
+    transition: none;
+  }
+}
+
+/* Prior turns: tuck the toolbar away until hover or focus */
+.root[data-latest='false'] {
+  gap: 0;
+  overflow: hidden;
+}
+
+.root[data-latest='false'] .actions {
+  position: relative;
+  z-index: 0;
+  max-height: 0;
+  min-height: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+.root[data-latest='false']:is(:hover, :focus-within) {
+  gap: var(--spacing-050);
+  overflow: visible;
+}
+
+.root[data-latest='false']:is(:hover, :focus-within) .actions {
+  max-height: 32px;
+  min-height: 24px;
+  margin-bottom: var(--spacing-050);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition:
+    opacity 200ms ease-out,
+    transform var(--transition-fast),
+    max-height var(--transition-fast),
+    min-height var(--transition-fast),
+    margin-bottom var(--transition-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-latest='false'] .actions {
+    transform: none;
+  }
+}

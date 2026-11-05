@@ -1,0 +1,128 @@
+.button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--spacing-100);
+  border: 1px solid var(--color-border-mildest);
+  border-radius: var(--radius-xlarge) var(--radius-small) var(--radius-xlarge) var(--radius-xlarge);
+  cursor: pointer;
+  flex-shrink: 0;
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-xs);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  --sweep-radius: var(--radius-medium);
+  border-radius: var(--radius-medium);
+  isolation: isolate;
+  overflow: visible;
+}
+
+.staticBorder {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ai-border-static);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.default {
+  background: var(--color-fill-surface);
+  border-color: var(--color-border-mildest);
+}
+
+.hover,
+.active {
+  background: var(--color-fill-surface);
+  border-color: var(--color-border-mildest);
+  box-shadow:
+    var(--shadow-xs),
+    inset 0 0 6px 0 var(--ai-highlight-border);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-fill-brand);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Quiet — Figma Primary Button: uniform medium radius (Sweep keeps teardrop) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap {
+  border-radius: var(--radius-medium);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .button {
+  border-radius: var(--radius-medium);
+  border-color: transparent;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  background: var(--ai-border-mono-static-medium);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.active) .staticBorder {
+  background: var(--ai-border-static-medium);
+}
+
+/* Quiet — Figma Primary Button hover: inset purple glow */
+:global([data-ai-motion='quiet']) .hover,
+:global([data-ai-motion='quiet']) .active {
+  background: var(--color-fill-surface);
+  border-color: var(--color-border-mildest);
+  box-shadow:
+    var(--shadow-xs),
+    inset 0 0 6px 1px var(--ai-highlight-border);
+}
+
+/* Motion — Action Button engage ladder: milder rest, violet border on hover + lift */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .default {
+  border-color: transparent;
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  background: var(--color-border-milder);
+  z-index: 3;
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .wrap:has(.active) .staticBorder {
+  background: var(--ai-purple);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .active {
+  background: var(--color-fill-surface);
+  border-color: transparent;
+  box-shadow: var(--shadow-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

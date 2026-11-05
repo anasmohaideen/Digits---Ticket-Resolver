@@ -1,0 +1,10 @@
+/* Dew AI styles ported from the AI Design System. Core Dew tokens that the
+   prototype already gets from @freshworks/dew-styles were removed from
+   tokens.css so nothing in the prototype is re-coloured. */
+@import './tokens.css';
+@import './utilities.css';
+@import './ai-press.css';
+@import './ai-text-shimmer.css';
+@import './ai-quiet-library.css';
+@import './motion-hover-chrome.css';
+@import './tweak-hover-chrome.css';

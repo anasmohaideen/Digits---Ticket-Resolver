@@ -1,0 +1,160 @@
+.menu {
+  z-index: 1000;
+  min-width: 240px;
+  padding: var(--spacing-050);
+  border: 1px solid var(--color-border-milder);
+  border-radius: var(--radius-medium);
+  background: var(--color-fill-surface);
+  box-shadow: var(--shadow-dropdown-list);
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  width: 100%;
+  padding: var(--spacing-100) var(--spacing-150);
+  border: none;
+  border-radius: var(--radius-small);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.item:hover,
+.item:focus-visible {
+  outline: none;
+}
+
+.item:not(.itemAi):hover,
+.item:not(.itemAi):focus-visible {
+  background: var(--color-fill-container);
+}
+
+.itemAi {
+  border: 1px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+
+.itemAi > * {
+  position: relative;
+  z-index: 1;
+}
+
+.itemAi::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.itemAi:hover,
+.itemAi:focus-visible {
+  background: transparent;
+}
+
+.itemAi:hover::after,
+.itemAi:focus-visible::after {
+  opacity: 1;
+}
+
+.itemIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-icon-default);
+}
+
+.itemIconAi {
+  color: var(--ai-purple);
+}
+
+.itemIconSpacer {
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.itemLabel {
+  font: var(--font-body);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+}
+
+.itemLabelAi {
+  font: var(--font-body-semibold);
+  letter-spacing: var(--font-body-tracking);
+  background: var(--ai-text-hover);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* AI row — icon only on engage; label stays primary */
+.itemAi:hover .itemIconAi,
+.itemAi:focus-visible .itemIconAi {
+  color: var(--ai-purple);
+}
+
+.itemAi:hover .itemLabelAi,
+.itemAi:focus-visible .itemLabelAi {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+
+/* Motion — summary-banner-style violet stroke */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .itemAi::after {
+  background: var(--ai-purple);
+}
+
+/* Quiet — Static Bold gradient stroke (summary banner hover) */
+:global([data-ai-motion='quiet']) .itemAi::after {
+  background: var(--ai-border-static-bold);
+}
+
+/* Sweep / Glow — milder solid stroke */
+:global(:is([data-ai-motion='sweep'], [data-ai-motion='glow'])) .itemAi:hover,
+:global(:is([data-ai-motion='sweep'], [data-ai-motion='glow'])) .itemAi:focus-visible {
+  border-color: var(--color-border-milder);
+}
+
+/* Motion — AI menu sparkle at rest matches default icon */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .itemIconAi {
+  color: var(--color-icon-default);
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .itemLabelAi {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+
+.divider {
+  height: 1px;
+  margin: var(--spacing-050) var(--spacing-100);
+  background: var(--color-border-milder);
+}
+
+.header {
+  padding: var(--spacing-050) var(--spacing-150);
+  font: var(--font-caption-regular);
+  letter-spacing: var(--font-caption-tracking);
+  color: var(--color-text-secondary);
+}

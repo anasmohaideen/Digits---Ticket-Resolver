@@ -1,0 +1,121 @@
+{
+  "_note": "One example per block and state. Render each in a dev gallery. Actors are shortened; expand to the Actor shape in types.ts.",
+  "actors": {
+    "tr": { "kind": "digit", "digit": "ticket-resolver", "name": "Ticket Resolver" },
+    "wc": { "kind": "digit", "digit": "workplace-concierge", "name": "Workplace Concierge" },
+    "kc": { "kind": "digit", "digit": "knowledge-curator", "name": "Knowledge Curator" },
+    "copilot": { "kind": "copilot", "name": "Freddy AI Copilot" },
+    "megan": { "kind": "requester", "id": "u-megan", "name": "Megan Brooks" },
+    "jordan": { "kind": "agent", "id": "a-jordan", "name": "Jordan Reyes" }
+  },
+
+  "summary": [
+    { "state": "not-generated" },
+    { "state": "generating", "updatedBy": "@tr", "elapsedSeconds": 2.1 },
+    { "state": "ready", "ref": "inc-4127.slack-handover.json#summary" },
+    { "state": "out-of-date", "ref": "inc-4127.slack-handover.json#summary", "newSince": { "messages": 3, "since": "2026-10-19T09:35:00-07:00" } },
+    { "state": "edited", "ref": "inc-4127.slack-handover.json#summary", "editedBy": { "agent": "@jordan", "at": "2026-10-19T09:52:00-07:00" },
+      "standing": ["Intune profile assigned manually at 9:44. Waiting for Megan to confirm."] },
+    { "state": "ready", "collapsed": true, "ref": "inc-4127.slack-handover.json#summary" }
+  ],
+
+  "rootCause": [
+    { "state": "not-analyzed" },
+    { "state": "analyzing", "by": "@tr", "live": "Searching for similar tickets", "elapsedSeconds": 2.1 },
+    { "state": "found", "ref": "inc-4127.slack-handover.json#rootCause" },
+    { "state": "inconclusive", "by": "@tr", "at": "2026-10-19T09:21:00-07:00",
+      "title": "Couldn’t determine a root cause",
+      "checked": ["4 similar tickets, 1 recent change and the requester’s device. 2 similar tickets were fixed in different ways, so the evidence conflicts."],
+      "confidence": { "score": 0.41, "threshold": 0.75, "band": "low" },
+      "fix": { "title": "No fix suggested", "status": "none" } },
+    { "state": "disputed", "ref": "inc-4127.slack-handover.json#rootCause", "feedback": { "by": "@jordan", "reasonPlaceholder": "What was wrong?" } },
+    { "state": "found", "collapsed": true, "ref": "inc-4127.slack-handover.json#rootCause" }
+  ],
+
+  "fixStatuses": [
+    { "status": "proposed", "title": "Re-issue Megan’s Wi-Fi certificate", "via": { "kind": "workflow", "name": "Re-issue Wi-Fi certificate (macOS)" } },
+    { "status": "awaiting-approval", "title": "Re-issue Megan’s Wi-Fi certificate", "approver": "@jordan", "eventId": "ap1" },
+    { "status": "running", "title": "Re-issue Megan’s Wi-Fi certificate", "steps": [
+      { "label": "Revoked the old certificate", "status": "done" },
+      { "label": "Assigning the new Wi-Fi profile", "status": "running" },
+      { "label": "Confirm the laptop checked in", "status": "skipped" } ] },
+    { "status": "applied", "title": "Re-issue Megan’s Wi-Fi certificate",
+      "verified": "Workflow confirmed the laptop checked in. Megan confirmed she’s back on Corp-Secure." },
+    { "status": "blocked", "ref": "inc-4127.slack-handover.json#rootCause.fix" },
+    { "status": "none", "title": "No fix suggested" }
+  ],
+
+  "messages": [
+    { "variant": "requester-reply", "channel": "slack", "actor": "@megan", "body": ["Just me, I think."] },
+    { "variant": "requester-reply", "channel": "slack", "actor": "@megan", "body": ["Ugh, second time this month. I have a client demo at 11."], "flags": { "sentiment": "Frustrated · Time-sensitive" } },
+    { "variant": "requester-reply", "channel": "email", "actor": { "kind": "requester", "id": "u-daniel", "name": "Daniel Ortiz" }, "body": ["Here you go."], "attachments": [{ "name": "outlook-prompt.png", "sizeLabel": "212 KB" }] },
+    { "variant": "reply", "channel": "email", "actor": "@jordan", "to": ["daniel.ortiz@acmecorp.com"], "body": ["Could you send a screenshot of the prompt?"] },
+    { "variant": "reply", "channel": "slack", "actor": "@jordan", "body": ["I’ve pushed the fix to your laptop."], "flags": { "draftedWithCopilot": "edited" } },
+    { "variant": "forward", "channel": "email", "actor": "@jordan", "to": ["identity-team@acmecorp.com"], "body": ["Can you check sign-in logs?"] },
+    { "variant": "public-note", "channel": "email", "actor": "@jordan", "body": ["No Microsoft 365 incidents reported for our tenant."] },
+    { "variant": "private-note", "channel": "slack", "actor": "@jordan", "body": ["Assigning the profile manually in Intune."] },
+    { "variant": "digit-message", "channel": "slack", "via": "workplace-concierge", "actor": "@tr", "body": ["I’ve passed this to Jordan on the Network team with everything I found."] },
+    { "variant": "concierge-message", "channel": "slack", "via": "workplace-concierge", "actor": "@wc", "body": ["Is it only your laptop, or are people around you having trouble too?"] },
+    { "variant": "digit-message", "channel": "slack", "via": "workplace-concierge", "actor": "@tr", "compact": true, "body": ["Let’s try a quick fix: forget Corp-Secure, then rejoin."] }
+  ],
+
+  "events": [
+    { "type": "ticket-created", "ref": "inc-4127.slack-handover.json#e-created" },
+    { "type": "delegated", "ref": "inc-4127.slack-handover.json#e-deleg" },
+    { "type": "status-changed", "actor": "@tr", "data": { "status": "Waiting on Requester" } },
+    { "type": "properties-updated", "ref": "inc-4127.slack-handover.json#e-props" },
+    { "type": "searched", "ref": "inc-4127.slack-handover.json#e-s1", "_note": "with results, expandable" },
+    { "type": "searched", "ref": "inc-4127.slack-handover.json#e-s2", "_note": "count + linked object" },
+    { "type": "searched", "ref": "inc-4127.slack-handover.json#e-s3", "_note": "verb phrasing (work graph)" },
+    { "type": "root-cause-added", "ref": "inc-4127.slack-handover.json#e-rc", "_note": "with Why" },
+    { "type": "summary-updated", "ref": "inc-4127.slack-handover.json#e-sum" },
+    { "type": "workflow-executed", "ref": "inc-4127.slack-handover.json#e-wf", "_note": "1 step failed" },
+    { "type": "workflow-executed", "actor": "@tr", "data": { "workflow": "Re-issue Wi-Fi certificate (macOS)", "steps": [
+      { "label": "Revoked the old certificate in Microsoft Intune", "status": "done" },
+      { "label": "Assigned the new Corp-Secure Wi-Fi profile in Intune", "status": "done" },
+      { "label": "Confirmed the laptop checked in · new certificate valid until Oct 2027", "status": "done" } ] }, "_note": "all done" },
+    { "type": "approval-requested", "ref": "inc-4127.slack-handover.json#e-ar" },
+    { "type": "approval-decided", "ref": "inc-4127.slack-handover.json#e-ad" },
+    { "type": "approval-decided", "actor": "@jordan", "data": { "decision": "rejected", "object": ["Re-issue Megan’s Wi-Fi certificate"],
+      "details": [{ "label": "Reason", "value": ["Hold until we decide whether to roll back CHG-2187."] }] } },
+    { "type": "handed-over", "ref": "inc-4127.slack-handover.json#e-ho" },
+    { "type": "handed-over", "actor": "@tr", "data": { "target": "@jordan", "reason": "inconclusive", "routing": "Intelligent routing → Network Team",
+      "details": [{ "label": "Checked", "value": ["4 similar tickets, 1 recent change"] }, { "label": "Confidence", "value": ["Low · 0.41 (threshold 0.75)"] }] } },
+    { "type": "resolution-notes", "actor": "@tr", "data": { "object": [{ "label": "resolution notes", "to": { "type": "resolution-tab" } }] } },
+    { "type": "thought", "actor": "@tr", "data": { "seconds": 2, "steps": [
+      { "label": "Workflow reported the new certificate is valid until Oct 2027", "status": "done" },
+      { "label": "Megan confirmed she’s back on Corp-Secure", "status": "done" } ] } },
+    { "type": "external-update", "actor": "@tr", "data": { "app": "Workday", "count": 3 }, "_note": "tools-registry path only; not MVP" },
+    { "type": "digit-event", "actor": "@kc", "data": { "verb": "proposed updates to", "object": [{ "label": "Can’t connect to Corp-Secure Wi-Fi", "to": { "type": "article", "id": "KB-118" } }] } }
+  ],
+
+  "approval": [
+    { "state": "pending", "ref": "inc-4127.slack-handover.json#ap1", "override": { "state": "pending" } },
+    { "state": "approved", "ref": "inc-4127.slack-handover.json#ap1" },
+    { "state": "rejected", "ref": "inc-4127.slack-handover.json#ap1", "override": { "state": "rejected", "decidedAt": "2026-10-19T09:31:00-07:00" } }
+  ],
+
+  "live": [
+    { "activity": "thinking", "actor": "@tr", "label": "Thinking", "elapsedSeconds": 2.1 },
+    { "activity": "searching", "actor": "@tr", "label": "Searching for similar tickets", "elapsedSeconds": 2.1 },
+    { "activity": "executing", "actor": "@tr", "label": "Executing workflow: Re-issue Wi-Fi certificate (macOS)", "elapsedSeconds": 2.1 },
+    { "activity": "waiting", "actor": "@tr", "label": "Waiting for approval from Jordan Reyes", "elapsedSeconds": 240, "_note": "proposed" }
+  ],
+
+  "groups": [
+    { "ref": "inc-4127.slack-handover.json#g-run", "open": false },
+    { "ref": "inc-4127.slack-handover.json#g-run", "open": true, "openPhases": ["p-before", "p-rca"] },
+    { "humanThread": "inc-4133.email-humans.json#stream", "_note": "renders today’s “+3 conversations” pill, then 4 cards" }
+  ],
+
+  "replyBar": [
+    { "source": "slack", "reply": "Reply · in Slack", "note": "private only" },
+    { "source": "teams", "reply": "Reply · in Teams", "note": "private only" },
+    { "source": "email", "reply": "Reply", "note": "private + public" }
+  ],
+
+  "strip": [
+    { "text": "KB steps didn’t help. Ticket Resolver found the cause and ran the fix; the last step failed.", "rootCause": "High", "fix": "Blocked" },
+    { "text": "Outlook prompts for a password every few minutes. Identity team is checking sign-in logs.", "rootCause": null, "fix": null }
+  ]
+}

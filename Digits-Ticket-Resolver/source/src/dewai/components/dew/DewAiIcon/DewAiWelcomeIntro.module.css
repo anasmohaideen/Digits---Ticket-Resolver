@@ -1,0 +1,92 @@
+/*
+ * Welcome intro — main + mini sparkles from dew-ai/sparkle.svg.
+ * Main sparkle: full 360° rotation, ease-out settle. Mini: fade in only.
+ * Tweak: main sparkle settles at 90° instead of a full turn.
+ */
+
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* Figma Blank: sparkle glyph is 5/6 of the size box */
+  --welcome-glyph-scale: calc(5 / 6);
+}
+
+.svg {
+  width: calc(100% * var(--welcome-glyph-scale));
+  height: calc(100% * var(--welcome-glyph-scale));
+  display: block;
+  overflow: visible;
+}
+
+.mainGroup {
+  transform-origin: 5px 5px;
+  animation: welcome-main-spin 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Tweak — settle at a quarter turn instead of a full spin */
+:global([data-ai-motion='tweak']) .mainGroup {
+  animation-name: welcome-main-spin-90;
+}
+
+.mainSparkle {
+  transform-origin: 5px 5px;
+}
+
+.miniGroup {
+  transform-origin: 8.1px 1.9px;
+  animation: welcome-mini-fade 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.miniSparkle {
+  transform-origin: 8.1px 1.9px;
+}
+
+@keyframes welcome-main-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes welcome-main-spin-90 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes welcome-mini-fade {
+  0% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0;
+  }
+
+  55% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mainGroup,
+  .mainSparkle,
+  .miniGroup,
+  .miniSparkle {
+    animation: none;
+  }
+}

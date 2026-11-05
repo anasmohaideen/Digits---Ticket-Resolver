@@ -1,0 +1,199 @@
+/*
+ * AI_Chip — Sweep/Glow baseline + Quiet Figma masters (2644:7668)
+ *
+ * Sweep/Glow: chip-focus fill, 16px icon, pink hover stroke
+ * Quiet: Fill R-L, Static Mild/Medium, 24px icon, height-locked 32
+ */
+
+.chipWrap {
+  position: relative;
+  display: inline-flex;
+  border-radius: var(--radius-circular);
+  --sweep-radius: var(--radius-circular);
+  isolation: isolate;
+  overflow: visible;
+}
+
+.staticBorder {
+  composes: gradient-ring-mask from global;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ai-border-static);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.chip {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  height: 32px;
+  min-height: 32px;
+  box-sizing: border-box;
+  padding: var(--spacing-050) var(--spacing-050) var(--spacing-050) var(--spacing-150);
+  border: 1px solid transparent;
+  border-radius: var(--radius-circular);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.default {
+  background: transparent;
+}
+
+.focus {
+  background:
+    var(--ai-gradient-chip-focus),
+    var(--color-fill-surface);
+}
+
+.hover {
+  background:
+    var(--ai-gradient-chip-focus),
+    var(--color-fill-surface);
+  border-color: var(--ai-pink);
+}
+
+/* Soft sweep ring replaces the static pink stroke while the overlay is active */
+.sweeping .hover {
+  border-color: transparent;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-icon-primary);
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-050);
+  min-width: 0;
+}
+
+.label {
+  padding: 0 var(--spacing-100);
+  font: var(--font-body-semibold);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.subText {
+  font: var(--font-body-italic);
+  letter-spacing: var(--font-body-tracking);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.default .label,
+.focus .label {
+  color: var(--color-text-primary);
+}
+
+.hover .label {
+  background: var(--ai-text-hover);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--spacing-100);
+  border-radius: var(--radius-circular);
+  background: var(--color-fill-neutral-mild);
+  color: var(--color-text-on-brand);
+  font: var(--font-caption);
+  letter-spacing: var(--font-caption-tracking);
+}
+
+/* ── Quiet — Figma library masters ───────────────────────────────────────── */
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  background: var(--ai-border-static-mild);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .chipWrap:has(.hover) .staticBorder {
+  background: var(--ai-border-static-medium);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .chip {
+  /* Figma Default/Focus pad [4, 8, 4, 12]; height stays 32 on hover */
+  padding: var(--spacing-050) var(--spacing-100) var(--spacing-050) var(--spacing-150);
+  /* Stroke comes only from Static Mild/Medium ring — no solid Core border */
+  border: none;
+  box-shadow: none;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .default {
+  background: var(--color-fill-surface);
+  border-color: transparent;
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .focus {
+  background:
+    var(--ai-gradient-fill-rl),
+    var(--color-fill-surface);
+  border: none;
+  box-shadow: none;
+}
+
+/* Motion — hover fill is the entry-origin overlay under the chip face */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .focus {
+  background: var(--color-fill-surface);
+}
+
+/* Motion — Default chip: grayscale rest; Violet on hover/focus */
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .staticBorder {
+  background: var(--color-border-milder);
+  z-index: 3;
+}
+
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .chipWrap:has(.hover) .staticBorder,
+:global(:is([data-ai-motion='motion'], [data-ai-motion='tweak'])) .chipWrap:has(.focus) .staticBorder {
+  background: var(--ai-purple);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-icon-default);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover .icon {
+  color: var(--color-text-primary);
+}
+
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .badge {
+  min-width: 24px;
+  height: 20px;
+  background: var(--color-fill-info-mildest);
+  color: var(--color-text-brand);
+}
+
+/* Quiet Hover/Focus — Color/Text/Primary (Figma 2644:7669 / 2724:8360; no AI/Text rainbow) */
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .hover .label,
+:global(:is([data-ai-motion='quiet'], [data-ai-motion='motion'], [data-ai-motion='tweak'])) .focus .label {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--color-text-primary);
+}
+

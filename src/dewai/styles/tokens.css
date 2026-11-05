@@ -1,0 +1,630 @@
+/*
+ * Dew AI Design System — CSS custom properties
+ *
+ * Libraries:
+ *   Core Dew  — 🎨 Dew Design System 1.0.2 (DEW Tokens 2.0) — GQNDCqAWbfWyA9h7L6EZrO
+ *   Dew AI    — 🌟 Dew - AI (AI collection + gradient styles) — fwe6VNWrvGupvyxqtXsxlj
+ *   App       — Code-only aliases (playground chrome, wordmark, code blocks)
+ *
+ * Naming: Figma `Color/Text/Primary` → `--color-text-primary`
+ */
+
+:root {
+  /* ── Core Dew · DEW Tokens 2.0 (light mode) ───────────────────────────── */
+
+  /* Color/Text/* */
+  --color-text-error: #cd2629; /* Color/Text/Semantic/Error · Color/Fill/Semantic/Error/Bold */
+
+  /* Color/Fill/* */
+  --color-fill-success: #10b08f; /* Color/Fill/Semantic/Success/Mild */
+  --color-fill-success-mildest: #daf3ee;
+  --color-fill-warning-mildest: #feecd5;
+  --color-fill-info-overlay: rgba(165, 210, 255, 0.2);
+  --color-text-success: #00795c; /* Color/Text/Semantic/Success */
+  --color-fill-info-mildest: #def0ff; /* Color/Fill/Semantic/Info/Mildest */
+  --color-border-info-mild: #c1e2ff; /* Color/Boundary/Semantic/Info/Mild */
+  --color-fill-error: #f33735; /* Color/Fill/Semantic/Error */
+  --color-fill-error-mildest: #ffe9ee; /* Color/Fill/Semantic/Error/Mildest */
+  --color-text-error-bold: #d13c3c; /* Overdue tag text */
+  --color-fill-error-tag: #fde3e3; /* Overdue tag background */
+
+  /* Color/Boundary/* */
+  --color-border-mildest: #eaeef2; /* Color/Boundary/Border/Mildest */
+  --color-border-milder: #dde3e9; /* Color/Boundary/Border/Milder */
+  --color-border-divider: #c9d3db; /* Color/Boundary/Divider */
+  --color-border: #8e9dac; /* Color/Boundary/Border */
+  --color-border-boldest: #27313b; /* Color/Boundary/Border/Boldest */
+  --color-border-error-mild: #ffc2cb; /* Color/Boundary/Semantic/Error/Mild */
+  --color-border-error-bold: #a62426; /* Color/Boundary/Semantic/Error/Bold · Chip Er_hover */
+
+  /* Color/Icon/* — illustration icons use currentColor; these alias text roles */
+  --color-icon-default: var(--color-text-primary);
+  --color-icon-muted: var(--color-text-placeholder);
+  --color-icon-placeholder: var(--color-text-placeholder); /* Color/Icon/Placeholder */
+  --color-icon-brand: var(--color-text-brand);
+  --color-icon-error: var(--color-text-error);
+
+  /* Spacing/* */
+
+  /* Border-radius/* */
+  --radius-xsmall: 4px; /* Border-radius/xsmall · Chip Rectangle avatar */
+  --radius-small: 6px; /* Border-radius/small · Chip Rectangle */
+  --radius-medium: 8px; /* Border-radius/medium */
+  --radius-large: 12px; /* Border-radius/large */
+  --radius-xlarge: 16px; /* Border-radius/xlarge */
+  --radius-circular: 999px; /* Border-radius/Circular (Figma: 99 — CSS uses full pill) */
+
+  /* Shadow/* */
+
+  /* Typography — Inter Variable text styles from Core Dew */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-callout: 600 16px/24px var(--font-family); /* Callout-16px/Semibold */
+  --font-callout-regular: 400 16px/24px var(--font-family); /* Callout-16px/Regular */
+  --font-callout-tracking: 0.02px;
+  --font-headline: 600 18px/24px var(--font-family); /* Headline-18px/Semibold */
+  --font-body-semibold: 600 14px/20px var(--font-family); /* Body-14px/Semibold */
+  --font-body: 400 14px/20px var(--font-family); /* Body-14px/Regular */
+  --font-body-medium: 500 14px/20px var(--font-family); /* Body-14px/Medium */
+  --font-body-italic: italic 400 14px/20px var(--font-family); /* Body-14px/Regular Italic */
+  --font-body-tracking: 0.04px;
+  --font-caption: 600 12px/20px var(--font-family); /* Caption-12px/Semibold */
+  --font-caption-regular: 400 12px/20px var(--font-family); /* Caption-12px/Regular */
+  --font-caption-tracking: 0.06px;
+
+  /* ── App-only (not in Figma variable collections) ─────────────────────── */
+
+  --color-wordmark-default: var(--color-icon-primary);
+  --color-wordmark-inverse: #eaf0f5;
+  --color-fill-avatar: #e8f0fe;
+  --color-fill-code: #0f1720;
+  --color-text-code: #dbe7f3;
+  --color-fill-preview-dark: #0f1b28;
+
+  /* ── Dew AI · AI collection (solid stops) ─────────────────────────────── */
+
+  --ai-pink: #fb64b6; /* AI/Color/Hot Pink */
+  --ai-light-pink: #ffc2cb; /* AI/Color/Soft Pink */
+  --ai-purple: #a987fc; /* AI/Color/Violet */
+  --ai-blue: #276cf0; /* AI/Color/Indigo */
+  --ai-blue-bright: #6aa8ff; /* AI/Color/Blue */
+  --ai-teal: #10b08f; /* AI/Color/Green */
+  --ai-logo: #bc5bf1; /* AI/Logo — sparkle logo fill only */
+  --ai-highlight-border: #d7cbfe; /* Primary Button highlight border (component WIP) */
+
+  /* Dew AI · mild fills (10% light / 15% dark — see [data-surface='dark']) */
+  --ai-violet-mild: #a987fc1a; /* AI/Color/Violet Mild */
+  --ai-blue-mild: #6aa8ff1a; /* AI/Color/Blue Mild */
+  --ai-indigo-mild: #276cf01a; /* AI/Color/Indigo Mild */
+  --ai-pink-mild: #fb64b61a; /* AI/Color/Hot Pink Mild */
+  --ai-soft-pink-mild: #ffc2cb1a; /* AI/Color/Soft Pink Mild */
+  --ai-teal-mild: #10b08f1a; /* AI/Color/Green Mild — thinking overlays */
+
+  /* Dew AI · medium fills (50% light / 50% dark) */
+  --ai-violet-medium: #a987fc80; /* AI/Color/Violet Medium */
+  --ai-blue-medium: #6aa8ff80; /* AI/Color/Blue Medium */
+  --ai-indigo-medium: #276cf080; /* AI/Color/Indigo Medium */
+  --ai-pink-medium: #fb64b680; /* AI/Color/Hot Pink Medium */
+  --ai-soft-pink-medium: #ffc2cb80; /* AI/Color/Soft Pink Medium */
+  --ai-teal-medium: #10b08f80; /* AI/Color/Green Medium */
+  --ai-negative: #ffffff00; /* AI/Color/Negative — transparent stop */
+
+  --color-icon-accent: var(--ai-blue);
+  --color-icon-ai: var(--ai-purple); /* AI/Color/Violet — non-logo AI icons */
+
+  /* Motion mode — flat violet AI signal (Motion tab only; Sweep/Glow/Quiet unchanged) */
+  --ai-motion-accent: var(--ai-purple); /* AI/Color/Violet */
+  --ai-motion-accent-mild: var(--ai-violet-mild);
+  --ai-motion-accent-medium: var(--ai-violet-medium);
+  --ai-motion-border: var(--ai-highlight-border);
+  --ai-motion-resolve-duration: 250ms;
+
+  /* ── Dew AI · gradient styles (Figma fill styles → CSS gradients) ─────── */
+
+  --ai-stroke-opacity: 0.7;
+  --ai-stroke-hot-pink: rgb(251 100 182 / var(--ai-stroke-opacity));
+  --ai-stroke-soft-pink: rgb(255 194 203 / var(--ai-stroke-opacity));
+  --ai-stroke-violet: rgb(169 135 252 / var(--ai-stroke-opacity));
+  --ai-stroke-indigo: rgb(39 108 240 / var(--ai-stroke-opacity));
+  --ai-stroke-blue: rgb(106 168 255 / var(--ai-stroke-opacity));
+  --ai-stroke-violet-focus: rgb(149 97 251 / var(--ai-stroke-opacity));
+
+  /* AI/Border/Static — Sweep/Glow legacy (≈ Bold @ 0.7 opacity) */
+  --ai-border-static: linear-gradient(
+    50deg,
+    var(--ai-stroke-hot-pink) 0%,
+    var(--ai-stroke-soft-pink) 25%,
+    var(--ai-stroke-violet) 65%,
+    var(--ai-stroke-indigo) 100%
+  );
+
+  /* AI/Border/Static Mild — Quiet chip rest/focus (45°) */
+  --ai-border-static-mild: linear-gradient(
+    45deg,
+    var(--ai-indigo-mild) 0%,
+    var(--ai-blue-mild) 25%,
+    var(--ai-soft-pink-mild) 50%,
+    var(--ai-pink-mild) 100%
+  );
+
+  /* AI/Border/Static Medium — Quiet banner rest/output + button hover (45°) */
+  --ai-border-static-medium: linear-gradient(
+    45deg,
+    var(--ai-violet-medium) 0%,
+    var(--ai-blue-medium) 25%,
+    var(--ai-soft-pink-medium) 50%,
+    var(--ai-pink-medium) 100%
+  );
+
+  /* AI/Border/Mono Static Medium — Quiet Action Button default (45°, pink-led) */
+  --ai-border-mono-static-medium: linear-gradient(
+    45deg,
+    var(--ai-pink-medium) 0%,
+    var(--ai-soft-pink-mild) 25%,
+    var(--ai-soft-pink-medium) 50%,
+    var(--ai-pink-medium) 100%
+  );
+
+  /* AI/Border/Static Bold — Quiet banner hover (45°, Violet → Blue → Soft Pink → Hot Pink) */
+  --ai-border-static-bold: linear-gradient(
+    45deg,
+    var(--ai-purple) 0%,
+    var(--ai-blue-bright) 25%,
+    var(--ai-light-pink) 50%,
+    var(--ai-pink) 100%
+  );
+
+  /*
+   * AI Input Box 2 — Focus / Filled / Thinking stroke
+   * Figma GRADIENT_ANGULAR: #6AA8FF → #9561FB → #6AA8FF
+   */
+  --ai-border-input-focus: conic-gradient(
+    from 0deg,
+    var(--ai-stroke-blue) 0deg,
+    var(--ai-stroke-violet-focus) 180deg,
+    var(--ai-stroke-blue) 360deg
+  );
+
+  /* AI/Border/Motion */
+  --ai-border-angular: conic-gradient(
+    from 0deg,
+    var(--ai-stroke-hot-pink) 0deg,
+    transparent 54deg,
+    var(--ai-stroke-violet) 180deg,
+    transparent 234deg,
+    transparent 360deg
+  );
+
+  /* AI/Overlay/Extended — Sweep/Glow banner wash */
+  --ai-gradient-default: linear-gradient(
+    105deg,
+    rgba(251, 100, 181, 0.1) 25%,
+    rgba(255, 194, 203, 0.1) 50%,
+    rgba(169, 135, 252, 0.1) 85%,
+    rgba(39, 108, 240, 0.1) 100%
+  );
+
+  /*
+   * AI/Overlay/Fill R-L — Quiet surface wash (45°: Negative → Soft Pink Mild → Hot Pink Mild)
+   * Stacked over Color/Fill/Surface in components.
+   */
+  --ai-gradient-fill-rl: linear-gradient(
+    45deg,
+    var(--ai-negative) 0%,
+    var(--ai-soft-pink-mild) 70%,
+    var(--ai-pink-mild) 100%
+  );
+
+  /*
+   * AI/Overlay/Fill L-R — 45° Hot Pink Mild → Soft Pink Mild @40% → Negative
+   * (e.g. Reply Editor AI footer). Stacked over Color/Fill/Surface.
+   */
+  --ai-gradient-fill-lr: linear-gradient(
+    45deg,
+    var(--ai-pink-mild) 0%,
+    var(--ai-soft-pink-mild) 40%,
+    var(--ai-negative) 100%
+  );
+
+  /*
+   * Legacy Quiet Soft Pink recipes — kept for playground catalog;
+   * Quiet components now use --ai-gradient-fill-rl.
+   */
+  --ai-gradient-quiet-default: linear-gradient(
+    90.88deg,
+    var(--color-fill-surface) 30%,
+    var(--ai-soft-pink-mild) 100%
+  );
+
+  --ai-gradient-quiet-hover: linear-gradient(
+    90.88deg,
+    var(--color-fill-surface) 15%,
+    rgba(255, 194, 203, 0.16) 100%
+  );
+
+  --ai-gradient-quiet-thinking: linear-gradient(
+    90.88deg,
+    var(--color-fill-surface) 20%,
+    var(--ai-soft-pink-mild) 75%,
+    rgba(16, 176, 143, 0.12) 100%
+  );
+
+  /* AI/Overlay/Compact — banner hover fill (Figma mild stops @ 10%) */
+  --ai-gradient-hover: linear-gradient(
+    74.95deg,
+    var(--ai-pink-mild) 15.28%,
+    var(--ai-soft-pink-mild) 55.67%,
+    var(--ai-violet-mild) 100.49%
+  );
+
+  /* Thinking state — adds teal end-stop (AI/Color/Green Mild) */
+  --ai-gradient-thinking: linear-gradient(
+    105deg,
+    rgba(251, 100, 181, 0.12) 25%,
+    rgba(255, 194, 203, 0.12) 50%,
+    rgba(39, 108, 240, 0.12) 85%,
+    rgba(16, 176, 143, 0.12) 100%
+  );
+
+  /* AI/Fill/Focus — chip focus overlay */
+  --ai-gradient-chip-focus: linear-gradient(
+    82.95deg,
+    var(--ai-pink-mild) 15%,
+    var(--ai-soft-pink-mild) 55.29%,
+    var(--ai-violet-mild) 100%
+  );
+
+  /* AI/Text/Default */
+  --ai-gradient-text: linear-gradient(90.73deg, var(--ai-pink) -2.57%, var(--ai-blue) 95.07%);
+
+  /*
+   * AI/Text/Thinking — continuous palette cycle for processing labels
+   * Seamless loop: ends on pink to match start · animate background-position
+   */
+  --ai-gradient-text-cycle: linear-gradient(
+    90deg,
+    var(--ai-pink) 0%,
+    var(--ai-light-pink) 20%,
+    var(--ai-purple) 40%,
+    var(--ai-blue) 60%,
+    var(--ai-teal) 80%,
+    var(--ai-pink) 100%
+  );
+
+  --ai-text-shimmer-duration: 3s;
+  --ai-text-shine-duration: 3.6s;
+
+  /* Motion/Text Shine — Proposal thinking labels (see .ai-text-shine) */
+  --ai-gradient-text-shine: linear-gradient(
+    90deg,
+    var(--color-text-primary) 0%,
+    var(--color-text-primary) 24%,
+    color-mix(in srgb, #ffffff 52%, var(--color-text-primary)) 46%,
+    color-mix(in srgb, #ffffff 38%, var(--color-text-primary)) 54%,
+    var(--color-text-primary) 72%,
+    var(--color-text-primary) 100%
+  );
+
+  /* AI/Text/Title — welcome name gradient (Title-24px/Bold) */
+  --ai-gradient-title: linear-gradient(87.02deg, var(--ai-blue) -55.43%, var(--ai-pink) 120.83%);
+
+  /* AI/Text/Default — hover label gradient */
+  --ai-text-hover: linear-gradient(
+    92.26deg,
+    var(--ai-pink) 2.57%,
+    var(--ai-blue) 95.07%
+  );
+
+  /*
+   * Glow FX - Default / Mild — Figma effect styles (Dew AI library)
+   * Overlays bleed via negative inset on wrap.
+   */
+  --ai-glow-fx-default:
+    0 4px 8px 4px rgba(106, 168, 255, 0.1),
+    0 0 24px 8px rgba(169, 135, 252, 0.1);
+  --ai-glow-fx-default-peak:
+    0 4px 10px 5px rgba(106, 168, 255, 0.16),
+    0 0 28px 10px rgba(169, 135, 252, 0.16);
+  --ai-glow-fx-mild:
+    -4px -2px 4px 2px rgba(169, 135, 252, 0.1),
+    4px 2px 4px 2px rgba(251, 100, 182, 0.1);
+  --ai-glow-fx-mild-peak:
+    -4px -2px 6px 3px rgba(169, 135, 252, 0.16),
+    4px 2px 6px 3px rgba(251, 100, 182, 0.16);
+  --ai-glow-fx-cycle: 3.2s;
+  --ai-glow-fx-bleed-banner: 6px;
+  --ai-glow-fx-bleed-button: 4px;
+  --ai-glow-fx-bleed-chip: 3px;
+
+  /* ── Layout & motion (app) ────────────────────────────────────────────── */
+
+  --banner-height-compact: 56px;
+  --banner-height-default: 108px;
+  --banner-height-expanded: 212px;
+  --transition-fast: 300ms ease-out;
+  --transition-medium: 400ms ease-out;
+  --ai-shimmer-duration: 2s; /* AI Shimmer · Figma motion timeline */
+  --ai-sweep-reference-perimeter: 320px;
+  --ai-sweep-reference-duration: 2.25s;
+  --ai-sweep-duration-min: 1.5s;
+  --ai-sweep-duration-max: 8s;
+  /* Arc-length parameterization: duration scales with perimeter; angle driven in JS for uniform px/s */
+}
+
+/* ── Light surface reset · restores :root tokens inside dark app chrome ─── */
+[data-surface='light'] {
+
+  --color-border-mildest: #eaeef2;
+  --color-border-milder: #dde3e9;
+  --color-border-divider: #c9d3db;
+  --color-border: #8e9dac;
+
+  --color-fill-error-mildest: #ffe9ee;
+  --color-fill-warning-mildest: #feecd5;
+  --color-fill-success-mildest: #daf3ee;
+  --color-fill-info-mildest: #def0ff;
+  --color-fill-info-overlay: rgba(165, 210, 255, 0.2);
+  --color-border-error-mild: #ffc2cb;
+  --color-border-error-bold: #a62426;
+  --color-text-error: #cd2629;
+
+  --color-icon-default: var(--color-text-primary);
+  --color-icon-muted: var(--color-text-placeholder);
+  --color-icon-placeholder: var(--color-text-placeholder); /* Color/Icon/Placeholder */
+  --color-icon-brand: var(--color-text-brand);
+  --color-icon-accent: var(--ai-blue);
+  --color-icon-ai: var(--ai-purple); /* AI/Color/Violet — non-logo AI icons */
+  --color-icon-error: var(--color-text-error);
+
+  --color-fill-avatar: #e8f0fe;
+
+  --ai-pink-mild: #fb64b61a;
+  --ai-soft-pink-mild: #ffc2cb1a;
+  --ai-violet-mild: #a987fc1a;
+  --ai-blue-mild: #6aa8ff1a;
+  --ai-indigo-mild: #276cf01a;
+  --ai-teal-mild: #10b08f1a;
+
+  --ai-gradient-default: linear-gradient(
+    105deg,
+    rgba(251, 100, 181, 0.1) 25%,
+    rgba(255, 194, 203, 0.1) 50%,
+    rgba(169, 135, 252, 0.1) 85%,
+    rgba(39, 108, 240, 0.1) 100%
+  );
+
+  --ai-gradient-thinking: linear-gradient(
+    105deg,
+    rgba(251, 100, 181, 0.12) 25%,
+    rgba(255, 194, 203, 0.12) 50%,
+    rgba(39, 108, 240, 0.12) 85%,
+    rgba(16, 176, 143, 0.12) 100%
+  );
+
+  --ai-gradient-chip-focus: linear-gradient(
+    82.95deg,
+    var(--ai-pink-mild) 15%,
+    var(--ai-soft-pink-mild) 55.29%,
+    var(--ai-violet-mild) 100%
+  );
+
+  --ai-border-static: linear-gradient(
+    50deg,
+    var(--ai-stroke-hot-pink) 0%,
+    var(--ai-stroke-soft-pink) 25%,
+    var(--ai-stroke-violet) 65%,
+    var(--ai-stroke-indigo) 100%
+  );
+
+  --ai-glow-fx-default:
+    0 4px 8px 4px rgba(106, 168, 255, 0.1),
+    0 0 24px 8px rgba(169, 135, 252, 0.1);
+  --ai-glow-fx-default-peak:
+    0 4px 10px 5px rgba(106, 168, 255, 0.16),
+    0 0 28px 10px rgba(169, 135, 252, 0.16);
+  --ai-glow-fx-mild:
+    -4px -2px 4px 2px rgba(169, 135, 252, 0.1),
+    4px 2px 4px 2px rgba(251, 100, 182, 0.1);
+  --ai-glow-fx-mild-peak:
+    -4px -2px 6px 3px rgba(169, 135, 252, 0.16),
+    4px 2px 6px 3px rgba(251, 100, 182, 0.16);
+}
+
+/* ── Dark surface · Core Dew Dark + Dew AI mode overrides ───────────────── */
+/* Core Dew fills: Container (#0b0b0b) is darker than Surface (#1a1a1a) in Dark */
+[data-surface='dark'] {
+
+  --color-border-mildest: #27313b; /* Color/Boundary/Border/Mildest → Smoke/S900 */
+  --color-border-milder: #2b3640; /* Color/Boundary/Border/Milder → Smoke/S850 */
+  --color-border-divider: #303c46; /* Color/Boundary/Divider → Smoke/S800 */
+  --color-border: #6f8396; /* Color/Boundary/Border → Smoke/S400 */
+
+  --color-fill-error-mildest: #611112; /* Color/Fill/Semantic/Error/Mildest */
+  --color-fill-warning-mildest: #522400; /* Color/Fill/Semantic/Warning/Mildest */
+  --color-fill-success-mildest: #00382b; /* Color/Fill/Semantic/Success/Mildest */
+  --color-fill-info-mildest: #002293; /* Color/Fill/Semantic/Info/Mildest */
+  --color-fill-info-overlay: rgba(0, 63, 210, 0.2); /* Color/Overlay/Semantic/Info */
+  --color-border-error-mild: #751618; /* Color/Boundary/Semantic/Error/Mild */
+  --color-border-error-bold: #f97071; /* Color/Boundary/Semantic/Error/Bold */
+  --color-text-error: #ffc2cb; /* Color/Text/Semantic/Error */
+
+  --color-icon-default: var(--color-text-primary);
+  --color-icon-muted: var(--color-text-placeholder);
+  --color-icon-placeholder: var(--color-text-placeholder); /* Color/Icon/Placeholder */
+  --color-icon-brand: var(--color-text-brand);
+  --color-icon-accent: var(--ai-blue-bright);
+  --color-icon-ai: var(--ai-purple); /* AI/Color/Violet — non-logo AI icons */
+  --color-icon-error: var(--color-text-error);
+
+  --color-fill-avatar: rgba(0, 63, 210, 0.2);
+
+  /* Dew AI mild fills @ 15% opacity — Figma AI collection dark mode */
+  --ai-pink-mild: rgba(251, 100, 182, 0.15);
+  --ai-soft-pink-mild: #a6242626; /* Soft Pink Mild dark — #a62426 @ 15% */
+  --ai-soft-pink-mild-strong: color-mix(in srgb, var(--ai-light-pink) 24%, transparent);
+  --ai-violet-mild: rgba(169, 135, 252, 0.15);
+  --ai-blue-mild: rgba(106, 168, 255, 0.15);
+  --ai-indigo-mild: rgba(39, 108, 240, 0.15);
+  --ai-teal-mild: rgba(0, 81, 63, 0.15);
+
+  /* Dew AI base solids @ 70% — Soft Pink dark uses #a62426 */
+  --ai-pink: rgba(251, 100, 182, 0.7);
+  --ai-light-pink: rgba(166, 36, 38, 0.7); /* Soft Pink dark — #a62426 @ 70% */
+  --ai-purple: rgba(169, 135, 252, 0.7);
+  --ai-blue: rgba(39, 108, 240, 0.7);
+  --ai-blue-bright: rgba(106, 168, 255, 0.7);
+  --ai-teal: rgba(0, 81, 63, 0.7); /* Green dark — #00513f @ 70% */
+
+  /* Dew AI medium fills — pink mediums @ 40% dark; others @ 50% */
+  --ai-pink-medium: rgba(251, 100, 182, 0.4);
+  --ai-soft-pink-medium: #a6242666; /* Soft Pink Medium dark — #a62426 @ 40% */
+  --ai-violet-medium: rgba(169, 135, 252, 0.5);
+  --ai-blue-medium: rgba(106, 168, 255, 0.5);
+  --ai-indigo-medium: rgba(39, 108, 240, 0.5);
+  --ai-teal-medium: #00513f80; /* Green Medium dark — #00513f @ 50% */
+  --ai-negative: #00000000;
+
+  --ai-gradient-default: linear-gradient(
+    105deg,
+    rgba(251, 100, 181, 0.2) 25%,
+    color-mix(in srgb, var(--ai-light-pink) 20%, transparent) 50%,
+    rgba(169, 135, 252, 0.2) 85%,
+    rgba(39, 108, 240, 0.2) 100%
+  );
+
+  --ai-gradient-fill-rl: linear-gradient(
+    45deg,
+    var(--ai-negative) 0%,
+    var(--ai-soft-pink-mild) 70%,
+    var(--ai-pink-mild) 100%
+  );
+
+  --ai-gradient-fill-lr: linear-gradient(
+    45deg,
+    var(--ai-pink-mild) 0%,
+    var(--ai-soft-pink-mild) 40%,
+    var(--ai-negative) 100%
+  );
+
+  --ai-border-static-mild: linear-gradient(
+    45deg,
+    var(--ai-indigo-mild) 0%,
+    var(--ai-blue-mild) 25%,
+    var(--ai-soft-pink-mild) 50%,
+    var(--ai-pink-mild) 100%
+  );
+
+  --ai-border-static-medium: linear-gradient(
+    45deg,
+    var(--ai-violet-medium) 0%,
+    var(--ai-blue-medium) 25%,
+    var(--ai-soft-pink-medium) 50%,
+    var(--ai-pink-medium) 100%
+  );
+
+  --ai-border-mono-static-medium: linear-gradient(
+    45deg,
+    var(--ai-pink-medium) 0%,
+    var(--ai-soft-pink-mild) 25%,
+    var(--ai-soft-pink-medium) 50%,
+    var(--ai-pink-medium) 100%
+  );
+
+  --ai-border-static-bold: linear-gradient(
+    45deg,
+    var(--ai-purple) 0%,
+    var(--ai-blue-bright) 25%,
+    var(--ai-light-pink) 50%,
+    var(--ai-pink) 100%
+  );
+
+  --ai-gradient-quiet-default: linear-gradient(
+    90.88deg,
+    var(--color-fill-surface) 30%,
+    var(--ai-soft-pink-mild) 100%
+  );
+
+  --ai-gradient-quiet-hover: linear-gradient(
+    90.88deg,
+    var(--color-fill-surface) 15%,
+    var(--ai-soft-pink-mild-strong) 100%
+  );
+
+  --ai-gradient-quiet-thinking: linear-gradient(
+    90.88deg,
+    var(--color-fill-surface) 20%,
+    var(--ai-soft-pink-mild) 75%,
+    var(--ai-teal-mild) 100%
+  );
+
+  --ai-gradient-thinking: linear-gradient(
+    105deg,
+    rgba(251, 100, 181, 0.2) 25%,
+    color-mix(in srgb, var(--ai-light-pink) 20%, transparent) 50%,
+    rgba(39, 108, 240, 0.2) 85%,
+    rgba(16, 176, 143, 0.2) 100%
+  );
+
+  --ai-gradient-chip-focus: linear-gradient(
+    82.95deg,
+    var(--ai-pink-mild) 15%,
+    var(--ai-soft-pink-mild) 55.29%,
+    var(--ai-violet-mild) 100%
+  );
+
+  /*
+   * AI/Text/Default + AI/Text/Thinking — full-opacity spectrum for clip-text shimmer
+   * (UI solids stay @70%; text FX needs higher contrast on dark primary)
+   */
+  --ai-gradient-text: linear-gradient(90.73deg, #fb64b6 -2.57%, #6aa8ff 95.07%);
+  --ai-gradient-text-cycle: linear-gradient(
+    90deg,
+    #fb64b6 0%,
+    #ffc2cb 20%,
+    #c4b5fd 40%,
+    #6aa8ff 60%,
+    #2dd4bf 80%,
+    #fb64b6 100%
+  );
+
+  --ai-gradient-text-shine: linear-gradient(
+    90deg,
+    var(--color-text-secondary) 0%,
+    var(--color-text-secondary) 22%,
+    color-mix(in srgb, #ffffff 48%, var(--color-text-secondary)) 44%,
+    color-mix(in srgb, var(--ai-purple) 45%, var(--color-text-secondary)) 54%,
+    var(--color-text-secondary) 72%,
+    var(--color-text-secondary) 100%
+  );
+
+
+  --ai-border-static: linear-gradient(
+    50deg,
+    var(--ai-stroke-hot-pink) 0%,
+    var(--ai-stroke-soft-pink) 25%,
+    var(--ai-stroke-violet) 65%,
+    var(--ai-stroke-indigo) 100%
+  );
+
+  --ai-glow-fx-default:
+    0 4px 10px 5px rgba(106, 168, 255, 0.14),
+    0 0 28px 10px rgba(169, 135, 252, 0.14);
+  --ai-glow-fx-default-peak:
+    0 4px 12px 6px rgba(106, 168, 255, 0.2),
+    0 0 32px 12px rgba(169, 135, 252, 0.2);
+  --ai-glow-fx-mild:
+    -4px -2px 4px 2px rgba(169, 135, 252, 0.14),
+    4px 2px 4px 2px rgba(251, 100, 182, 0.14);
+  --ai-glow-fx-mild-peak:
+    -4px -2px 6px 3px rgba(169, 135, 252, 0.2),
+    4px 2px 6px 3px rgba(251, 100, 182, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
