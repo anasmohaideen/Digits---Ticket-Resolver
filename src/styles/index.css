@@ -3172,3 +3172,6 @@ div:has(> [role='menu']) { z-index: 1000; }
 @media (prefers-reduced-motion: reduce) { .tr-o2-generating-lines span { animation: none; } }
 @media (max-width: 600px) { .tr-o2-generating-actions { gap: 8px; } }
 .tr-o2-generating-label > :first-child { color: #b653f3; }
+.tr-o2-activity.is-artifact-pointer .tr-o2-activity-line { cursor: pointer; }
+.tr-o2-activity.is-artifact-pointer .tr-o2-activity-line:hover { background: var(--color-fill-container); }
+.tr-o2-activity-view:focus-visible { outline: 2px solid var(--color-boundary-brand); outline-offset: 2px; }

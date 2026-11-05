@@ -9,7 +9,7 @@ import RichTextView from '../RichTextView';
 import type { TicketType } from '../../tickets.data';
 import ArtifactCard from './ArtifactCard';
 import ArtifactStrip from './ArtifactStrip';
-import { ResolutionBody, RootCauseBody, SummaryBody, briefLine } from './ArtifactBodies';
+import { briefLine } from './ArtifactBodies';
 import ResponseCard, { type InternalStyle, type ResponseTone } from './ResponseCard';
 import ReplyComposer from './ReplyComposer';
 import { isEmailLike } from './composerLayout';
@@ -259,7 +259,10 @@ export default function DetailsTabOption2({
   const available = availableArtifacts(tab, Boolean(resolution)).filter((kind) => !deleted.includes(kind));
   /* The card always opens on Summary when there is one. */
   const lead = available.includes('summary') ? 'summary' : leadArtifact(available);
-  const [active, setActive] = useState<ArtifactKind>(lead);
+  const [selectedArtifact, setActive] = useState<ArtifactKind>(lead);
+  // Deleting the selected tab must switch the body even when the preferred
+  // lead (usually Summary) did not change. Never render a deleted artifact.
+  const active = available.includes(selectedArtifact) ? selectedArtifact : lead;
   useEffect(() => setActive(lead), [lead]);
   /* What was just asked for is what the card shows. */
   useEffect(() => { if (rcaGen.phase !== 'idle') setActive('root-cause'); }, [rcaGen.phase]);
@@ -496,9 +499,9 @@ export default function DetailsTabOption2({
   /* From the reference build: one home per fact. The pinned card holds the
      current Summary and Root cause in full; the thread keeps only the moment
      each was produced, as an activity row whose View takes the reader back to
-     the card with that tab selected. Resolution notes stay a full entry. */
-  const ARTIFACT_EVENT_TYPE = { summary: 'summary-updated', 'root-cause': 'root-cause-added' } as const;
-  const renderArtifactPointer = (entry: ArtifactEntry & { artifact: 'summary' | 'root-cause' }) => {
+     the card with that tab selected. Resolution notes use the same pointer. */
+  const ARTIFACT_EVENT_TYPE = { summary: 'summary-updated', 'root-cause': 'root-cause-added', resolution: 'resolution-notes' } as const;
+  const renderArtifactPointer = (entry: ArtifactEntry) => {
     const label = ARTIFACT_LABEL[entry.artifact].toLowerCase();
     /* The same action icon as the event it stands for. */
     const asEvent: EventNode = { kind: 'event', id: entry.id, at: entry.at, actor: entry.actor, type: ARTIFACT_EVENT_TYPE[entry.artifact], data: {} };
@@ -508,38 +511,18 @@ export default function DetailsTabOption2({
         actor={entry.actor}
         at={entry.at}
         icon={<EventLeadingIcon event={asEvent} />}
-        text={<>{activityPerson(entry.actor)} {entry.artifact === 'root-cause' ? 'added a' : 'updated the'} <strong>{label}</strong></>}
-        work={workFor(entry.id)}
-        conclusion={entry.artifact === 'root-cause' ? tab.rootCause.reasoning : undefined}
+        text={<>{activityPerson(entry.actor)} {entry.artifact === 'summary' ? 'updated the' : 'added a'} <strong>{label}</strong></>}
         ticketCode={ticketCode}
         view={{
           ariaLabel: `View the ${label} in the pinned card`,
           onClick: () => {
             setActive(entry.artifact);
-            scrollToCard();
+            requestAnimationFrame(scrollToCard);
           }
         }}
       />
     );
   };
-
-  const renderArtifact = (entry: ArtifactEntry) => (
-    <ResponseCard
-      id={entry.id}
-      actor={entry.actor}
-      at={entry.at}
-      tone="internal-ai"
-      internalStyle={internalStyle}
-      title={ARTIFACT_LABEL[entry.artifact]}
-      work={workFor(entry.id)}
-      conclusion={entry.artifact === 'root-cause' ? tab.rootCause.reasoning : undefined}
-      ticketCode={ticketCode}
-    >
-      {entry.artifact === 'summary' && <SummaryBody tab={tab} ticketCode={ticketCode} />}
-      {entry.artifact === 'root-cause' && <RootCauseBody tab={tab} ticketCode={ticketCode} />}
-      {entry.artifact === 'resolution' && resolution && <ResolutionBody note={resolution} ticketCode={ticketCode} />}
-    </ResponseCard>
-  );
 
   const renderMessage = (message: MessageNode) => {
     const tone = TONE_BY_VARIANT[message.variant];
@@ -603,9 +586,7 @@ export default function DetailsTabOption2({
   const renderEntry = (entry: ResponseEntry) => {
     if (entry.kind === 'event') return renderEvent(entry);
     if (entry.kind === 'artifact') {
-      return entry.artifact === 'resolution'
-        ? renderArtifact(entry)
-        : renderArtifactPointer({ ...entry, artifact: entry.artifact });
+      return renderArtifactPointer(entry);
     }
     if (entry.kind === 'message') return renderMessage(entry);
     return null;

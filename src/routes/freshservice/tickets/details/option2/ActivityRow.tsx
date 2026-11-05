@@ -59,20 +59,21 @@ export default function ActivityRow({
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const hasWork = Boolean(work && work.length > 0);
-  const expandable = Boolean(details) || hasWork;
+  const expandable = !view && (Boolean(details) || hasWork);
 
   /* The whole line opens the panel for the pointer; keyboard users have the
      chevron, which is the real control. A click that ends a text selection,
      or lands on another control, leaves it alone. */
   const onLineClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (!expandable) return;
     if ((event.target as HTMLElement).closest('button, a')) return;
     if (window.getSelection()?.toString()) return;
+    if (view) { view.onClick(); return; }
+    if (!expandable) return;
     setOpen((value) => !value);
   };
 
   return (
-    <article id={`stream-${id}`} className={`tr-o2-activity${expandable ? ' is-expandable' : ''}${open ? ' is-open' : ''}`}>
+    <article id={`stream-${id}`} className={`tr-o2-activity${expandable ? ' is-expandable' : ''}${view ? ' is-artifact-pointer' : ''}${open ? ' is-open' : ''}`}>
       <div className="tr-o2-activity-line" onClick={onLineClick}>
         <span className="tr-o2-activity-lead">{icon}</span>
         <p className="tr-o2-activity-text">
@@ -88,9 +89,11 @@ export default function ActivityRow({
             </time>
           </Tooltip>
           {view && (
-            <button type="button" className="tr-o2-activity-view" aria-label={view.ariaLabel} onClick={view.onClick}>
-              View
-            </button>
+            <Tooltip content={view.ariaLabel} placement="top">
+              <button type="button" className="tr-o2-activity-view" aria-label={view.ariaLabel} onClick={view.onClick}>
+                View
+              </button>
+            </Tooltip>
           )}
           {expandable && (
             <button
