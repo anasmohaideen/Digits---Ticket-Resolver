@@ -2841,13 +2841,6 @@ div:has(> [role='menu']) { z-index: 1000; }
 .tr-o2-dock-ext strong { font-weight: var(--font-weight-semi-bold); color: var(--color-text-primary); }
 .tr-o2-reply-dock-actions.has-ext::before { border-radius: 0; }
 
-/* Side pane while the Digit has the ticket: fields read as disabled. */
-.tr-o2-props-locked [data-testid='select-trigger'][data-disabled] {
-  background: var(--color-fill-container);
-  color: var(--color-text-secondary);
-  cursor: not-allowed;
-}
-
 /* The dock measures its own width for the rules below. */
 .tr-o2-reply-dock-stack { container-type: inline-size; }
 /* On a narrow dock the avatar gives way so the three buttons keep one row. */

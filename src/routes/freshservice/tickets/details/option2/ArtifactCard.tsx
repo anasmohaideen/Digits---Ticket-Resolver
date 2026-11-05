@@ -5,6 +5,7 @@ import { META } from '../details.styles';
 import { elapsed } from '../format';
 import { SparkleIcon, SummaryHeaderActions } from '../AiCardChrome';
 import { ActionBanner, AiFeedbackFooter } from '../../../../../dewai';
+import { useTakeover } from '../../HandOverDialog';
 import PreTicketLog from './PreTicketLog';
 import { ResolutionBody, RootCauseBody, SummaryBody } from './ArtifactBodies';
 import { RelativeTime, type InternalStyle } from './ResponseCard';
@@ -58,7 +59,6 @@ export default function ArtifactCard({
   resolution,
   internalStyle,
   log = [],
-  locked = false,
   onForward,
   onDelete,
   onGenerate
@@ -73,8 +73,6 @@ export default function ArtifactCard({
   internalStyle: InternalStyle;
   /** The requester-visible chat before the ticket: the read-only record at the foot. */
   log?: MessageNode[];
-  /** The Digit still has the ticket: the card can be read and copied, not changed. */
-  locked?: boolean;
   /** Present only on email-based tickets: drops the card's text into the reply editor. */
   onForward?: (text: string) => void;
   onDelete: (kind: ArtifactKind) => void;
@@ -83,6 +81,7 @@ export default function ArtifactCard({
 }) {
   const { summary, rootCause } = tab;
   const bodyRef = useRef<HTMLDivElement | null>(null);
+  const takeover = useTakeover();
   const className = `tr-ai-card tr-o2-card ${internalStyle === 'border' ? 'is-accent' : ''}`;
 
   /* The log now lives in the Description box. The accordion stays built, behind
@@ -93,8 +92,7 @@ export default function ArtifactCard({
      "Summarize ticket" row, with the record of the chat still below it. */
   if (available.length === 0) {
     /* The AI Design System's action banner (from the reference build), with
-       the Freddy logo before the title and no info icon. Without `onGenerate`
-       (the ticket is locked) it shows but can't be clicked. */
+       the Freddy logo before the title and no info icon. */
     return (
       <ActionBanner
         state="default"
@@ -160,11 +158,15 @@ export default function ArtifactCard({
           )}
         </div>
         <span style={{ flex: 1 }} />
+        {/* Everything here but Copy changes the ticket, so it goes through the
+            take-over guard while the Digit has it. */}
         <SummaryHeaderActions
           subject={label.toLowerCase()}
-          readOnly={locked}
-          onForward={onForward ? () => onForward(bodyRef.current?.innerText ?? '') : undefined}
-          onDelete={() => onDelete(active)}
+          onRegenerate={() => takeover()}
+          onEdit={() => takeover()}
+          onAddNote={() => takeover()}
+          onForward={onForward ? () => takeover(() => onForward(bodyRef.current?.innerText ?? '')) : undefined}
+          onDelete={() => takeover(() => onDelete(active))}
         />
       </div>
 

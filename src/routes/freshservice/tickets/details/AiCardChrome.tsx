@@ -80,6 +80,7 @@ export function SummaryHeaderActions({
   onAddNote,
   onForward,
   onDelete,
+  onEdit,
   readOnly = false,
   subject = 'summary'
 }: {
@@ -88,6 +89,7 @@ export function SummaryHeaderActions({
   /** Omit to hide "Forward": it only applies to email-based tickets. */
   onForward?: () => void;
   onDelete?: () => void;
+  onEdit?: () => void;
   /** Read-only: copy stays, everything that changes the card is disabled. */
   readOnly?: boolean;
   subject?: string;
@@ -100,7 +102,7 @@ export function SummaryHeaderActions({
     <>
       <IconButton iconName="Refresh" aria-label={`Regenerate ${subject}`} size="mini" disabled={readOnly} onClick={onRegenerate} />
       <IconButton iconName="Copy" aria-label={`Copy ${subject}`} size="mini" />
-      <IconButton iconName="Edit" aria-label={`Edit ${subject}`} size="mini" disabled={readOnly} />
+      <IconButton iconName="Edit" aria-label={`Edit ${subject}`} size="mini" disabled={readOnly} onClick={onEdit} />
       <Menu
         aria-label={`More ${subject} actions`}
         disabled={readOnly}

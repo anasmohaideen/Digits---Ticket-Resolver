@@ -9,9 +9,18 @@ import RecipientField from './RecipientField';
 import { SparkleIcon } from '../AiCardChrome';
 import ActorAvatar from '../ActorAvatar';
 import { ActionButton } from '../../../../../dewai';
+import { useTakeover } from '../../HandOverDialog';
 
 /** The Digit a locked ticket is waiting on. */
 const LOCK_DIGIT: Actor = { kind: 'digit', digit: 'ticket-resolver', name: 'Ticket Resolver' };
+
+/**
+ * The strip stacked on the dock while the Digit has the ticket ("Ticket
+ * Resolver is working on this ticket…"). Off for now: nothing is locked, and
+ * the first change asks to take over instead. Kept, switched off, while it's
+ * discussed with PM; flip to bring it back.
+ */
+const SHOW_LOCK_STRIP = false;
 
 /** What a note on an email ticket can be marked as. */
 export type NoteKind = 'private' | 'public';
@@ -39,8 +48,9 @@ export type NoteKind = 'private' | 'public';
  * tab reachable by keyboard, so this is a toolbar of toggle buttons.)
  *
  * The row reads left to right: the agent's own avatar, then the buttons.
- * While the Digit still has the ticket (`locked`) Reply and the note are
- * disabled and say why at the row's end; Ask AI only reads, so it stays.
+ * While the Digit still has the ticket (`locked`) every button still works:
+ * Reply, the note and "Reply using AI" first ask to take the ticket over
+ * (`useTakeover`); Ask AI only reads, so it never asks.
  *
  * "Reply using AI" offers contextual drafts for the active ticket.
  * S3 opens with its suggested reply already in the field.
@@ -360,6 +370,7 @@ export default function ReplyComposer({
     requestAnimationFrame(follow);
   };
 
+  const takeover = useTakeover();
   const choose = (next: ComposeMode) => {
     setSuggestionsOpen(false);
     if (open && next === mode) {
@@ -720,7 +731,7 @@ export default function ReplyComposer({
           {/* While the Digit has the ticket, the dock says so in a strip stacked
               on top of it (like a queued message above an input), visible
               from anywhere on the page. */}
-          {locked && (
+          {SHOW_LOCK_STRIP && locked && (
             <div role="status" className="tr-o2-dock-ext">
               <ActorAvatar actor={LOCK_DIGIT} size="xxs" pixelSize={20} />
               <span><strong>{LOCK_DIGIT.name}</strong> is working on this ticket. Pick it up to make changes.</span>
@@ -729,7 +740,7 @@ export default function ReplyComposer({
 
           <div
             ref={toolbarRef}
-            className={`tr-o2-reply-dock-actions${locked ? ' has-ext' : ''}`}
+            className={`tr-o2-reply-dock-actions${SHOW_LOCK_STRIP && locked ? ' has-ext' : ''}`}
             role="toolbar"
             aria-label="Respond to this ticket"
             data-open-mode={open ? mode : undefined}
@@ -738,7 +749,6 @@ export default function ReplyComposer({
             <span className="tr-o2-reply-dock-avatar"><ActorAvatar actor={agent} size="sm" /></span>
             {modes.map((m) => {
               const selected = open && mode === m;
-              const disabled = locked && m !== 'ask';
               /* Only while every editor is folded, so switching between open
                  editors never makes a dot pop in or out. */
               const hasDraft = !open && !isBlank(drafts[m]);
@@ -750,9 +760,8 @@ export default function ReplyComposer({
                   prefixIcon={buttonIcon(m)}
                   data-mode={m}
                   aria-pressed={selected}
-                  disabled={disabled}
                   aria-label={hasDraft ? `${buttonLabel[m]}, draft saved` : undefined}
-                  onClick={() => (m === 'ask' ? onAskAi?.() : choose(m))}
+                  onClick={() => (m === 'ask' ? onAskAi?.() : takeover(() => choose(m)))}
                 >
                   {buttonLabel[m]}
                   {hasDraft && <span className="tr-o2-draft-dot" aria-hidden />}
@@ -780,12 +789,11 @@ export default function ReplyComposer({
                   {button}
                   <Menu
                     aria-label="Reply using AI"
-                    disabled={disabled}
                     options={REPLY_AI_MENU}
-                    onClick={(option) => replyUsingAi(option.value as ReplySuggestion)}
+                    onClick={(option) => takeover(() => replyUsingAi(option.value as ReplySuggestion))}
                     slots={{
                       trigger: (
-                        <TextButton type="button" variant="secondary" aria-label="Reply using AI" disabled={disabled}>
+                        <TextButton type="button" variant="secondary" aria-label="Reply using AI">
                           <SparkleIcon size="sm" />
                         </TextButton>
                       )

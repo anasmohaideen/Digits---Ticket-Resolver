@@ -8,7 +8,7 @@ import AskAiPanel from './details/option2/AskAiPanel';
 import useAskAi from './details/option2/useAskAi';
 import { PrimaryButton } from '../../../dewai';
 import ReviewControls from './details/option2/ReviewControls';
-import HandOverDialog, { type HandOver } from './HandOverDialog';
+import HandOverDialog, { TakeoverContext, type Takeover } from './HandOverDialog';
 import type { InternalStyle } from './details/option2/ResponseCard';
 import { hasScenarioData, parseScenario, type ScenarioId } from './details/option2/scenarios';
 import { findDetailsFixture, findDetailsTicket } from './details/fixtures';
@@ -347,6 +347,9 @@ function TicketTabs<T extends string>({
   );
 }
 
+/** The pane's free-text fields, which the prototype keeps only for the session. */
+const EMPTY_TEXTS = { plannedStart: '', plannedEnd: '', plannedEffort: '', tags: '' };
+
 const PROP_INPUT: React.CSSProperties = {
   width: '100%',
   boxSizing: 'border-box',
@@ -359,23 +362,16 @@ const PROP_INPUT: React.CSSProperties = {
 };
 
 /** Read-only while the Digit has the ticket, as Dew's disabled fields read. */
-const PROP_INPUT_DISABLED: React.CSSProperties = {
-  ...PROP_INPUT,
-  backgroundColor: 'var(--color-fill-container)',
-  color: 'var(--color-text-disabled, var(--color-text-secondary))',
-  cursor: 'not-allowed'
-};
-
 function SlaRow({
   label,
   due,
   editable,
-  disabled,
+  onEdit,
   topSpacing = false
 }: {
   label: string;
   due: string;
-  disabled?: boolean;
+  onEdit?: () => void;
   /** Resolution due can be rescheduled in the product; first response cannot. */
   editable?: boolean;
   topSpacing?: boolean;
@@ -386,7 +382,7 @@ function SlaRow({
         <div style={{ ...LABEL, display: 'flex', alignItems: 'center', gap: 'var(--spacing-050)' }}>
           {label}
           {editable && (
-            <IconButton iconName="Edit" aria-label={`Edit ${label.toLowerCase()}`} size="mini" disabled={disabled} />
+            <IconButton iconName="Edit" aria-label={`Edit ${label.toLowerCase()}`} size="mini" onClick={onEdit} />
           )}
         </div>
         <div style={VALUE}>{due}</div>
@@ -430,8 +426,8 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
   const subjectRef = useRef<HTMLDivElement | null>(null);
   /** Taken from the Digit with Pickup; any other stage starts fresh. */
   const [pickedUpAt, setPickedUpAt] = useState<string | undefined>();
-  /** Taking the ticket from its digital worker, waiting on the hand-over confirmation. */
-  const [handOver, setHandOver] = useState<{ prompt: HandOver; apply: () => void } | undefined>();
+  /** A change to a ticket the Digit has, waiting on the take-over confirmation. */
+  const [handOver, setHandOver] = useState<(() => void) | undefined>();
 
   const internalStyle: InternalStyle = searchParams.get('internal') === 'border' ? 'border' : 'tint';
   const fixture = findDetailsFixture(found?.code);
@@ -441,7 +437,25 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
   const story = Boolean(fixture && hasScenarioData(fixture.ticket.id));
   /* While the Digit has the ticket, people can read it but not change it. */
   const locked = digitOwns(stageParam) && !pickedUpAt;
+  /* Nothing is disabled while the Digit has the ticket. The first change asks
+     to take it over (`HandOverDialog`); Continue picks the ticket up and then
+     goes ahead with what the person did. */
+  const takeover: Takeover = (action) => {
+    if (!locked) {
+      action?.();
+      return;
+    }
+    setHandOver(() => () => {
+      setPickedUpAt(new Date().toISOString());
+      if (action) window.setTimeout(action, 0);
+    });
+  };
   useEffect(() => setPickedUpAt(undefined), [stageParam]);
+  /* The properties pane's draft (see `update`); a new stage starts it fresh. */
+  const [draft, setDraft] = useState<Partial<Ticket>>({});
+  const [texts, setTexts] = useState(EMPTY_TEXTS);
+  const [savedTexts, setSavedTexts] = useState(EMPTY_TEXTS);
+  useEffect(() => { setDraft({}); setTexts(savedTexts); }, [stageParam]); // eslint-disable-line react-hooks/exhaustive-deps
   /* A ticket the list shows with Ticket Resolver is the Resolver's while it
      owns the stage; once it has handed over, or someone picks it up, the agent
      is the person it went to (the viewer, as in the hand-over rows). */
@@ -561,10 +575,32 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
     : 'landing';
 
   const patch = (changes: Partial<Ticket>) => setTicket((t) => (t ? { ...t, ...changes } : t));
+
+  /* The properties pane is a form: edits are held as a draft and nothing
+     changes until Update, which stays off until something differs from what
+     is saved. Update is the one change here, so it is where a ticket the Digit
+     has asks to be taken over (as does moving it off Ticket Resolver). */
+  const edit = (changes: Partial<Ticket>) => setDraft((current) => ({ ...current, ...changes }));
+  const changed = ticket
+    ? (Object.keys(draft) as Array<keyof Ticket>).filter((key) => draft[key] !== ticket[key])
+    : [];
+  const formDirty = changed.length > 0 || (Object.keys(texts) as Array<keyof typeof texts>).some((key) => texts[key] !== savedTexts[key]);
+  const form = { ...ticket!, ...draft };
+  const update = () => {
+    const apply = () => {
+      patch(Object.fromEntries(changed.map((key) => [key, draft[key]])) as Partial<Ticket>);
+      setSavedTexts(texts);
+      setDraft({});
+    };
+    const leavesResolver = ticket?.assignee === 'Ticket Resolver' && changed.includes('assignee');
+    if (!locked && leavesResolver) setHandOver(() => apply);
+    else takeover(apply);
+  };
   const opts = <T extends string>(values: readonly T[]) => values.map((v) => ({ value: v, label: v }));
 
   return (
     <TabNavigationContext.Provider value={{ openTab: (name) => TABS.includes(name as (typeof TABS)[number]) && setTab(name as (typeof TABS)[number]) }}>
+    <TakeoverContext.Provider value={takeover}>
     <div style={{ display: 'flex', flex: 1, minWidth: 0, minHeight: 0, flexDirection: 'column' }}>
       {/* Quick actions */}
       <div
@@ -589,20 +625,20 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-100)' }}>
-          {/* The Digit still has the ticket: picking it up is the one change a person can make. */}
+          {/* The Digit still has the ticket: Pick up takes it over outright. */}
           {locked && (
-            <TextButton type="button" variant="secondary" size="default" onClick={() => setHandOver({ prompt: { kind: 'pickup' }, apply: () => setPickedUpAt(new Date().toISOString()) })}>
+            <TextButton type="button" variant="secondary" size="default" onClick={() => takeover()}>
               Pick up
             </TextButton>
           )}
-          {/* Taking the ticket from the Digit can't be undone, so every route to it
-              (Pick up, or a new agent in the properties) is confirmed first. */}
+          {/* Taking the ticket from the Digit can't be undone, so every change to it
+              (Pick up included) is confirmed first, in the same words. */}
           <HandOverDialog
-            handOver={handOver?.prompt}
+            open={Boolean(handOver)}
             digit={STAGE_DIGIT.name}
             onCancel={() => setHandOver(undefined)}
             onConfirm={() => {
-              handOver?.apply();
+              handOver?.();
               setHandOver(undefined);
             }}
           />
@@ -622,13 +658,12 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
               )
             }}
           />
-          <TextButton type="button" variant="secondary" size="default" aria-label="Edit ticket" disabled={locked}>
+          <TextButton type="button" variant="secondary" size="default" aria-label="Edit ticket" onClick={() => takeover()}>
             Edit
           </TextButton>
           <Menu
             aria-label="Conversations"
-            disabled={locked}
-            onClick={() => {}}
+            onClick={() => takeover()}
             options={[
               { value: 'reply', label: 'Reply' },
               { value: 'forward', label: 'Forward' },
@@ -636,7 +671,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
             ]}
             slots={{
               trigger: (
-                <TextButton type="button" variant="secondary" size="default" suffixIcon="ChevronDown" disabled={locked}>
+                <TextButton type="button" variant="secondary" size="default" suffixIcon="ChevronDown">
                   Reply
                 </TextButton>
               )
@@ -644,8 +679,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
           />
           <Menu
             aria-label="Associate"
-            disabled={locked}
-            onClick={() => {}}
+            onClick={() => takeover()}
             options={[
               { value: 'change', label: 'Change' },
               { value: 'problem', label: 'Problem' },
@@ -653,16 +687,16 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
             ]}
             slots={{
               trigger: (
-                <TextButton type="button" variant="secondary" size="default" suffixIcon="ChevronDown" disabled={locked}>
+                <TextButton type="button" variant="secondary" size="default" suffixIcon="ChevronDown">
                   Associate
                 </TextButton>
               )
             }}
           />
-          <TextButton type="button" variant="secondary" size="default" disabled={locked} onClick={() => patch({ status: 'Closed' })}>
+          <TextButton type="button" variant="secondary" size="default" onClick={() => takeover(() => patch({ status: 'Closed' }))}>
             Close
           </TextButton>
-          <IconButton iconName="MoreHorizontal" aria-label="More button" size="default" withBackground disabled={locked} />
+          <IconButton iconName="MoreHorizontal" aria-label="More button" size="default" withBackground onClick={() => takeover()} />
           <IconButton
             iconName="ChevronLeft"
             aria-label="Previous ticket"
@@ -791,7 +825,6 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
         {/* Side pane — Ask AI or the widgets, or hidden so the conversation can
             go edge to edge. */}
         {paneVisible && <aside
-          className={locked ? 'tr-o2-props-locked' : undefined}
           style={{
             width: '366px',
             flexShrink: 0,
@@ -824,7 +857,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
               </div>
             </div>
             <SlaRow label="First response due" due={INCIDENT_DATES.firstResponseDue} />
-            <SlaRow label="Resolution due" due={INCIDENT_DATES.resolutionDue} editable disabled={locked} topSpacing />
+            <SlaRow label="Resolution due" due={INCIDENT_DATES.resolutionDue} editable onEdit={() => takeover()} topSpacing />
           </div>
 
           <div ref={(el) => { widgetRefs.current.requester = el; }} style={CARD}>
@@ -877,20 +910,18 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
                 <PropRow>
                   <PropField label="Priority" required>
                     <Select
-                      disabled={locked}
                       aria-label="Ticket priority"
                       options={opts(PRIORITIES)}
-                      value={{ value: ticket.priority, label: ticket.priority }}
-                      onValueChange={(next) => next && patch({ priority: next.value as Priority })}
+                      value={{ value: form.priority, label: form.priority }}
+                      onValueChange={(next) => next && edit({ priority: next.value as Priority })}
                     />
                   </PropField>
                   <PropField label="Status" required>
                     <Select
-                      disabled={locked}
                       aria-label="Ticket status"
                       options={opts(STATUSES)}
-                      value={{ value: ticket.status, label: ticket.status }}
-                      onValueChange={(next) => next && patch({ status: next.value as Status })}
+                      value={{ value: form.status, label: form.status }}
+                      onValueChange={(next) => next && edit({ status: next.value as Status })}
                     />
                   </PropField>
                 </PropRow>
@@ -898,20 +929,18 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
                 <PropRow>
                   <PropField label="Source">
                     <Select
-                      disabled={locked}
                       aria-label="Source"
                       options={opts(SOURCES)}
-                      value={{ value: ticket.source, label: ticket.source }}
-                      onValueChange={(next) => next && patch({ source: next.value as Source })}
+                      value={{ value: form.source, label: form.source }}
+                      onValueChange={(next) => next && edit({ source: next.value as Source })}
                     />
                   </PropField>
                   <PropField label="Type">
                     <Select
-                      disabled={locked}
                       aria-label="Type"
                       options={opts(TICKET_TYPES)}
-                      value={{ value: ticket.type, label: ticket.type }}
-                      onValueChange={(next) => next && patch({ type: next.value as TicketType })}
+                      value={{ value: form.type, label: form.type }}
+                      onValueChange={(next) => next && edit({ type: next.value as TicketType })}
                     />
                   </PropField>
                 </PropRow>
@@ -919,20 +948,18 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
                 <PropRow>
                   <PropField label="Urgency">
                     <Select
-                      disabled={locked}
                       aria-label="Urgency"
                       options={opts(LEVELS)}
-                      value={{ value: ticket.urgency, label: ticket.urgency }}
-                      onValueChange={(next) => next && patch({ urgency: next.value as Level })}
+                      value={{ value: form.urgency, label: form.urgency }}
+                      onValueChange={(next) => next && edit({ urgency: next.value as Level })}
                     />
                   </PropField>
                   <PropField label="Impact">
                     <Select
-                      disabled={locked}
                       aria-label="Impact"
                       options={opts(LEVELS)}
-                      value={{ value: ticket.impact, label: ticket.impact }}
-                      onValueChange={(next) => next && patch({ impact: next.value as Level })}
+                      value={{ value: form.impact, label: form.impact }}
+                      onValueChange={(next) => next && edit({ impact: next.value as Level })}
                     />
                   </PropField>
                 </PropRow>
@@ -940,33 +967,19 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
                 <PropRow>
                   <PropField label="Group">
                     <Select
-                      disabled={locked}
                       aria-label="Group"
                       options={opts(GROUPS)}
-                      value={{ value: ticket.group, label: ticket.group }}
-                      onValueChange={(next) => next && patch({ group: next.value as Group })}
+                      value={{ value: form.group, label: form.group }}
+                      onValueChange={(next) => next && edit({ group: next.value as Group })}
                     />
                   </PropField>
                   {/* "Agent" here, not the list's "Assigned to". */}
                   <PropField label="Agent">
                     <Select
-                      disabled={locked}
                       aria-label="Ticket agent"
                       options={opts(AGENTS.filter((agent) => agent !== 'Ticket Resolver'))}
-                      value={{ value: ticket.assignee, label: ticket.assignee }}
-                      onValueChange={(next) => {
-                        if (!next) return;
-                        const assignee = next.value as Agent;
-                        /* A digital worker can't be chosen here, and taking the ticket from one is for good. */
-                        if (ticket.assignee === 'Ticket Resolver' && assignee !== 'Ticket Resolver') {
-                          setHandOver({
-                            prompt: assignee === 'None' ? { kind: 'unassign' } : { kind: 'assign', to: assignee },
-                            apply: () => patch({ assignee })
-                          });
-                        } else {
-                          patch({ assignee });
-                        }
-                      }}
+                      value={{ value: form.assignee, label: form.assignee }}
+                      onValueChange={(next) => next && edit({ assignee: next.value as Agent })}
                     />
                   </PropField>
                 </PropRow>
@@ -974,33 +987,32 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
                 <PropRow>
                   <PropField label="Department">
                     <Select
-                      disabled={locked}
                       aria-label="Department"
                       options={opts(DEPARTMENTS)}
-                      value={{ value: ticket.department, label: ticket.department }}
-                      onValueChange={(next) => next && patch({ department: next.value as Department })}
+                      value={{ value: form.department, label: form.department }}
+                      onValueChange={(next) => next && edit({ department: next.value as Department })}
                     />
                   </PropField>
                   {/* Unset on the live ticket too, so it renders empty. */}
                   <PropField label="Category">
-                    <Select aria-label="Category" disabled={locked} options={[]} placeholder="--" value={null} onValueChange={() => {}} />
+                    <Select aria-label="Category" options={[]} placeholder="--" value={null} onValueChange={() => {}} />
                   </PropField>
                 </PropRow>
 
                 <PropField label="Planned Start Date">
-                  <input style={locked ? PROP_INPUT_DISABLED : PROP_INPUT} disabled={locked} placeholder="DD-MM-YYYY" aria-label="Planned Start Date" />
+                  <input style={PROP_INPUT} placeholder="DD-MM-YYYY" aria-label="Planned Start Date" value={texts.plannedStart} onChange={(event) => setTexts((current) => ({ ...current, plannedStart: event.target.value }))} />
                 </PropField>
                 <PropField label="Planned End Date">
-                  <input style={locked ? PROP_INPUT_DISABLED : PROP_INPUT} disabled={locked} placeholder="DD-MM-YYYY" aria-label="Planned End Date" />
+                  <input style={PROP_INPUT} placeholder="DD-MM-YYYY" aria-label="Planned End Date" value={texts.plannedEnd} onChange={(event) => setTexts((current) => ({ ...current, plannedEnd: event.target.value }))} />
                 </PropField>
                 <PropField label="Planned Effort">
-                  <input style={locked ? PROP_INPUT_DISABLED : PROP_INPUT} disabled={locked} placeholder="Eg: 1h 10m" aria-label="Planned Effort" />
+                  <input style={PROP_INPUT} placeholder="Eg: 1h 10m" aria-label="Planned Effort" value={texts.plannedEffort} onChange={(event) => setTexts((current) => ({ ...current, plannedEffort: event.target.value }))} />
                 </PropField>
                 <PropField label="Tags">
-                  <input style={locked ? PROP_INPUT_DISABLED : PROP_INPUT} disabled={locked} placeholder="Search" aria-label="Tags" />
+                  <input style={PROP_INPUT} placeholder="Search" aria-label="Tags" value={texts.tags} onChange={(event) => setTexts((current) => ({ ...current, tags: event.target.value }))} />
                 </PropField>
 
-                <TextButton type="button" variant="primary" style={{ width: '100%' }} disabled={locked}>
+                <TextButton type="button" variant="primary" style={{ width: '100%' }} disabled={!formDirty} onClick={update}>
                   Update
                 </TextButton>
               </>
@@ -1079,6 +1091,7 @@ export function TicketDetailView({ ticketId: id, split }: { ticketId: string | u
           : undefined}
       />
     </div>
+    </TakeoverContext.Provider>
     </TabNavigationContext.Provider>
   );
 }

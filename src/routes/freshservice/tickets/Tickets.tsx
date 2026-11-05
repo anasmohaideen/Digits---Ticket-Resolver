@@ -7,15 +7,8 @@ import ViewControls from './ViewControls';
 import ViewSwitcher from './ViewSwitcher';
 import { VIEW_TICKETS, ticketHref } from './ticketViews';
 import { DIGIT_AVATAR, DIGIT_AVATAR_MAX_PX, DIGIT_AVATAR_STYLE } from './details/details.tokens';
-import AssignPicker, { type Assignment } from './AssignPicker';
-import HandOverDialog, { type HandOver } from './HandOverDialog';
-
-/** What taking a ticket from its digital worker will do, for the confirmation's words. */
-function handOverFor(group: string, next: Assignment): HandOver {
-  if (next.agent !== 'None') return { kind: 'assign', to: next.agent };
-  if (next.group !== group) return { kind: 'assign', to: next.group };
-  return { kind: 'unassign' };
-}
+import AssignPicker from './AssignPicker';
+import HandOverDialog from './HandOverDialog';
 import {
   AGENTS,
   COLUMN_FIELDS,
@@ -859,8 +852,8 @@ export function sortTickets(tickets: Ticket[], field: string, direction: 'asc' |
 
 export default function Tickets() {
   const [tickets, setTickets] = useState<Ticket[]>(PROTOTYPE_TICKETS);
-  /** A change of assignee waiting on the hand-over confirmation. */
-  const [handOver, setHandOver] = useState<{ id: string; next: Assignment; prompt: HandOver } | undefined>();
+  /** A change to a ticket Ticket Resolver is working on, waiting on the take-over confirmation. */
+  const [handOver, setHandOver] = useState<{ id: string; changes: Partial<Ticket> } | undefined>();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [sortField, setSortField] = useState('Created Date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
@@ -927,6 +920,15 @@ export default function Tickets() {
 
   const patch = (id: string, changes: Partial<Ticket>) =>
     setTickets((rows) => rows.map((row) => (row.id === id ? { ...row, ...changes } : row)));
+  /* Any change to a ticket Ticket Resolver is working on asks first; going ahead
+     unassigns it (unless the change itself names a new assignee). */
+  const change = (row: Ticket, changes: Partial<Ticket>) => {
+    if (row.assignee !== 'Ticket Resolver') {
+      patch(row.id, changes);
+      return;
+    }
+    setHandOver({ id: row.id, changes: { assignee: 'None', ...changes } });
+  };
 
   const activeFilterCount =
     filterMode === 'advanced'
@@ -992,7 +994,7 @@ export default function Tickets() {
             ariaLabel={`Status for ${row.original.code}`}
             value={row.original.status}
             values={STATUSES}
-            onChange={(status) => patch(row.original.id, { status })}
+            onChange={(status) => change(row.original, { status })}
           />
         )
       },
@@ -1007,7 +1009,7 @@ export default function Tickets() {
             value={row.original.priority}
             values={PRIORITIES}
             dot={(p) => PRIORITY_COLOR[p]}
-            onChange={(priority) => patch(row.original.id, { priority })}
+            onChange={(priority) => change(row.original, { priority })}
           />
         )
       },
@@ -1021,14 +1023,7 @@ export default function Tickets() {
             ariaLabel={`Assignee for ${row.original.code}`}
             value={{ agent: row.original.assignee, group: row.original.group }}
             leading={agentAvatar(row.original.assignee)}
-            onChange={(next) => {
-              /* Taking a ticket from a digital worker is for good, so it is confirmed first. */
-              if (row.original.assignee === 'Ticket Resolver') {
-                setHandOver({ id: row.original.id, next, prompt: handOverFor(row.original.group, next) });
-              } else {
-                patch(row.original.id, { assignee: next.agent, group: next.group });
-              }
-            }}
+            onChange={(next) => change(row.original, { assignee: next.agent, group: next.group })}
           />
         )
       }
@@ -1201,11 +1196,11 @@ export default function Tickets() {
       <ViewControls />
 
       <HandOverDialog
-        handOver={handOver?.prompt}
+        open={Boolean(handOver)}
         digit="Ticket Resolver"
         onCancel={() => setHandOver(undefined)}
         onConfirm={() => {
-          if (handOver) patch(handOver.id, { assignee: handOver.next.agent, group: handOver.next.group });
+          if (handOver) patch(handOver.id, handOver.changes);
           setHandOver(undefined);
         }}
       />

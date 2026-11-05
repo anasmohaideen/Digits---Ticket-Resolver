@@ -1,56 +1,33 @@
+import { createContext, useContext } from 'react';
 import { Modal, TextButton } from '@freshworks/dew-components';
 
 /**
- * The one confirmation for taking a ticket away from a digital worker, wherever
- * it happens: Pick up on the ticket page, or a new assignee chosen in the list
- * or in the ticket's properties. The worker stops, and it can't be put back,
- * so every route asks first, in the same words.
- *
- *   pickup     "Pick up this ticket"            [Cancel] [Pick up]
- *   assign     "Assign to Sarah Kim"            [Cancel] [Assign]
- *   unassign   "Unassign Ticket Resolver"       [Cancel] [Unassign]
- *
- * The body is the same everywhere: "Ticket Resolver will stop its current
- * resolution steps and can't be assigned back later."
+ * The one confirmation for changing a ticket a digital worker is working on,
+ * whatever the change and wherever it's made: Pick up, a reply or note, a
+ * property, the top card, or a status, priority or assignee in the list.
+ * Nothing is disabled while the worker has the ticket; the first change asks
+ * this, in the same words every time, and Continue goes ahead with it.
  */
-export type HandOver =
-  | { kind: 'pickup' }
-  | { kind: 'assign'; to: string }
-  | { kind: 'unassign' };
-
-export function handOverCopy(handOver: HandOver, digit: string) {
-  switch (handOver.kind) {
-    case 'pickup':
-      return { title: 'Pick up this ticket', confirm: 'Pick up' };
-    case 'assign':
-      return { title: `Assign to ${handOver.to}`, confirm: 'Assign' };
-    case 'unassign':
-      return { title: `Unassign ${digit}`, confirm: 'Unassign' };
-  }
-}
-
 export default function HandOverDialog({
-  handOver,
+  open,
   digit,
   onConfirm,
   onCancel
 }: {
-  /** What the person is about to do; nothing open when undefined. */
-  handOver: HandOver | undefined;
-  /** The digital worker that holds the ticket. */
+  open: boolean;
+  /** The digital worker that has the ticket. */
   digit: string;
   onConfirm: () => void;
   onCancel: () => void;
 }) {
-  /* Keep the last words on screen while the dialog closes. */
-  const copy = handOverCopy(handOver ?? { kind: 'pickup' }, digit);
   return (
-    <Modal open={Boolean(handOver)} onOpenChange={(open) => !open && onCancel()}>
+    <Modal open={open} onOpenChange={(next) => !next && onCancel()}>
       <Modal.Content size="sm">
-        <Modal.Header title={copy.title} hideCloseBtn />
+        <Modal.Header title={`Take over from ${digit}`} hideCloseBtn />
         <Modal.Body>
           <p style={{ margin: 0, fontSize: '14px', lineHeight: '20px', color: 'var(--color-text-primary)' }}>
-            {digit} will stop its current resolution steps and can’t be assigned back later.
+            {digit} is working on this ticket. If you make a change now, it stops its resolution steps and is
+            unassigned. It can’t be assigned back later.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -58,10 +35,20 @@ export default function HandOverDialog({
             Cancel
           </TextButton>
           <TextButton type="button" variant="primary" onClick={onConfirm}>
-            {copy.confirm}
+            Continue
           </TextButton>
         </Modal.Footer>
       </Modal.Content>
     </Modal>
   );
 }
+
+/**
+ * The ticket page's guard: `takeover(action)` runs the action straight away
+ * when no digital worker has the ticket; otherwise it asks first and, on
+ * Continue, takes the ticket over and then runs it. Anything that changes the
+ * ticket goes through it; reading, copying and Ask AI don't.
+ */
+export type Takeover = (action?: () => void) => void;
+export const TakeoverContext = createContext<Takeover>((action) => action?.());
+export const useTakeover = () => useContext(TakeoverContext);

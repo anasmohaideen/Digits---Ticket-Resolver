@@ -19,6 +19,7 @@ import MessagesPill from './MessagesPill';
 import { eventLine } from '../EventRow';
 import EventDetailsPane from './EventDetailsPane';
 import ActivityRow, { activityPerson } from './ActivityRow';
+import { useTakeover } from '../../HandOverDialog';
 import EventLeadingIcon from '../EventLeadingIcon';
 import { hasStandardDetails, standardDetails } from './eventDetails';
 import Reveal from './Reveal';
@@ -254,6 +255,7 @@ export default function DetailsTabOption2({
   /* Deleting a tab removes it; the next one takes its place, and with none
      left the card falls back to its empty state. */
   const [deleted, setDeleted] = useState<ArtifactKind[]>([]);
+  const takeover = useTakeover();
   const available = availableArtifacts(tab, Boolean(resolution)).filter((kind) => !deleted.includes(kind));
   /* The card always opens on Summary when there is one. */
   const lead = available.includes('summary') ? 'summary' : leadArtifact(available);
@@ -266,12 +268,14 @@ export default function DetailsTabOption2({
 
   /* Slim rows under the top card for what a person can ask for when the Digit
      did not produce it. */
-  const ambientRows: AmbientRow[] = locked ? [] : [
+  /* Asking for work is a change, so while the Digit has the ticket it goes
+     through the take-over guard first. */
+  const ambientRows: AmbientRow[] = [
     ...(tab.summary.state !== 'not-generated' && tab.summary.state !== 'generating' && tab.rootCause.state === 'not-analyzed' && rcaGen.phase === 'idle' && rootCauseContent
-      ? [{ id: 'rca', label: 'Find the likely cause and resolution steps', onClick: rcaGen.start }]
+      ? [{ id: 'rca', label: 'Find the likely cause and resolution steps', onClick: () => takeover(rcaGen.start) }]
       : []),
     ...(tab.rootCause.state === 'found' && !resolution && hasResolutionOnDemand(ticketCode)
-      ? [{ id: 'note', label: 'Generate a resolution note', busy: noteGen.phase === 'generating', busyLabel: 'Writing the resolution note', seconds: noteGen.elapsed, onClick: noteGen.start }]
+      ? [{ id: 'note', label: 'Generate a resolution note', busy: noteGen.phase === 'generating', busyLabel: 'Writing the resolution note', seconds: noteGen.elapsed, onClick: () => takeover(noteGen.start) }]
       : [])
   ];
 
@@ -617,13 +621,12 @@ export default function DetailsTabOption2({
             resolution={resolution}
             internalStyle={internalStyle}
             log={logMessages}
-            locked={locked}
             onForward={isEmailLike(tab.ticket.source) ? (text) => setForward((current) => ({ id: (current?.id ?? 0) + 1, text })) : undefined}
             onDelete={(kind) => setDeleted((current) => [...current, kind])}
-            onGenerate={summaryContent && !locked ? () => {
+            onGenerate={summaryContent ? () => takeover(() => {
               setDeleted((current) => current.filter((kind) => kind !== 'summary'));
               summaryGen.start();
-            } : undefined}
+            }) : undefined}
           />
           <AmbientRows rows={ambientRows} />
         </div>
